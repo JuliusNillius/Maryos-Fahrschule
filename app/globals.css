@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* §03 Brand + Design System — global tokens */
+:root {
+  --radius: 10px;
+  --glow: 0 0 24px rgba(93, 196, 34, 0.35);
+  --glow-sm: 0 0 12px rgba(93, 196, 34, 0.2);
+
+  --green-400: #6fd934;
+  --green-500: #5dc422;
+  --green-600: #3d8a14;
+  --green-primary: #5dc422;
+  --green-dark: #3d8a14;
+  --green-glow: rgba(93, 196, 34, 0.15);
+  --green-glow-strong: rgba(93, 196, 34, 0.35);
+  --green-glow-text: rgba(93, 196, 34, 0.4);
+
+  --bg: #080808;
+  --surface: #0f0f0f;
+  --surface-2: #141414;
+  --card: #141414;
+  --card2: #1c1c1c;
+
+  --text: #f0f0f0;
+  --text-muted: #777777;
+  --red: #e53e3e;
+  --border: rgba(93, 196, 34, 0.18);
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Page transitions: weicher Fade-In beim Seitenwechsel */
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-page-in {
+  animation: page-in 0.25s ease-out forwards;
+}
+
+@media (min-width: 768px) {
+  body.custom-cursor-active {
+    cursor: none;
+  }
+}
+
+/* Button base styles (design system) */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-green-primary px-6 py-3 font-heading text-sm font-bold uppercase tracking-[0.15em] text-black transition-all duration-[250ms] ease-out;
+  }
+  .btn-primary:hover {
+    @apply scale-[1.02] bg-[#6FD934];
+    box-shadow: 0 0 40px var(--green-glow-strong), 0 0 80px rgba(93, 196, 34, 0.2);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-lg border border-green-primary/80 bg-transparent px-6 py-3 font-heading text-sm font-bold uppercase tracking-[0.12em] text-green-primary transition-all duration-[250ms];
+  }
+  .btn-ghost:hover {
+    background-color: rgba(93, 196, 34, 0.08);
+    border-color: var(--green-primary);
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+  .card-style {
+    @apply rounded-xl border border-[rgba(93,196,34,0.12)] bg-surface transition-all duration-300 ease-out;
+  }
+  .card-style:hover {
+    @apply -translate-y-1 border-green-primary;
+    box-shadow: 0 0 30px var(--green-glow), 0 4px 24px rgba(0, 0, 0, 0.4);
+  }
+  .section-divider {
+    @apply border-t border-[rgba(93,196,34,0.18)];
+  }
+  .headline-glow {
+    text-shadow: 0 0 60px var(--green-glow-text), 0 2px 20px rgba(0, 0, 0, 0.5);
+  }
+  .headline-glow-subtle {
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Reviews double marquee */
+@keyframes reviews-marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes reviews-marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-reviews-marquee-left {
+  animation: reviews-marquee-left 45s linear infinite;
+}
+.animate-reviews-marquee-right {
+  animation: reviews-marquee-right 45s linear infinite;
+}
+.animate-reviews-marquee-left:hover,
+.animate-reviews-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+/* WhatsApp floating button pulse ring */
+@keyframes whatsapp-pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.whatsapp-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid theme('colors.green.primary');
+  animation: whatsapp-pulse-ring 2s ease-out infinite;
+  pointer-events: none;
+}
+
+/* Hero-Video mobil: volle Fläche, kein Streifen/Kleinanzeige (v.a. iOS/Safari) */
+@media (max-width: 767px) {
+  .hero-video-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 100%;
+    min-width: 100%;
+  }
+  .hero-video-wrap video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    object-position: center center;
+  }
+}

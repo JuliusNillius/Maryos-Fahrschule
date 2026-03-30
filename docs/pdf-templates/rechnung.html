@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rechnung {{R_NUMMER}} – Maryo's Fahrschule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #5DC422;
+      --green-dark: #3D8A14;
+      --text: #1a1a1a;
+      --text-muted: #666666;
+      --label: #888888;
+      --bg-page: #ffffff;
+      --bg-light: #f9f9f9;
+      --bg-recipient: #f8f8f8;
+      --bg-summary: #f4f4f4;
+      --bg-payment: #f0fae8;
+      --border: #eeeeee;
+      --status-offen-bg: #fff3cd;
+      --status-offen-text: #856404;
+      --status-bezahlt-bg: #d4f5c0;
+      --status-bezahlt-text: #1f6b00;
+      --status-storniert-bg: #f8d7da;
+      --status-storniert-text: #721c24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg-page);
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 32px 40px 40px;
+      position: relative;
+    }
+    .decorative-right {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 6px;
+      height: 100vh;
+      background: var(--green);
+      z-index: 0;
+    }
+    .decorative-right .swoosh {
+      position: absolute;
+      top: 0;
+      right: 6px;
+      width: 120px;
+      height: 100%;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .decorative-right .clover-wm {
+      position: absolute;
+      top: 24px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    .content { position: relative; z-index: 1; }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid var(--green);
+    }
+    .logo-svg {
+      height: 56px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+    .company-info {
+      text-align: right;
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+    .company-info strong { color: var(--text); }
+
+    /* Title + Meta */
+    .invoice-title {
+      font-family: 'Barlow Condensed', Arial Narrow, sans-serif;
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 0 0 24px;
+    }
+    .meta-row {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .meta-col {
+      flex: 1;
+      min-width: 200px;
+    }
+    .meta-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--label);
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .status-badge.offen { background: var(--status-offen-bg); color: var(--status-offen-text); }
+    .status-badge.bezahlt { background: var(--status-bezahlt-bg); color: var(--status-bezahlt-text); }
+    .status-badge.storniert { background: var(--status-storniert-bg); color: var(--status-storniert-text); }
+
+    /* Recipient */
+    .recipient-block {
+      background: var(--bg-recipient);
+      border-left: 4px solid var(--green);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+    .recipient-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--label);
+      margin-bottom: 10px;
+    }
+    .recipient-firma { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+    .recipient-email { color: var(--green); }
+
+    /* Table */
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .items-table thead th {
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 500;
+    }
+    .items-table thead th:nth-child(n+4) { text-align: right; }
+    .items-table tbody td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .items-table tbody tr:nth-child(odd) { background: #ffffff; }
+    .items-table tbody tr:nth-child(even) { background: var(--bg-light); }
+    .items-table tbody td:nth-child(n+4) { text-align: right; }
+    .items-table .summary-row td {
+      background: var(--bg-summary);
+      padding: 10px 16px;
+      text-align: right;
+      border-bottom: 1px solid var(--border);
+    }
+    .items-table .summary-row td:first-child { text-align: left; }
+    .items-table .total-row td {
+      background: #1a1a1a;
+      color: #ffffff;
+      padding: 16px;
+      font-family: 'Barlow Condensed', Arial Narrow, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      border-top: 3px solid var(--green);
+    }
+    .items-table .total-row td:last-child { color: var(--green); }
+    .items-table .total-row td:first-child { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Payment note */
+    .payment-note {
+      background: var(--bg-payment);
+      border: 1px solid rgba(93, 196, 34, 0.25);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 24px 0;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 2px solid var(--green);
+      padding-top: 16px;
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      color: var(--label);
+    }
+    .footer-col { flex: 1; min-width: 140px; }
+    .footer-tagline {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 10px;
+      font-style: italic;
+      color: var(--green);
+    }
+
+    @media print {
+      body { padding: 32px 40px; }
+      .decorative-right { display: none !important; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .items-table tbody tr { page-break-inside: avoid; }
+    }
+    @page { size: A4; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="decorative-right" aria-hidden="true">
+    <svg class="swoosh" viewBox="0 0 120 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 Q80 200 20 400 Q0 600 60 800 Q100 1000 0 1200" stroke="#5DC422" stroke-width="80" fill="none" />
+    </svg>
+    <svg class="clover-wm" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="10" fill="#5DC422"/>
+      <ellipse cx="32" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(-35 32 42)"/>
+      <ellipse cx="68" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(35 68 42)"/>
+      <ellipse cx="50" cy="25" rx="14" ry="20" fill="#5DC422"/>
+      <ellipse cx="50" cy="75" rx="14" ry="20" fill="#5DC422"/>
+    </svg>
+  </div>
+
+  <div class="content">
+    <header class="header">
+      <div>
+        <!-- Logo: Clover + MARYO'S + FAHRSCHULE + Swoosh (inline SVG, ~200×60) -->
+        <svg class="logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Four-leaf clover -->
+          <circle cx="30" cy="30" r="8" fill="#5DC422"/>
+          <ellipse cx="22" cy="26" rx="10" ry="14" fill="#5DC422" transform="rotate(-35 22 26)"/>
+          <ellipse cx="38" cy="26" rx="10" ry="14" fill="#5DC422" transform="rotate(35 38 26)"/>
+          <ellipse cx="30" cy="16" rx="10" ry="14" fill="#5DC422"/>
+          <ellipse cx="30" cy="44" rx="10" ry="14" fill="#5DC422"/>
+          <!-- MARYO'S -->
+          <text x="52" y="28" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-style="italic" font-size="18" fill="#1a1a1a">MARYO'S</text>
+          <!-- FAHRSCHULE -->
+          <text x="52" y="48" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-style="italic" font-size="22" fill="#5DC422">FAHRSCHULE</text>
+          <!-- Swoosh curve under text -->
+          <path d="M 50 52 Q 120 58 195 48" stroke="#5DC422" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="company-info">
+        Maryo's Fahrschule GmbH<br />
+        Bahnhofstraße 25 · 41236 Mönchengladbach<br />
+        Tel: 0178 4557528<br />
+        info@maryos-fahrschule.de
+      </div>
+    </header>
+
+    <h1 class="invoice-title">Rechnung</h1>
+
+    <div class="meta-row">
+      <div class="meta-col">
+        <div class="meta-label">Rechnungsnummer</div>
+        <div class="meta-value">{{R_NUMMER}}</div>
+        <div class="meta-label" style="margin-top:10px">Rechnungsdatum</div>
+        <div class="meta-value">{{R_DATUM}}</div>
+        <div class="meta-label" style="margin-top:10px">Fällig bis</div>
+        <div class="meta-value">{{R_FAELLIG}}</div>
+        <div class="meta-label" style="margin-top:10px">Leistungsdatum</div>
+        <div class="meta-value">{{R_LEISTUNGSDATUM}}</div>
+      </div>
+      <div class="meta-col" style="text-align:right">
+        <span class="status-badge {{R_STATUS}}">{{R_STATUS}}</span><br />
+        <div class="meta-label">Zahlungsart</div>
+        <div class="meta-value">{{R_ZAHLUNGSART}}</div>
+      </div>
+    </div>
+
+    <div class="recipient-block">
+      <div class="recipient-label">Rechnungsempfänger</div>
+      <div class="recipient-firma">{{K_FIRMA}}</div>
+      <div>{{K_NAME}}</div>
+      <div>{{K_ADRESSE}}</div>
+      <div>{{K_PLZ_ORT}}</div>
+      <div class="recipient-email">{{K_EMAIL}}</div>
+    </div>
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Pos.</th>
+          <th>Leistung / Beschreibung</th>
+          <th>Menge</th>
+          <th>Netto</th>
+          <th>MwSt %</th>
+          <th>Brutto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>{{R_TITEL}}</td>
+          <td>1</td>
+          <td>{{NETTO}}</td>
+          <td>{{MWST_BETRAG}}</td>
+          <td>{{BRUTTO}}</td>
+        </tr>
+        <tr class="summary-row">
+          <td colspan="5">Gesamtbetrag exkl. USt.</td>
+          <td>{{NETTO}}</td>
+        </tr>
+        <tr class="summary-row">
+          <td colspan="5">MwSt. 19 %</td>
+          <td>{{MWST_BETRAG}}</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="5">GESAMTBETRAG INKL. MWST.</td>
+          <td>{{BRUTTO}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="payment-note">
+      💳 Bitte überweisen Sie den Betrag von {{BRUTTO}} innerhalb von {{R_ZAHLUNGSZIEL_TAGE}} Tagen nach Rechnungsdatum unter Angabe der Rechnungsnummer {{R_NUMMER}}.
+    </div>
+
+    <footer class="footer">
+      <div class="footer-col">
+        Maryo's Fahrschule GmbH<br />
+        Bahnhofstraße 25 · 41236 Mönchengladbach<br />
+        HRB 23787 Mönchengladbach
+      </div>
+      <div class="footer-col">
+        Geschäftsführer: Yaako Maryo Asoo<br />
+        Tel: 0178 4557528<br />
+        info@maryos-fahrschule.de
+      </div>
+      <div class="footer-col">
+        <!-- Bankdaten hier ergänzen -->
+        IBAN: ________________________<br />
+        BIC: _________________________<br />
+        Bank: ________________________
+      </div>
+    </footer>
+    <div class="footer-tagline">🍀 Fahr in dein Glück</div>
+  </div>
+</body>
+</html>

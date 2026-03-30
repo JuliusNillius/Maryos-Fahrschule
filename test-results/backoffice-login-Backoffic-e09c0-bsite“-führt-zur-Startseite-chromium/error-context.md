@@ -1,0 +1,394 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]: Maryo's Driving School | Mönchengladbach | B, BE, A, A1, A2, AM | Maryo's Fahrschule
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: 🍀
+      - generic [ref=e7]:
+        - generic [ref=e8]: MARYO'S
+        - generic [ref=e9]: FAHRSCHULE
+      - img [ref=e10]
+      - paragraph [ref=e12]: FAHR IN DEIN GLÜCK
+    - generic [ref=e14]:
+      - banner [ref=e15]:
+        - generic [ref=e16]:
+          - link "Maryo's Fahrschule Startseite" [ref=e17] [cursor=pointer]:
+            - /url: /en
+            - img "Maryo's Fahrschule" [ref=e18]
+          - navigation "Hauptmenü" [ref=e19]:
+            - link "Licenses" [ref=e20] [cursor=pointer]:
+              - /url: "#fuehrerscheine"
+            - link "Teachers" [ref=e21] [cursor=pointer]:
+              - /url: "#lehrer"
+            - link "Find instructor" [ref=e22] [cursor=pointer]:
+              - /url: "#quiz"
+            - link "Prices" [ref=e23] [cursor=pointer]:
+              - /url: "#preise"
+            - link "Blog" [ref=e24] [cursor=pointer]:
+              - /url: /en/blog
+            - link "Contact" [ref=e25] [cursor=pointer]:
+              - /url: "#kontakt"
+          - generic [ref=e26]:
+            - button "Sprache wählen" [ref=e28] [cursor=pointer]:
+              - generic [ref=e29]: 🌐
+              - generic [ref=e30]: EN
+              - generic [ref=e31]: ▾
+            - link "Register" [ref=e32] [cursor=pointer]:
+              - /url: /en#anmelden
+            - link "Backoffice" [ref=e33] [cursor=pointer]:
+              - /url: /en/backoffice
+      - main [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e41]:
+            - paragraph [ref=e42]: "🍀 Mönchengladbach's #1 Driving School"
+            - heading "DRIVE TO YOUR LUCK" [level=1] [ref=e43]:
+              - generic [ref=e44]: DRIVE TO YOUR
+              - generic [ref=e45]: LUCK
+            - paragraph [ref=e46]: Choose your instructor. Book online. Hit the road.
+            - generic [ref=e47]:
+              - link "🏁 REGISTER NOW" [ref=e48] [cursor=pointer]:
+                - /url: /en#anmelden
+              - link "OUR INSTRUCTORS →" [ref=e49] [cursor=pointer]:
+                - /url: /en#lehrer
+            - generic [ref=e51]: Scroll
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: "3.0"
+              - text: 5.0 ★ Google
+            - generic [ref=e57]: ◆
+            - generic [ref=e58]:
+              - generic [ref=e59]: "11"
+              - text: 18 Reviews
+            - generic [ref=e60]: ◆
+            - generic [ref=e61]:
+              - generic [ref=e62]: "6"
+              - text: 10 Languages
+            - generic [ref=e63]: ◆
+            - generic [ref=e64]:
+              - generic [ref=e65]: "4"
+              - text: 6 License Classes
+            - generic [ref=e66]: ◆
+            - generic [ref=e67]: 100% Digital
+        - region "Vertrauen" [ref=e68]:
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - generic [ref=e72]: ⭐ 5.0 Google
+                - generic [ref=e73]: ◆
+              - generic [ref=e74]:
+                - generic [ref=e75]: Apple Pay
+                - generic [ref=e76]: ◆
+              - generic [ref=e77]:
+                - generic [ref=e78]: Sofort & Klarna
+                - generic [ref=e79]: ◆
+              - generic [ref=e80]:
+                - generic [ref=e81]: B · BE · A · A1 · A2 · AM
+                - generic [ref=e82]: ◆
+              - generic [ref=e83]:
+                - generic [ref=e84]: 10 Languages
+                - generic [ref=e85]: ◆
+              - generic [ref=e86]:
+                - generic [ref=e87]: 18 Reviews
+                - generic [ref=e88]: ◆
+              - generic [ref=e89]:
+                - generic [ref=e90]: WhatsApp Support
+                - generic [ref=e91]: ◆
+              - generic [ref=e92]:
+                - generic [ref=e93]: Founded 2025
+                - generic [ref=e94]: ◆
+              - generic [ref=e95]:
+                - generic [ref=e96]: Mönchengladbach
+                - generic [ref=e97]: ◆
+              - generic [ref=e98]:
+                - generic [ref=e99]: 100% Online
+                - generic [ref=e100]: ◆
+              - generic [ref=e102]: TÜV Certification
+              - generic [ref=e103]: ◆
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]: ⭐ 5.0 Google
+                - generic [ref=e107]: ◆
+              - generic [ref=e108]:
+                - generic [ref=e109]: Apple Pay
+                - generic [ref=e110]: ◆
+              - generic [ref=e111]:
+                - generic [ref=e112]: Sofort & Klarna
+                - generic [ref=e113]: ◆
+              - generic [ref=e114]:
+                - generic [ref=e115]: B · BE · A · A1 · A2 · AM
+                - generic [ref=e116]: ◆
+              - generic [ref=e117]:
+                - generic [ref=e118]: 10 Languages
+                - generic [ref=e119]: ◆
+              - generic [ref=e120]:
+                - generic [ref=e121]: 18 Reviews
+                - generic [ref=e122]: ◆
+              - generic [ref=e123]:
+                - generic [ref=e124]: WhatsApp Support
+                - generic [ref=e125]: ◆
+              - generic [ref=e126]:
+                - generic [ref=e127]: Founded 2025
+                - generic [ref=e128]: ◆
+              - generic [ref=e129]:
+                - generic [ref=e130]: Mönchengladbach
+                - generic [ref=e131]: ◆
+              - generic [ref=e132]:
+                - generic [ref=e133]: 100% Online
+                - generic [ref=e134]: ◆
+              - generic [ref=e136]: TÜV Certification
+              - generic [ref=e137]: ◆
+        - region "Numbers and facts" [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - generic [ref=e141]: "0"
+              - generic [ref=e142]: Google stars
+            - generic [ref=e143]:
+              - generic [ref=e144]: "0"
+              - generic [ref=e145]: Reviews
+            - generic [ref=e146]:
+              - generic [ref=e147]: "0"
+              - generic [ref=e148]: Languages
+            - generic [ref=e149]:
+              - generic [ref=e150]: "0"
+              - generic [ref=e151]: License classes
+        - region "Preisrechner" [ref=e152]:
+          - generic [ref=e153]:
+            - heading "WHAT DOES YOUR LICENSE COST?" [level=2] [ref=e154]
+            - paragraph [ref=e155]: Calculate your price in 30 seconds.
+            - paragraph [ref=e156]: Choose class
+            - generic [ref=e157]:
+              - button "B" [ref=e158] [cursor=pointer]
+              - button "BE" [ref=e159] [cursor=pointer]
+              - button "A" [ref=e160] [cursor=pointer]
+              - button "A2" [ref=e161] [cursor=pointer]
+              - button "A1" [ref=e162] [cursor=pointer]
+              - button "AM" [ref=e163] [cursor=pointer]
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - paragraph [ref=e167]: THEORY
+            - heading "THEORY? SORTED." [level=2] [ref=e168]
+            - paragraph [ref=e169]: App + live lessons. No cramming — we get you exam-ready.
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - generic [ref=e172]: 📱
+              - generic [ref=e173]:
+                - paragraph [ref=e174]: APP
+                - paragraph [ref=e175]: Practice whenever, wherever.
+            - generic [ref=e176]:
+              - generic [ref=e177]: 🖐️
+              - generic [ref=e178]:
+                - paragraph [ref=e179]: LIVE
+                - paragraph [ref=e180]: Lessons in your language.
+            - generic [ref=e181]:
+              - generic [ref=e182]: ✅
+              - generic [ref=e183]:
+                - paragraph [ref=e184]: TÜV
+                - paragraph [ref=e185]: Test included — we prepare you.
+          - link "SEE HOW IT WORKS →" [ref=e187] [cursor=pointer]:
+            - /url: /en#ablauf
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - paragraph [ref=e191]: QUIZ
+            - heading "FIND YOUR INSTRUCTOR" [level=2] [ref=e192]
+            - paragraph [ref=e193]: 3 clicks — we recommend the right coach for you.
+          - generic [ref=e198]:
+            - paragraph [ref=e199]: In which language do you want lessons?
+            - generic [ref=e200]:
+              - button "German" [ref=e201] [cursor=pointer]
+              - button "Arabic" [ref=e202] [cursor=pointer]
+              - button "Turkish" [ref=e203] [cursor=pointer]
+              - button "Russian" [ref=e204] [cursor=pointer]
+              - button "English" [ref=e205] [cursor=pointer]
+              - button "French" [ref=e206] [cursor=pointer]
+        - generic [ref=e208]:
+          - heading "REFER A FRIEND" [level=2] [ref=e209]
+          - paragraph [ref=e210]: Recommend Maryo's — your mate saves, you get something back. Use your code at signup.
+          - link "SIGN UP & GET YOUR CODE" [ref=e212] [cursor=pointer]:
+            - /url: /en#anmelden
+        - generic [ref=e214]:
+          - heading "CHOOSE A DATE" [level=2] [ref=e215]
+          - paragraph [ref=e216]: First lesson or theory — we'll confirm by phone.
+          - paragraph [ref=e217]: Your details (optional — for callback)
+          - generic [ref=e218]:
+            - textbox "Name" [ref=e219]
+            - textbox "Email" [ref=e220]
+            - textbox "Phone" [ref=e221]
+          - paragraph [ref=e222]: Date
+          - generic [ref=e223]:
+            - button "Di., 3. März" [ref=e224] [cursor=pointer]
+            - button "Mi., 4. März" [ref=e225] [cursor=pointer]
+            - button "Do., 5. März" [ref=e226] [cursor=pointer]
+            - button "Fr., 6. März" [ref=e227] [cursor=pointer]
+            - button "Sa., 7. März" [ref=e228] [cursor=pointer]
+            - button "So., 8. März" [ref=e229] [cursor=pointer]
+            - button "Mo., 9. März" [ref=e230] [cursor=pointer]
+            - button "Di., 10. März" [ref=e231] [cursor=pointer]
+            - button "Mi., 11. März" [ref=e232] [cursor=pointer]
+            - button "Do., 12. März" [ref=e233] [cursor=pointer]
+            - button "Fr., 13. März" [ref=e234] [cursor=pointer]
+            - button "Sa., 14. März" [ref=e235] [cursor=pointer]
+            - button "So., 15. März" [ref=e236] [cursor=pointer]
+            - button "Mo., 16. März" [ref=e237] [cursor=pointer]
+          - button "Request slot" [disabled] [ref=e238]
+        - region "Home page topics" [ref=e239]:
+          - generic [ref=e240]:
+            - tablist [ref=e242]:
+              - tab "Cars" [selected] [ref=e243] [cursor=pointer]
+              - tab "Licenses" [ref=e244] [cursor=pointer]
+              - tab "Process & Fleet" [ref=e245] [cursor=pointer]
+              - tab "Prices" [ref=e246] [cursor=pointer]
+              - tab "Register" [ref=e247] [cursor=pointer]
+              - tab "Reviews & FAQ" [ref=e248] [cursor=pointer]
+            - tabpanel "Cars" [ref=e249]:
+              - generic [ref=e251]:
+                - heading "OUR VEHICLES" [level=2] [ref=e253]
+                - generic [ref=e254]:
+                  - generic [ref=e256]:
+                    - generic [ref=e257]:
+                      - img "VW Golf 8" [ref=e260]
+                      - generic [ref=e261]:
+                        - generic [ref=e262]: Manual
+                        - generic [ref=e263]: B
+                    - generic [ref=e264]:
+                      - heading "VW Golf 8" [level=3] [ref=e265]
+                      - paragraph [ref=e266]: "Class: B"
+                  - generic [ref=e267]:
+                    - generic [ref=e268]:
+                      - img "VW Golf 8" [ref=e271]
+                      - generic [ref=e272]:
+                        - generic [ref=e273]: Automatic
+                        - generic [ref=e274]: B
+                        - generic [ref=e275]: BE
+                    - generic [ref=e276]:
+                      - heading "VW Golf 8" [level=3] [ref=e277]
+                      - paragraph [ref=e278]: "Class: B, BE"
+                  - generic [ref=e279]:
+                    - generic [ref=e280]:
+                      - img "Audi A3" [ref=e283]
+                      - generic [ref=e284]:
+                        - generic [ref=e285]: Manual
+                        - generic [ref=e286]: B
+                    - generic [ref=e287]:
+                      - heading "Audi A3" [level=3] [ref=e288]
+                      - paragraph [ref=e289]: "Class: B"
+                  - generic [ref=e290]:
+                    - generic [ref=e291]:
+                      - img "Honda CB500F" [ref=e294]
+                      - generic [ref=e295]:
+                        - generic [ref=e296]: Manual
+                        - generic [ref=e297]: A2
+                        - generic [ref=e298]: A
+                    - generic [ref=e299]:
+                      - heading "Honda CB500F" [level=3] [ref=e300]
+                      - paragraph [ref=e301]: "Class: A2, A"
+                  - generic [ref=e302]:
+                    - generic [ref=e303]:
+                      - img "Honda CBF125" [ref=e306]
+                      - generic [ref=e307]:
+                        - generic [ref=e308]: Manual
+                        - generic [ref=e309]: A1
+                    - generic [ref=e310]:
+                      - heading "Honda CBF125" [level=3] [ref=e311]
+                      - paragraph [ref=e312]: "Class: A1"
+                  - generic [ref=e313]:
+                    - generic [ref=e314]:
+                      - img "Peugeot 50ccm" [ref=e317]
+                      - generic [ref=e318]:
+                        - generic [ref=e319]: Manual
+                        - generic [ref=e320]: AM
+                    - generic [ref=e321]:
+                      - heading "Peugeot 50ccm" [level=3] [ref=e322]
+                      - paragraph [ref=e323]: "Class: AM"
+        - region "VISIT US" [ref=e325]:
+          - generic [ref=e326]:
+            - heading "VISIT US" [level=2] [ref=e327]
+            - generic [ref=e328]:
+              - generic [ref=e329]:
+                - paragraph [ref=e330]:
+                  - generic [ref=e331]: 📍
+                  - link "Bahnhofstraße 25, 41236 Mönchengladbach" [ref=e332] [cursor=pointer]:
+                    - /url: https://www.google.com/maps/search/?api=1&query=Bahnhofstraße+25,+41236+Mönchengladbach
+                - paragraph [ref=e333]:
+                  - generic [ref=e334]: 📞
+                  - link "0178 4557528" [ref=e335] [cursor=pointer]:
+                    - /url: tel:+491784557528
+                - paragraph [ref=e336]:
+                  - generic [ref=e337]: 💬
+                  - link "WhatsApp" [ref=e338] [cursor=pointer]:
+                    - /url: https://wa.me/491784557528
+                - paragraph [ref=e339]:
+                  - generic [ref=e340]: 🕐
+                  - text: "Mon–Fri: 12:00–18:00"
+                - paragraph [ref=e341]:
+                  - generic [ref=e342]: 🔴
+                  - text: "Sat & Sun: Closed"
+                - generic [ref=e343]:
+                  - link "Instagram" [ref=e344] [cursor=pointer]:
+                    - /url: https://instagram.com
+                  - link "TikTok" [ref=e345] [cursor=pointer]:
+                    - /url: https://tiktok.com
+                  - link "Facebook" [ref=e346] [cursor=pointer]:
+                    - /url: https://facebook.com
+                  - link "YouTube" [ref=e347] [cursor=pointer]:
+                    - /url: https://youtube.com
+              - iframe [ref=e349]:
+                
+        - generic [ref=e351]:
+          - generic [ref=e352]:
+            - generic [ref=e353]:
+              - link "Maryo's Fahrschule" [ref=e354] [cursor=pointer]:
+                - /url: /en
+                - img "Maryo's Fahrschule" [ref=e355]
+              - paragraph [ref=e356]: FAHR IN DEIN GLÜCK
+              - generic [ref=e357]:
+                - link "Instagram" [ref=e358] [cursor=pointer]:
+                  - /url: https://instagram.com
+                - link "TikTok" [ref=e359] [cursor=pointer]:
+                  - /url: https://tiktok.com
+                - link "Facebook" [ref=e360] [cursor=pointer]:
+                  - /url: https://facebook.com
+            - generic [ref=e361]:
+              - heading "Quick links" [level=3] [ref=e362]
+              - list [ref=e363]:
+                - listitem [ref=e364]:
+                  - link "Home" [ref=e365] [cursor=pointer]:
+                    - /url: /en
+                - listitem [ref=e366]:
+                  - link "Classes" [ref=e367] [cursor=pointer]:
+                    - /url: /en#fuehrerscheine
+                - listitem [ref=e368]:
+                  - link "Teachers" [ref=e369] [cursor=pointer]:
+                    - /url: /en#lehrer
+                - listitem [ref=e370]:
+                  - link "Prices" [ref=e371] [cursor=pointer]:
+                    - /url: /en#preise
+                - listitem [ref=e372]:
+                  - link "Register" [ref=e373] [cursor=pointer]:
+                    - /url: /en#anmelden
+            - generic [ref=e374]:
+              - heading "License classes" [level=3] [ref=e375]
+              - paragraph [ref=e376]: B · BE · A · A2 · A1 · AM
+            - generic [ref=e377]:
+              - heading "Contact" [level=3] [ref=e378]
+              - paragraph [ref=e379]:
+                - text: Bahnhofstraße 25
+                - text: 41236 Mönchengladbach
+              - link "0178 4557528" [ref=e380] [cursor=pointer]:
+                - /url: tel:+491784557528
+              - paragraph [ref=e381]: Mon–Fri 12:00–18:00
+          - generic [ref=e382]:
+            - paragraph [ref=e383]: © 2025 Maryo's Fahrschule GmbH — Bahnhofstraße 25, 41236 Mönchengladbach
+            - paragraph [ref=e384]: "HRB 23787 Mönchengladbach | Owner: Yaako Maryo Asoo"
+            - generic [ref=e385]:
+              - link "Imprint" [ref=e386] [cursor=pointer]:
+                - /url: /en/impressum
+              - link "Privacy" [ref=e387] [cursor=pointer]:
+                - /url: /en/datenschutz
+              - link "Terms" [ref=e388] [cursor=pointer]:
+                - /url: /en/agb
+      - link "Open WhatsApp" [ref=e390] [cursor=pointer]:
+        - /url: https://wa.me/491784557528
+        - img [ref=e391]
+```

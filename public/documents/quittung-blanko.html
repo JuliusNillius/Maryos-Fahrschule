@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quittung – Maryo's Fahrschule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Einheitliches DIN A4: 210mm × 297mm – alle Seiten gleich */
+    @page { size: 210mm 297mm; margin: 0; }
+    :root { --green: #5DC422; --green-dark: #3D8A14; --text: #0f0f0f; --text-muted: #525252; --bg: #fafafa; --card: #ffffff; --a4-w: 210mm; --a4-h: 297mm; --header-h: 72px; --footer-h: 52px; --content-pad: 16mm; }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11pt; line-height: 1.5; color: var(--text); background: var(--card); margin: 0 auto; padding: 0; }
+    .a4-page { width: var(--a4-w); min-height: var(--a4-h); margin: 0 auto; position: relative; background: var(--card); box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    .watermark { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .watermark-logo { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%) rotate(-12deg); width: 70%; max-width: 480px; height: auto; opacity: 0.07; background: url('logo.png') center/contain no-repeat; min-height: 260px; }
+    .watermark-clover { position: absolute; right: 10%; bottom: 20%; width: 160px; height: 160px; opacity: 0.06; }
+    .watermark-clover svg { width: 100%; height: 100%; }
+    .doc-header { background: #0a0a0a; border-bottom: 3px solid var(--green); padding: 18px var(--content-pad); min-height: var(--header-h); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .doc-header-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 0; }
+    .doc-header .logo { display: none; }
+    .doc-header-info { font-size: 10pt; line-height: 1.5; color: rgba(255,255,255,0.85); }
+    .doc-header-info strong { color: #fff; font-weight: 600; }
+    .doc-header-info .line { color: rgba(93, 196, 34, 0.9); }
+    .doc-header-right { text-align: right; font-size: 9.5pt; line-height: 1.5; color: rgba(255,255,255,0.75); }
+    .doc-content { position: relative; z-index: 1; padding: 20px var(--content-pad) 24px; min-height: calc(var(--a4-h) - var(--header-h) - var(--footer-h)); }
+    .doc-title { font-size: 1.25rem; font-weight: 700; color: var(--green-dark); margin: 0 0 20px; }
+    .quittung-box { border: 2px solid var(--green); padding: 22px 24px; margin: 20px 0; background: rgba(93, 196, 34, 0.12); border-radius: 8px; }
+    .quittung-box p { margin: 0 0 12px; }
+    .quittung-box p:last-of-type { margin-bottom: 0; }
+    .amount { font-size: 1.25rem; font-weight: 700; color: var(--green-dark); }
+    .doc-footer { padding: 14px var(--content-pad); min-height: var(--footer-h); background: #0a0a0a; border-top: 2px solid var(--green); font-size: 9pt; color: rgba(255,255,255,0.7); text-align: center; display: flex; align-items: center; justify-content: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @media print {
+      html, body { width: var(--a4-w) !important; margin: 0 !important; padding: 0 !important; background: #fff !important; box-shadow: none !important; }
+      .a4-page { width: var(--a4-w) !important; min-height: auto !important; box-shadow: none !important; page-break-after: auto; }
+      .doc-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; margin: 0; width: var(--a4-w); }
+      .doc-footer { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; margin: 0; width: var(--a4-w); }
+      .doc-content { padding-top: 88px; padding-bottom: 64px; min-height: auto; }
+      .watermark-logo { opacity: 0.04; }
+      .watermark-clover { opacity: 0.035; }
+    }
+  </style>
+</head>
+<body>
+  <div class="a4-page">
+    <div class="watermark" aria-hidden="true">
+      <div class="watermark-logo"></div>
+      <div class="watermark-clover">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="10" fill="#5DC422"/>
+          <ellipse cx="32" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(-35 32 42)"/>
+          <ellipse cx="68" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(35 68 42)"/>
+          <ellipse cx="50" cy="25" rx="14" ry="20" fill="#5DC422"/>
+          <ellipse cx="50" cy="75" rx="14" ry="20" fill="#5DC422"/>
+        </svg>
+      </div>
+    </div>
+    <header class="doc-header">
+      <div class="doc-header-left">
+        <img src="logo.png" alt="" class="logo" />
+        <div class="doc-header-info">
+          <strong>Maryo's Fahrschule GmbH</strong><br />
+          <span class="line">Bahnhofstraße 25 · 41236 Mönchengladbach</span><br />
+          Tel.: 0178 4557528
+        </div>
+      </div>
+      <div class="doc-header-right">
+        Geschäftsführer: Yaako Maryo Asoo<br />
+        Amtsgericht Mönchengladbach, HRB 23787
+      </div>
+    </header>
+    <div class="doc-content">
+      <h1 class="doc-title">Quittung</h1>
+      <div class="quittung-box">
+        <p><strong>Quittungsnummer:</strong> QU-____-______</p>
+        <p><strong>Datum:</strong> __.__.____</p>
+        <p><strong>Wir bestätigen den Empfang von:</strong></p>
+        <p class="amount">_______________ €</p>
+        <p><strong>Zahlungsart:</strong> [Bar / Überweisung / Sonstiges]</p>
+        <p><strong>Betreff / Verwendungszweck:</strong> _________________________</p>
+        <p><strong>Zahler:</strong> _________________________________________</p>
+        <p style="margin-top: 24px;">_________________________</p>
+        <p style="font-size: 10pt; color: var(--text-muted);">Unterschrift</p>
+      </div>
+    </div>
+    <footer class="doc-footer">
+      Maryo's Fahrschule GmbH · Bahnhofstraße 25 · 41236 Mönchengladbach · Amtsgericht Mönchengladbach HRB 23787 · Geschäftsführer Yaako Maryo Asoo
+    </footer>
+  </div>
+</body>
+</html>

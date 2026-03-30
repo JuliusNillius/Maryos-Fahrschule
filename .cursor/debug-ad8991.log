@@ -1,0 +1,107 @@
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503742709}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503742719}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772503742718}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772503742718}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772503742719}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772503742719}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503742720}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503742711}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503795384}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503795385}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503795444}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503795446}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503813678}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503814276}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503814276}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772503814279}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772503814280}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772503814282}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772503814283}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503814289}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772503814289}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503814578}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503814578}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772503814595}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503814599}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503814599}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503867994}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503867994}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503872422}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503872423}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503874623}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503874625}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503968106}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503968455}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503968455}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772503968463}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772503968465}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503968469}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772503968469}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772504717044}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772504717045}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772504717053}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772504717054}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772504717056}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772504717054}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"no supabase client","hypothesisId":"A","timestamp":1772504717054}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772504717055}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717173}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717173}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717215}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717215}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772504717227}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717228}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504717228}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504836520}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504836928}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504836928}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772504836933}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772504836935}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504836939}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772504836939}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505430655}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505430661}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772505430684}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772505430685}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after getSession","data":{"hasSession":false},"hypothesisId":"B","timestamp":1772505430723}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after getSession","data":{"hasSession":false},"hypothesisId":"B","timestamp":1772505430726}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505430727}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505430727}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505430963}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505430963}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505431012}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505431012}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505431021}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505431021}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505431022}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after /api/backoffice/me","data":{"status":401,"cancelled":true},"hypothesisId":"C","timestamp":1772505431141}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect was cancelled before setState","hypothesisId":"D","timestamp":1772505431141}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505569436}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505569644}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505569644}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505569649}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505569650}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505569652}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505569652}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505600362}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505600557}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505600557}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505600563}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505600565}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505600568}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505600569}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505613882}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":true,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505613883}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772505613903}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice","isLoginPage":false},"hypothesisId":"E","timestamp":1772505613904}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after getSession","data":{"hasSession":false},"hypothesisId":"B","timestamp":1772505613909}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after getSession","data":{"hasSession":false},"hypothesisId":"B","timestamp":1772505613912}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505613913}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":false},"hypothesisId":"E","timestamp":1772505613914}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505613934}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505613934}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect run","data":{"pathname":"/backoffice/login","isLoginPage":true},"hypothesisId":"E","timestamp":1772505613938}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505613940}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"render","data":{"checking":false,"allowed":false,"isLoginPage":true},"hypothesisId":"E","timestamp":1772505613940}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"after /api/backoffice/me","data":{"status":401,"cancelled":true},"hypothesisId":"C","timestamp":1772505614314}
+{"sessionId":"ad8991","location":"app/backoffice/layout.tsx","message":"effect was cancelled before setState","hypothesisId":"D","timestamp":1772505614315}

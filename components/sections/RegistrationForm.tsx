@@ -1,0 +1,697 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { registrationStep1Schema, registrationStep2Schema, registrationStep3Schema } from '@/lib/validations';
+import type { RegistrationStep1, RegistrationStep2, RegistrationStep3 } from '@/lib/validations';
+import { getRegistrationClass, getRegistrationInstructor } from '@/lib/registration';
+import type { Instructor } from '@/lib/instructors';
+import { Link } from '@/i18n/navigation';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
+
+const stripePromise = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
+
+function Step3PayButton({
+  formData,
+  validate,
+  onBack,
+  t,
+}: {
+  formData: FormData;
+  validate: () => boolean;
+  onBack: () => void;
+  t: (key: string) => string;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
+
+  const handlePay = async () => {
+    if (!validate()) return;
+    if (!stripe || !elements) return;
+    setPayError(null);
+    setLoading(true);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(PENDING_PAYMENT_KEY, JSON.stringify(formData));
+    }
+    const returnUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}${window.location.pathname}?payment=success`
+      : '';
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: returnUrl },
+    });
+    setLoading(false);
+    if (error) {
+      setPayError(error.message ?? 'Payment failed');
+      if (typeof window !== 'undefined') sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+    }
+  };
+
+  return (
+    <>
+      {payError && <p className="text-sm text-red-500">{payError}</p>}
+      <div className="flex gap-4">
+        <button type="button" onClick={onBack} className="btn-ghost" data-testid="registration-step3-back">
+          ← {t('back')}
+        </button>
+        <button
+          type="button"
+          onClick={handlePay}
+          disabled={!stripe || !elements || loading}
+          className="btn-primary flex-1"
+          data-cta
+          data-testid="registration-step3-pay"
+        >
+          🏁 {loading ? '…' : t('submit')} — 99 €
+        </button>
+      </div>
+    </>
+  );
+}
+
+const LICENCE_CLASSES = ['B', 'BE', 'A', 'A2', 'A1', 'AM'] as const;
+const LANGUAGES = [
+  { value: 'de', label: 'Deutsch' },
+  { value: 'ar', label: 'Arabisch' },
+  { value: 'tr', label: 'Türkisch' },
+  { value: 'ru', label: 'Russisch' },
+  { value: 'en', label: 'Englisch' },
+  { value: 'fr', label: 'Französisch' },
+  { value: 'uk', label: 'Ukrainisch' },
+  { value: 'pl', label: 'Polnisch' },
+  { value: 'es', label: 'Spanisch' },
+  { value: 'other', label: 'Sonstige' },
+];
+const TIME_PILLS = [
+  { value: 'morning', labelKey: 'timeMorning' as const },
+  { value: 'noon', labelKey: 'timeNoon' as const },
+  { value: 'afternoon', labelKey: 'timeAfternoon' as const },
+  { value: 'evening', labelKey: 'timeEvening' as const },
+];
+const SOURCES = [
+  { value: 'google', labelKey: 'sourceGoogle' as const },
+  { value: 'instagram', labelKey: 'sourceInstagram' as const },
+  { value: 'tiktok', labelKey: 'sourceTiktok' as const },
+  { value: 'recommendation', labelKey: 'sourceRecommendation' as const },
+  { value: 'walkby', labelKey: 'sourceWalkby' as const },
+  { value: 'other', labelKey: 'sourceOther' as const },
+];
+
+type FormData = RegistrationStep1 & RegistrationStep2 & RegistrationStep3;
+type TimeSlot = 'morning' | 'noon' | 'afternoon' | 'evening';
+
+const STORAGE_KEY = 'maryos-registration-draft';
+const PENDING_PAYMENT_KEY = 'maryos-payment-pending';
+
+type RegistrationFormProps = { instructors?: Instructor[]; initialRefCode?: string };
+
+export default function RegistrationForm({ instructors = [], initialRefCode = '' }: RegistrationFormProps) {
+  const list = instructors?.length ? instructors : [];
+  const t = useTranslations('registration');
+  const [step, setStep] = useState(1);
+  const [success, setSuccess] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [stripeError, setStripeError] = useState<string | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  const defaultClass = typeof window !== 'undefined' ? getRegistrationClass() : null;
+  const defaultInstructor = typeof window !== 'undefined' ? getRegistrationInstructor() : null;
+
+  const [myReferralCode, setMyReferralCode] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      motherTongue: 'de',
+      licenceClass: (defaultClass as FormData['licenceClass']) ?? 'B',
+      transmission: 'manual',
+      lessonLanguage: 'de',
+      hasLicence: false,
+      bf17: false,
+      timeSlots: [],
+      source: 'google',
+      referrerCode: initialRefCode,
+      acceptTerms: false,
+      acceptPrivacy: false,
+    },
+  });
+
+  const licenceClass = watch('licenceClass');
+  const motherTongue = watch('motherTongue');
+
+  useEffect(() => {
+    setValue('lessonLanguage', motherTongue as FormData['lessonLanguage']);
+  }, [motherTongue, setValue]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved) as Partial<FormData>;
+        Object.entries(data).forEach(([key, value]) => {
+          if (value !== undefined) setValue(key as keyof FormData, value);
+        });
+      } catch {
+        // ignore
+      }
+    }
+    if (initialRefCode.trim()) setValue('referrerCode', initialRefCode.trim());
+  }, [setValue, initialRefCode]);
+
+  useEffect(() => {
+    if (defaultClass && ['B', 'BE', 'A', 'A2', 'A1', 'AM'].includes(defaultClass)) {
+      setValue('licenceClass', defaultClass as FormData['licenceClass']);
+    }
+  }, [defaultClass, setValue]);
+
+  useEffect(() => {
+    if (defaultInstructor) setValue('instructorId', defaultInstructor);
+  }, [defaultInstructor, setValue]);
+
+  // Nach Rückkehr von Stripe-Zahlung: E-Mail senden und Success anzeigen
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('payment') !== 'success') return;
+    const pending = sessionStorage.getItem(PENDING_PAYMENT_KEY);
+    const codeStored = sessionStorage.getItem('maryos-my-referral-code');
+    if (!pending) return;
+    try {
+      const data = JSON.parse(pending) as FormData;
+      if (codeStored) setMyReferralCode(codeStored);
+      sendConfirmationEmail(data);
+      sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+      sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem('maryos-my-referral-code');
+      setSuccess(true);
+      window.history.replaceState({}, '', window.location.pathname + window.location.hash || '');
+    } catch {
+      sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+      sessionStorage.removeItem('maryos-my-referral-code');
+    }
+  }, []);
+
+  // PaymentIntent erstellen, sobald Schritt 3 erreicht wird (nur einmal)
+  // ClientSecret wird erst nach "Zahlung starten" geholt (mit Registration-ID für Webhook)
+  const startPayment = async () => {
+    const data = watch();
+    const result = registrationStep3Schema.safeParse(data);
+    if (!result.success) return;
+    setStripeError(null);
+    try {
+      const regRes = await fetch('/api/registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          birthDate: data.birthDate,
+          street: data.street,
+          zip: data.zip,
+          city: data.city,
+          motherTongue: data.motherTongue,
+          referrerCode: data.referrerCode ?? '',
+          licenceClass: data.licenceClass,
+          transmission: data.transmission,
+          instructorId: data.instructorId,
+          lessonLanguage: data.lessonLanguage,
+          hasLicence: data.hasLicence,
+          existingLicenceClass: data.existingLicenceClass,
+          existingLicenceCountry: data.existingLicenceCountry,
+          bf17: data.bf17,
+          timeSlots: data.timeSlots,
+          source: data.source,
+        }),
+      });
+      const regJson = await regRes.json();
+      if (!regRes.ok || !regJson.id) {
+        setStripeError('Anmeldung konnte nicht gespeichert werden.');
+        return;
+      }
+      if (regJson.myReferralCode && typeof window !== 'undefined') {
+        sessionStorage.setItem('maryos-my-referral-code', regJson.myReferralCode);
+      }
+      const stripeRes = await fetch('/api/stripe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, licenceClass: data.licenceClass, registrationId: regJson.id }),
+      });
+      const stripeJson = await stripeRes.json();
+      if (stripeJson.error) setStripeError(stripeJson.error);
+      else if (stripeJson.clientSecret) setClientSecret(stripeJson.clientSecret);
+    } catch {
+      setStripeError('Zahlung derzeit nicht verfügbar.');
+    }
+  };
+
+  useEffect(() => {
+    if (step !== 3) setClientSecret(null);
+  }, [step]);
+
+  useEffect(() => {
+    if (progressRef.current) {
+      progressRef.current.style.width = `${(step / 3) * 100}%`;
+    }
+  }, [step]);
+
+  const saveDraft = (data: Partial<FormData>) => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  };
+
+  const onStep1Next = () => {
+    const data = watch();
+    const result = registrationStep1Schema.safeParse(data);
+    if (!result.success) return;
+    saveDraft(data);
+    setStep(2);
+  };
+
+  const onStep2Next = () => {
+    const data = watch();
+    const result = registrationStep2Schema.safeParse(data);
+    if (!result.success) return;
+    saveDraft(data);
+    setStep(3);
+  };
+
+  const onSubmit = async (data: FormData) => {
+    const result = registrationStep3Schema.safeParse(data);
+    if (!result.success) return;
+    try {
+      const res = await fetch('/api/stripe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, licenceClass: data.licenceClass }),
+      });
+      const { clientSecret, error } = await res.json();
+      if (error || !clientSecret) {
+        setSuccess(true);
+        await sendConfirmationEmail(data);
+        if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      setSuccess(true);
+      await sendConfirmationEmail(data);
+      if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      setSuccess(true);
+      await sendConfirmationEmail(data);
+      if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
+    }
+  };
+
+  async function sendConfirmationEmail(data: FormData) {
+    try {
+      await fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: data.email,
+          firstName: data.firstName,
+          licenceClass: data.licenceClass,
+        }),
+      });
+    } catch {
+      // ignore
+    }
+  }
+
+  const inputClass =
+    'w-full rounded-lg border border-white/10 bg-surface2 px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-primary focus:outline-none focus:ring-2 focus:ring-green-primary/30';
+
+  if (success) {
+    return (
+      <section id="anmelden" className="section-divider scroll-mt-20 bg-bg py-20 md:py-28">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="relative z-10 max-w-md px-6 text-center">
+            <span className="text-6xl" aria-hidden>🏁</span>
+            <h2 className="mt-6 font-heading text-2xl font-bold italic uppercase text-white sm:text-3xl">
+              {t('successTitle')}
+            </h2>
+            <p className="mt-4 font-body text-text-muted">{t('successMessage')}</p>
+            {myReferralCode && (
+              <div className="mt-6 rounded-xl border border-green-500/30 bg-green-500/10 p-4">
+                <p className="font-body text-sm text-text-muted">{t('yourReferralCode')}</p>
+                <p className="mt-2 font-mono text-xl font-bold tracking-wider text-green-400">{myReferralCode}</p>
+                <p className="mt-2 text-xs text-text-muted">{t('referralCodeSuccessHint')}</p>
+              </div>
+            )}
+            <Link href="/" className="btn-primary mt-8" data-testid="registration-success-home">
+              {t('successCta')}
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      id="anmelden"
+      className="section-divider scroll-mt-20 bg-bg py-20 md:py-28"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 className="mb-4 text-center font-heading text-3xl font-bold italic uppercase tracking-tight text-white sm:text-4xl">
+          {t('heading')}
+        </h2>
+        <div className="mx-auto mb-10 h-1.5 max-w-md overflow-hidden rounded-full bg-surface2">
+          <div
+            ref={progressRef}
+            className="h-full w-0 rounded-full bg-green-primary transition-all duration-500 ease-out"
+            style={{ width: `${(step / 3) * 100}%` }}
+          />
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="lg:flex lg:gap-12">
+          <div className="lg:w-[60%]">
+            {step === 1 && (
+              <div className="space-y-6">
+                <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
+                  {t('step1Title')}
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block font-body text-sm text-text-muted">{t('firstName')} *</label>
+                    <input {...register('firstName')} className={inputClass} />
+                    {errors.firstName && (
+                      <p className="mt-1 text-sm text-red-500">{errors.firstName.message}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-body text-sm text-text-muted">{t('lastName')} *</label>
+                    <input {...register('lastName')} className={inputClass} />
+                    {errors.lastName && <p className="mt-1 text-sm text-red-500">{errors.lastName.message}</p>}
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('email')} *</label>
+                  <input type="email" {...register('email')} className={inputClass} />
+                  {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('phone')} *</label>
+                  <input type="tel" {...register('phone')} className={inputClass} />
+                  {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>}
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('birthDate')} *</label>
+                  <input type="date" {...register('birthDate')} className={inputClass} />
+                  {errors.birthDate && <p className="mt-1 text-sm text-red-500">{errors.birthDate.message}</p>}
+                </div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="sm:col-span-2">
+                    <label className="mb-1 block font-body text-sm text-text-muted">{t('street')}</label>
+                    <AddressAutocomplete
+                      value={watch('street') ?? ''}
+                      onChange={(v) => setValue('street', v)}
+                      onSelect={(s) => {
+                        setValue('street', s.street);
+                        setValue('zip', s.zip);
+                        setValue('city', s.city);
+                      }}
+                      placeholder={t('streetPlaceholder')}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block font-body text-sm text-text-muted">{t('zip')}</label>
+                    <input {...register('zip')} className={inputClass} placeholder="z. B. 41063" />
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('city')}</label>
+                  <input {...register('city')} className={inputClass} placeholder="z. B. Mönchengladbach" />
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('motherTongue')} *</label>
+                  <select {...register('motherTongue')} className={inputClass}>
+                    {LANGUAGES.map(({ value, label }) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('referrerCode')}</label>
+                  <input
+                    {...register('referrerCode')}
+                    className={inputClass}
+                    placeholder={t('referrerCodePlaceholder')}
+                    autoComplete="off"
+                  />
+                  <p className="mt-1 text-xs text-text-muted">{t('referrerCodeHint')}</p>
+                </div>
+                <button type="button" onClick={onStep1Next} className="btn-primary w-full sm:w-auto" data-cta data-testid="registration-step1-next">
+                  {t('next')} →
+                </button>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-6">
+                <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
+                  {t('step2Title')}
+                </h3>
+                <div>
+                  <label className="mb-2 block font-body text-sm text-text-muted">{t('licenceClass')} *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {LICENCE_CLASSES.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setValue('licenceClass', c)}
+                        className={`rounded-lg border px-4 py-2 font-heading text-sm font-bold uppercase transition-colors ${
+                          licenceClass === c
+                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
+                            : 'border-white/20 bg-surface2 text-white hover:border-green-primary/50'
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {(licenceClass === 'B' || licenceClass === 'BE') && (
+                  <div className="flex gap-4">
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <input type="radio" value="manual" {...register('transmission')} className="text-green-primary" />
+                      <span className="font-body text-sm">{t('transmissionManual')}</span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <input type="radio" value="automatic" {...register('transmission')} className="text-green-primary" />
+                      <span className="font-body text-sm">{t('transmissionAuto')}</span>
+                    </label>
+                  </div>
+                )}
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('instructor')}</label>
+                  <select {...register('instructorId')} className={inputClass}>
+                    <option value="">{t('instructorAny')}</option>
+                    {list.filter((i) => i.available).map((i) => (
+                      <option key={i.id} value={i.id}>
+                        {i.name} — {i.classes.join(', ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('lessonLanguage')} *</label>
+                  <select {...register('lessonLanguage')} className={inputClass}>
+                    {LANGUAGES.map(({ value, label }) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input type="checkbox" {...register('hasLicence')} className="rounded text-green-primary" />
+                    <span className="font-body text-sm">{t('hasLicence')}</span>
+                  </label>
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input type="checkbox" {...register('bf17')} className="rounded text-green-primary" />
+                    <span className="font-body text-sm">{t('bf17')}</span>
+                  </label>
+                </div>
+                <div>
+                  <label className="mb-2 block font-body text-sm text-text-muted">{t('timeSlots')}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {TIME_PILLS.map(({ value, labelKey }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => {
+                          const current = watch('timeSlots') ?? [];
+                          const next = (current as TimeSlot[]).includes(value as TimeSlot)
+                            ? (current as TimeSlot[]).filter((x) => x !== value)
+                            : [...(current as TimeSlot[]), value as TimeSlot];
+                          setValue('timeSlots', next);
+                        }}
+                        className={`rounded-full border px-4 py-2 font-body text-sm transition-colors ${
+                          (watch('timeSlots') ?? []).includes(value as TimeSlot)
+                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
+                            : 'border-white/20 bg-surface2 text-white'
+                        }`}
+                      >
+                        {t(labelKey)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('source')}</label>
+                  <select {...register('source')} className={inputClass}>
+                    {SOURCES.map(({ value, labelKey }) => (
+                      <option key={value} value={value}>
+                        {t(labelKey)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex gap-4">
+                  <button type="button" onClick={() => setStep(1)} className="btn-ghost" data-testid="registration-step2-back">
+                    ← {t('back')}
+                  </button>
+                  <button type="button" onClick={onStep2Next} className="btn-primary" data-cta data-testid="registration-step2-next">
+                    {t('next')} →
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="space-y-6">
+                <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
+                  {t('step3Title')}
+                </h3>
+                <div className="rounded-xl border border-[rgba(93,196,34,0.2)] bg-surface/80 p-6">
+                  <p className="font-body text-sm text-text-muted">
+                    {t('summaryText')} — {t('fee')}: 99,00 €
+                  </p>
+                </div>
+                {stripeError && (
+                  <p className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-sm text-amber-400">
+                    {stripeError}
+                  </p>
+                )}
+                {clientSecret && stripePromise && (
+                  <div className="rounded-xl border border-white/10 bg-surface2 p-4">
+                    <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night' } }}>
+                      <PaymentElement options={{ layout: 'tabs' }} />
+                      <label className="mt-4 flex cursor-pointer items-start gap-2">
+                        <input type="checkbox" {...register('acceptTerms')} className="mt-1 rounded text-green-primary" />
+                        <span className="font-body text-sm text-text-muted">
+                          {t('acceptTerms')}{' '}
+                          <a href="/agb" className="text-green-primary underline">{t('termsLink')}</a>.
+                        </span>
+                      </label>
+                      {errors.acceptTerms && <p className="text-sm text-red-500">{errors.acceptTerms.message}</p>}
+                      <label className="flex cursor-pointer items-start gap-2">
+                        <input type="checkbox" {...register('acceptPrivacy')} className="mt-1 rounded text-green-primary" />
+                        <span className="font-body text-sm text-text-muted">
+                          {t('acceptPrivacy')}{' '}
+                          <a href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</a>
+                          {t('acceptPrivacySuffix')}
+                        </span>
+                      </label>
+                      {errors.acceptPrivacy && <p className="text-sm text-red-500">{errors.acceptPrivacy.message}</p>}
+                      <Step3PayButton
+                        formData={watch()}
+                        validate={() => registrationStep3Schema.safeParse(watch()).success}
+                        onBack={() => setStep(2)}
+                        t={t}
+                      />
+                    </Elements>
+                  </div>
+                )}
+                {(!clientSecret || !stripePromise) && (
+                  <>
+                    <label className="flex cursor-pointer items-start gap-2">
+                      <input type="checkbox" {...register('acceptTerms')} className="mt-1 rounded text-green-primary" />
+                      <span className="font-body text-sm text-text-muted">
+                        {t('acceptTerms')}{' '}
+                        <a href="/agb" className="text-green-primary underline">{t('termsLink')}</a>.
+                      </span>
+                    </label>
+                    {errors.acceptTerms && <p className="text-sm text-red-500">{errors.acceptTerms.message}</p>}
+                    <label className="flex cursor-pointer items-start gap-2">
+                      <input type="checkbox" {...register('acceptPrivacy')} className="mt-1 rounded text-green-primary" />
+                      <span className="font-body text-sm text-text-muted">
+                        {t('acceptPrivacy')}{' '}
+                        <a href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</a>
+                        {t('acceptPrivacySuffix')}
+                      </span>
+                    </label>
+                    <div className="flex gap-4">
+                      <button type="button" onClick={() => setStep(2)} className="btn-ghost" data-testid="registration-step3-back-top">
+                        ← {t('back')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={startPayment}
+                        data-testid="registration-step3-start-payment"
+                        className="btn-primary flex-1"
+                        data-cta
+                      >
+                        🏁 {t('submit')} — 99 €
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-10 lg:mt-0 lg:w-[40%]">
+            <div className="sticky top-24 rounded-xl border border-[rgba(93,196,34,0.2)] bg-surface/80 p-6">
+              <h4 className="font-heading text-sm font-bold italic uppercase text-green-primary">
+                {t('summary')}
+              </h4>
+              <dl className="mt-4 space-y-2 font-body text-sm text-text-muted">
+                <div>
+                  <dt>{t('summaryClass')}</dt>
+                  <dd className="font-medium text-white">{watch('licenceClass') ?? '–'}</dd>
+                </div>
+                <div>
+                  <dt>{t('summaryInstructor')}</dt>
+                  <dd className="font-medium text-white">
+                    {list.find((i) => i.id === watch('instructorId'))?.name ?? t('instructorAny')}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{t('summaryLanguage')}</dt>
+                  <dd className="font-medium text-white">{watch('lessonLanguage') ?? '–'}</dd>
+                </div>
+                <hr className="border-white/10" />
+                <div>
+                  <dt>{t('fee')}</dt>
+                  <dd className="font-display font-bold text-green-primary">99,00 €</dd>
+                </div>
+                <p className="text-xs text-text-muted">({t('inclVat')})</p>
+              </dl>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arbeitsvertrag Fahrlehrer (170 UEs) – Maryo's Fahrschule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Einheitliches DIN A4: 210mm × 297mm – alle Seiten gleich */
+    @page { size: 210mm 297mm; margin: 0; }
+    :root { --green: #5DC422; --green-dark: #3D8A14; --text: #0f0f0f; --text-muted: #525252; --bg: #fafafa; --card: #ffffff; --a4-w: 210mm; --a4-h: 297mm; --header-h: 72px; --footer-h: 52px; --content-pad: 16mm; }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11pt; line-height: 1.5; color: var(--text); background: var(--card); margin: 0 auto; padding: 0; }
+    .a4-page { width: var(--a4-w); min-height: var(--a4-h); margin: 0 auto; position: relative; background: var(--card); box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    .watermark { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .watermark-logo { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%) rotate(-12deg); width: 70%; max-width: 480px; height: auto; opacity: 0.07; background: url('logo.png') center/contain no-repeat; min-height: 260px; }
+    .watermark-clover { position: absolute; right: 10%; bottom: 20%; width: 160px; height: 160px; opacity: 0.06; }
+    .watermark-clover svg { width: 100%; height: 100%; }
+    .doc-header { background: #0a0a0a; border-bottom: 3px solid var(--green); padding: 18px var(--content-pad); min-height: var(--header-h); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .doc-header-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 0; }
+    .doc-header .logo { display: none; }
+    .doc-header-info { font-size: 10pt; line-height: 1.5; color: rgba(255,255,255,0.85); }
+    .doc-header-info strong { color: #fff; font-weight: 600; }
+    .doc-header-info .line { color: rgba(93, 196, 34, 0.9); }
+    .doc-header-right { text-align: right; font-size: 9.5pt; line-height: 1.5; color: rgba(255,255,255,0.75); }
+    .doc-content { position: relative; z-index: 1; padding: 20px var(--content-pad) 24px; min-height: calc(var(--a4-h) - var(--header-h) - var(--footer-h)); }
+    .doc-title { font-size: 1.25rem; font-weight: 700; color: var(--green-dark); margin: 0 0 20px; text-align: center; }
+    .content { margin: 20px 0; }
+    .content p { margin: 0 0 10px; }
+    .content h2 { font-size: 1rem; font-weight: 600; margin: 18px 0 8px; color: var(--text); }
+    .placeholder { background: rgba(93, 196, 34, 0.12); padding: 0 4px; border-radius: 2px; }
+    .signatures { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .signatures p { margin: 0 0 4px; font-size: 10pt; color: var(--text-muted); }
+    .doc-footer { padding: 14px var(--content-pad); min-height: var(--footer-h); background: #0a0a0a; border-top: 2px solid var(--green); font-size: 9pt; color: rgba(255,255,255,0.7); text-align: center; display: flex; align-items: center; justify-content: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @media print {
+      html, body { width: var(--a4-w) !important; margin: 0 !important; padding: 0 !important; background: #fff !important; box-shadow: none !important; }
+      .a4-page { width: var(--a4-w) !important; min-height: auto !important; box-shadow: none !important; page-break-after: auto; }
+      .doc-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; margin: 0; width: var(--a4-w); }
+      .doc-footer { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; margin: 0; width: var(--a4-w); }
+      .doc-content { padding-top: 88px; padding-bottom: 64px; min-height: auto; }
+      .watermark-logo { opacity: 0.04; }
+      .watermark-clover { opacity: 0.035; }
+    }
+  </style>
+</head>
+<body>
+  <div class="a4-page">
+    <div class="watermark" aria-hidden="true">
+      <div class="watermark-logo"></div>
+      <div class="watermark-clover">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="10" fill="#5DC422"/>
+          <ellipse cx="32" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(-35 32 42)"/>
+          <ellipse cx="68" cy="42" rx="14" ry="20" fill="#5DC422" transform="rotate(35 68 42)"/>
+          <ellipse cx="50" cy="25" rx="14" ry="20" fill="#5DC422"/>
+          <ellipse cx="50" cy="75" rx="14" ry="20" fill="#5DC422"/>
+        </svg>
+      </div>
+    </div>
+    <header class="doc-header">
+      <div class="doc-header-left">
+        <img src="logo.png" alt="" class="logo" />
+        <div class="doc-header-info">
+          <strong>Maryo's Fahrschule GmbH</strong><br />
+          <span class="line">Bahnhofstraße 25 · 41236 Mönchengladbach</span><br />
+          Tel.: 0178 4557528
+        </div>
+      </div>
+      <div class="doc-header-right">
+        Geschäftsführer: Yaako Maryo Asoo<br />
+        Amtsgericht Mönchengladbach, HRB 23787
+      </div>
+    </header>
+    <div class="doc-content">
+    <h1 class="doc-title">Arbeitsvertrag für Fahrlehrer / Fahrlehrerin (170 UEs)</h1>
+    <div class="content">
+      <p><strong>Zwischen</strong></p>
+      <p><strong>Arbeitgeber:</strong><br />Maryo's Fahrschule GmbH, Bahnhofstraße 25, 41236 Mönchengladbach<br />Registergericht: Amtsgericht Mönchengladbach, HRB 23787 · Vertreten durch: Yaako Maryo Asoo, Geschäftsführer · Tel.: 0178 4557528<br />– nachfolgend „Arbeitgeber“ –</p>
+      <p><strong>und</strong></p>
+      <p><strong>Arbeitnehmer/in:</strong><br /><span class="placeholder">[Vor- und Nachname]</span><br /><span class="placeholder">[Straße, Hausnummer]</span><br /><span class="placeholder">[PLZ und Ort]</span><br />– nachfolgend „Arbeitnehmer/in“ –</p>
+      <p>wird folgender Arbeitsvertrag geschlossen.</p>
+
+      <h2>§ 1 Beginn und Dauer des Arbeitsverhältnisses</h2>
+      <p>(1) Das Arbeitsverhältnis beginnt am <span class="placeholder">[Datum]</span>.</p>
+      <p>(2) Das Arbeitsverhältnis wird auf unbefristete Zeit geschlossen.</p>
+      <p>(3) Es gilt eine Probezeit von 6 Monaten. Während der Probezeit kann das Arbeitsverhältnis mit einer Frist von 2 Wochen zum Monatsende oder zu jedem anderen Tag gekündigt werden.</p>
+
+      <h2>§ 2 Tätigkeit und Arbeitsort</h2>
+      <p>(1) Der/die Arbeitnehmer/in wird als Fahrlehrer / Fahrlehrerin beschäftigt. Die Tätigkeit umfasst die theoretische und praktische Ausbildung von Fahrschülern und Fahrschülerinnen in den Fahrzeugklassen <span class="placeholder">________________ (z. B. B, BE, A, A1, A2, AM; weitere Klassen je nach Erlaubnis – bitte eintragen)</span> gemäß Fahrlehrergesetz (FahrlG) und Fahrlehrer-Ausbildungsordnung.</p>
+      <p>(2) Arbeitsort ist der Sitz der Fahrschule, Bahnhofstraße 25, 41236 Mönchengladbach, sowie die für die praktische Ausbildung genutzten Strecken und Prüfungsgebiete im Einzugsbereich. Der/die Arbeitnehmer/in ist verpflichtet, die Tätigkeit auch außerhalb dieses Ortes zu erbringen, soweit dies für Fahrstunden und Prüfungen erforderlich ist.</p>
+      <p>(3) Der/die Arbeitnehmer/in versichert, im Besitz einer gültigen Fahrlehrererlaubnis zu sein und legt diese vor Arbeitsbeginn vor. Er/sie erhält die Erlaubnis während des Arbeitsverhältnisses aufrecht und informiert den Arbeitgeber unverzüglich über Einschränkungen oder Entzug.</p>
+
+      <h2>§ 3 Arbeitsentgelt (Stundenlohn)</h2>
+      <p>(1) Die Vergütung erfolgt auf Basis eines <strong>Stundenlohns</strong>. Der/die Arbeitnehmer/in erhält einen Bruttostundensatz in Höhe von <span class="placeholder">€ [Betrag]</span> (in Worten: <span class="placeholder">[Betrag in Worten]</span> Euro) pro <strong>Zeitstunde</strong>.</p>
+      <p>(2) Eine <strong>Unterrichtseinheit (UE)</strong> entspricht <strong>45 Minuten</strong> (= 0,75 Zeitstunden). Die monatliche Vergütung ergibt sich aus dem Stundensatz multipliziert mit den tatsächlich geleisteten Zeitstunden (geleistete UEs × 0,75). Geschuldet sind <strong>monatlich 170 UEs</strong>. Bei Urlaub oder Freistellung: Für jeden Urlaubstag wird die monatliche UE-Schuld um <strong>9 UEs</strong> reduziert.</p>
+      <p>(3) Das Entgelt wird monatlich im Nachhinein zum letzten Bankarbeitstag des Monats auf ein vom/von der Arbeitnehmer/in angegebenes Konto überwiesen.</p>
+      <p>(4) Zuschläge, Zulagen und Sonderzahlungen sind nur vereinbart, soweit sie gesondert schriftlich zugesagt wurden.</p>
+      <p>(5) <strong>Überstunden / Mehr-UEs:</strong> Leistungen über die vereinbarten UEs hinaus sind nur nach vorheriger schriftlicher oder ausdrücklicher Anordnung des Arbeitgebers zu erbringen. Sie werden <strong>ausschließlich durch Freizeitausgleich</strong> abgegolten; eine Vergütung in Geld erfolgt nicht.</p>
+
+      <h2>§ 4 Unterrichtseinheiten (UEs), Pausen und Ruhezeiten</h2>
+      <p>(1) Die geschuldete Arbeitsleistung wird in <strong>Unterrichtseinheiten (UEs)</strong> bemessen. Eine UE entspricht 45 Minuten. Der/die Arbeitnehmer/in schuldet <strong>monatlich 170 UEs</strong> (theoretischer und/oder praktischer Unterricht im Sinne des Fahrlehrergesetzes).</p>
+      <p>(2) Pausen und Ruhezeiten richten sich nach dem Arbeitszeitgesetz (ArbZG) (mind. 30 Min. Pause bei mehr als 6 Std., 11 Std. ununterbrochene Ruhezeit). Bei Einsatz im Fahrunterricht werden Pausen im Rahmen der betrieblichen Absprachen gewährt.</p>
+      <p>(3) Die Einteilung der zu leistenden UEs erfolgt nach betrieblichen Erfordernissen in Abstimmung mit dem/der Arbeitnehmer/in.</p>
+
+      <h2>§ 5 Erholungsurlaub</h2>
+      <p>(1) Der/die Arbeitnehmer/in hat Anspruch auf <strong>30 Arbeitstage</strong> Erholungsurlaub pro Kalenderjahr bei einer <strong>5-Tage-Woche</strong>. Im Übrigen gilt das Bundesurlaubsgesetz (BUrlG). Urlaubstermine werden mit dem Arbeitgeber abgestimmt.</p>
+      <p>(2) Für jeden genommenen Urlaubstag entfällt die Verpflichtung zur Erbringung von <strong>9 UEs</strong> in dem betreffenden Abrechnungszeitraum.</p>
+
+      <h2>§ 6 Krankheit, Arbeitsunfähigkeit, Attestpflicht</h2>
+      <p>(1) Bei Arbeitsunfähigkeit wegen Krankheit hat der/die Arbeitnehmer/in den Arbeitgeber unverzüglich zu informieren und die voraussichtliche Dauer der Abwesenheit mitzuteilen.</p>
+      <p>(2) Eine <strong>ärztliche Bescheinigung (Attest)</strong> über die Arbeitsunfähigkeit ist <strong>spätestens ab dem dritten Tag</strong> der Arbeitsunfähigkeit vorzulegen. Der Arbeitgeber ist berechtigt, die Vorlage eines Attests bereits ab dem ersten Tag zu verlangen, wenn dies aus betrieblichen Gründen erforderlich ist oder das Arbeitsverhältnis kürzer als vier Wochen besteht.</p>
+
+      <h2>§ 7 Tarifverträge und Betriebsvereinbarungen</h2>
+      <p>Auf dieses Arbeitsverhältnis findet kein Tarifvertrag Anwendung. Betriebsvereinbarungen werden, soweit vorhanden, vom Arbeitgeber bekannt gegeben.</p>
+
+      <h2>§ 8 Betriebliche Altersvorsorge</h2>
+      <p>Für die betriebliche Altersvorsorge ist folgender <strong>Versorgungsträger</strong> zuständig (Name und Anschrift i. S. d. § 2 Nachweisgesetz):<br /><strong>Julius Nillius</strong>, Hennes-Weisweiler-Allee 8–12, 41179 Mönchengladbach.<br />Einzelheiten ergeben sich aus den Unterlagen des Versorgungsträgers bzw. der mit dem Arbeitgeber vereinbarten Durchführungsweise.</p>
+
+      <h2>§ 9 Arbeits- und Hausordnung</h2>
+      <p>Der/die Arbeitnehmer/in verpflichtet sich, die <strong>betriebliche Arbeitsordnung</strong> und die <strong>Hausordnung</strong> der Maryo's Fahrschule GmbH einzuhalten. Diese werden vom Arbeitgeber bekannt gegeben und bei Bedarf aktualisiert.</p>
+
+      <h2>§ 10 Nebenpflichten, Schweigepflicht, Datenschutz, Umgang mit Fahrschülern</h2>
+      <p>(1) Der/die Arbeitnehmer/in verpflichtet sich zur Verschwiegenheit über alle geschäftlichen und personenbezogenen Daten von Kunden und des Arbeitgebers; die Verpflichtung besteht nach Beendigung des Arbeitsverhältnisses fort.</p>
+      <p>(2) Die Vorgaben der DSGVO und der betrieblichen Datenschutzrichtlinien sind einzuhalten.</p>
+      <p>(3) <strong>Umgang mit Fahrschülern/Fahrschülerinnen:</strong> Ein privater Kontakt außerhalb der beruflichen Tätigkeit ist untersagt. Ausgenommen ist ausschließlich die Terminvereinbarung (z. B. Unterrichts- oder Prüfungstermine).</p>
+
+      <h2>§ 11 Arbeitsmittel, Fahrzeuge, Privatnutzung, Schlüssel</h2>
+      <p>(1) Der Arbeitgeber stellt die erforderlichen Fahrzeuge und Lehrmaterialien. Die Nutzung einer Tankkarte für dienstliche Fahrten ist inbegriffen.</p>
+      <p>(2) <strong>Privatnutzung des Dienstwagens:</strong> Der/die Arbeitnehmer/in darf das überlassene Fahrzeug mit Zustimmung des Arbeitgebers auch privat nutzen. Die Besteuerung erfolgt nach der <strong>1‑%-Regelung</strong> (§ 6 Abs. 1 Nr. 4 Satz 2 EStG). Der geldwerte Vorteil wird vom Arbeitgeber ermittelt und dem Gehalt hinzugerechnet; die Lohnsteuer trägt der/die Arbeitnehmer/in. Die <strong>Tankkarte</strong> darf für die private Nutzung nur im vereinbarten Umfang (1‑%-Regel inkl. Kraftstoff) verwendet werden, sofern der Arbeitgeber dies ausdrücklich gestattet.</p>
+      <p>(3) Überlassene Schlüssel, Tankkarte, Chipkarten und sonstige Zugangsberechtigungen sind bei Beendigung des Arbeitsverhältnisses unverzüglich zurückzugeben.</p>
+
+      <h2>§ 12 Fortbildung</h2>
+      <p>Der Arbeitgeber unterstützt im Rahmen der betrieblichen Möglichkeiten bei gesetzlich oder beruflich erforderlichen Fortbildungen. Ein Rechtsanspruch auf bestimmte Fortbildungen besteht nur, soweit der Arbeitgeber dies ausdrücklich zugesagt hat.</p>
+
+      <h2>§ 13 Nebentätigkeit und Wettbewerb während des Arbeitsverhältnisses</h2>
+      <p>(1) Eine Nebentätigkeit ist dem Arbeitgeber vor Aufnahme anzuzeigen; sie ist unzulässig, wenn sie die geschuldete Leistung beeinträchtigt oder den Interessen des Arbeitgebers entgegensteht.</p>
+      <p>(2) Während der Dauer des Arbeitsverhältnisses darf keine Tätigkeit in unmittelbarem Wettbewerb zur Maryo's Fahrschule GmbH ausgeübt werden, sofern der Arbeitgeber nicht ausdrücklich zustimmt.</p>
+
+      <h2>§ 14 Wettbewerbsverbot nach Beendigung des Arbeitsverhältnisses</h2>
+      <p>(1) Für die Dauer von <strong>einem Jahr</strong> nach Beendigung des Arbeitsverhältnisses verpflichtet sich der/die Arbeitnehmer/in, keine Tätigkeit für eine andere Fahrschule auszuüben, die mit der Maryo's Fahrschule GmbH im gleichen oder angrenzenden Einzugsgebiet in Wettbewerb steht.</p>
+      <p>(2) Der Arbeitgeber kann auf die Geltendmachung dieses Wettbewerbsverbots verzichten.</p>
+
+      <h2>§ 15 Kündigung und Kündigungsverfahren</h2>
+      <p>(1) Während der Probezeit: Kündigungsfrist 2 Wochen zum Monatsende oder zu jedem anderen Tag. Nach der Probezeit gelten die gesetzlichen Kündigungsfristen des § 622 BGB (mind. 4 Wochen zum 15. oder zum Monatsende).</p>
+      <p>(2) Die Kündigung muss schriftlich (Unterschrift) erfolgen. Die Kündigung durch den/die Arbeitnehmer/in ist an den Arbeitgeber (Maryo's Fahrschule GmbH, Geschäftsführer Yaako Maryo Asoo, Bahnhofstraße 25, 41236 Mönchengladbach), die Kündigung durch den Arbeitgeber an den/die Arbeitnehmer/in zu richten.</p>
+      <p>(3) Der/die Arbeitnehmer/in kann innerhalb von 3 Wochen nach Zugang der Kündigung beim zuständigen Arbeitsgericht Klage auf Feststellung erheben, dass das Arbeitsverhältnis durch die Kündigung nicht aufgelöst ist (§ 4 KSchG).</p>
+      <p>(4) Die außerordentliche Kündigung bleibt unberührt.</p>
+
+      <h2>§ 16 Geltendmachung von Ansprüchen (Ausschlussfrist)</h2>
+      <p>Ansprüche des/der Arbeitnehmers/in aus dem Arbeitsverhältnis (z. B. Vergütung, Überstunden, Zuschläge) müssen <strong>innerhalb von 3 Monaten</strong> nach Fälligkeit <strong>schriftlich</strong> beim Arbeitgeber geltend gemacht werden. Nach Ablauf dieser Frist sind die Ansprüche ausgeschlossen, sofern der Arbeitgeber die Frist nicht arglistig verzögert hat.</p>
+
+      <h2>§ 17 Schlussbestimmungen</h2>
+      <p>Änderungen und Ergänzungen dieses Vertrages bedürfen der Schriftform. Sollte eine Bestimmung unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. Es gilt das Recht der Bundesrepublik Deutschland.</p>
+
+      <p><strong>Ort, Datum</strong></p>
+      <div class="signatures">
+        <div>
+          <p>_________________________________________</p>
+          <p>Maryo's Fahrschule GmbH<br />Yaako Maryo Asoo, Geschäftsführer</p>
+        </div>
+        <div>
+          <p>_________________________________________</p>
+          <p>Arbeitnehmer/in</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <footer class="doc-footer">
+      Maryo's Fahrschule GmbH · Bahnhofstraße 25 · 41236 Mönchengladbach · Amtsgericht Mönchengladbach HRB 23787 · Geschäftsführer Yaako Maryo Asoo
+    </footer>
+  </div>
+</body>
+</html>
