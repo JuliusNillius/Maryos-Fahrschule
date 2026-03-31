@@ -6,26 +6,20 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { getLangFlag, getClassesForFilter, type Instructor, type InstructorLang } from '@/lib/instructors';
+import { getLangFlag, type Instructor, type InstructorLang } from '@/lib/instructors';
 import { setRegistrationInstructor } from '@/lib/registration';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const LANG_FILTERS: InstructorLang[] = ['de', 'ar', 'tr', 'ru', 'en', 'fr'];
-const CLASS_FILTERS = ['all', 'pkw', 'motorrad'] as const;
-
+const LANG_FILTERS: InstructorLang[] = ['de', 'ar', 'tr'];
 function filterInstructors(
   instructors: Instructor[],
   langFilters: Set<InstructorLang>,
-  classFilter: (typeof CLASS_FILTERS)[number],
   availabilityOnly: boolean
 ): Instructor[] {
   return instructors.filter((inst) => {
     if (availabilityOnly && !inst.available) return false;
     if (langFilters.size > 0 && !inst.languages.some((l) => langFilters.has(l))) return false;
-    const instType = getClassesForFilter(inst.classes);
-    if (classFilter === 'pkw' && instType !== 'pkw' && instType !== 'both') return false;
-    if (classFilter === 'motorrad' && instType !== 'motorrad' && instType !== 'both') return false;
     return true;
   });
 }
@@ -38,10 +32,9 @@ export default function Instructors({ instructors }: InstructorsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [langFilters, setLangFilters] = useState<Set<InstructorLang>>(new Set());
-  const [classFilter, setClassFilter] = useState<(typeof CLASS_FILTERS)[number]>('all');
   const [availabilityOnly, setAvailabilityOnly] = useState(false);
 
-  const filtered = filterInstructors(list, langFilters, classFilter, availabilityOnly);
+  const filtered = filterInstructors(list, langFilters, availabilityOnly);
 
   const toggleLang = (lang: InstructorLang) => {
     setLangFilters((prev) => {
@@ -117,24 +110,6 @@ export default function Instructors({ instructors }: InstructorsProps) {
                 title={lang}
               >
                 {getLangFlag(lang)}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-body text-xs uppercase text-text-muted">{t('filterClass')}</span>
-            {CLASS_FILTERS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setClassFilter(c)}
-                data-testid={`instructors-filter-class-${c}`}
-                className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                  classFilter === c
-                    ? 'bg-green-primary/25 text-green-primary'
-                    : 'bg-surface2 text-text-muted hover:text-white'
-                }`}
-              >
-                {t(c === 'all' ? 'filterAll' : c === 'pkw' ? 'filterPkw' : 'filterMotorrad')}
               </button>
             ))}
           </div>

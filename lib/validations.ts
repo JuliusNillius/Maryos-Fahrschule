@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-const LICENCE_CLASSES = ['B', 'BE', 'A', 'A2', 'A1', 'AM'] as const;
-const LANGUAGES = [
-  'de', 'ar', 'tr', 'ru', 'en', 'fr', 'uk', 'pl', 'es', 'other',
-] as const;
+/** Nur PKW: Klasse B oder BF17 (Begleitetes Fahren) */
+const LICENCE_CLASSES = ['B', 'BF17'] as const;
+/** Unterrichts- / Kommunikationssprachen (Website & Anmeldung: DE, TR, AR) */
+const LANGUAGES = ['de', 'ar', 'tr'] as const;
 const TIME_SLOTS = ['morning', 'noon', 'afternoon', 'evening'] as const;
 const SOURCES = ['google', 'instagram', 'tiktok', 'recommendation', 'walkby', 'other'] as const;
+const OFFER_TYPES = ['standard', 'bundle_10_promo'] as const;
 
 export const registrationStep1Schema = z.object({
   firstName: z.string().min(1, 'Vorname erforderlich'),
@@ -22,6 +23,7 @@ export const registrationStep1Schema = z.object({
 
 export const registrationStep2Schema = z.object({
   licenceClass: z.enum(LICENCE_CLASSES),
+  offerType: z.enum(OFFER_TYPES).default('standard'),
   transmission: z.enum(['manual', 'automatic']).optional(),
   instructorId: z.string().optional(),
   lessonLanguage: z.enum(LANGUAGES),

@@ -4,7 +4,8 @@ import { Link } from '@/i18n/navigation';
 type Props = { params: Promise<{ locale: string }> };
 
 const sectionClass = 'mt-8';
-const headingClass = 'font-heading text-lg font-bold italic uppercase text-green-primary mt-6 first:mt-0';
+const headingClass =
+  'font-heading text-lg font-bold italic uppercase text-green-primary mt-6 first:mt-0';
 const pClass = 'font-body text-sm leading-relaxed text-text-muted mt-2';
 
 export default async function AGBPage({ params }: Props) {
@@ -18,82 +19,173 @@ export default async function AGBPage({ params }: Props) {
           Allgemeine Geschäftsbedingungen (AGB)
         </h1>
         <p className="mt-4 font-body text-sm leading-relaxed text-text-muted">
-          Gültig für Verträge zwischen Maryo&apos;s Fahrschule GmbH und Teilnehmer:innen von
-          Führerscheinausbildungen und Fahrsicherheitstrainings.
+          Gültig für Verträge zwischen Maryo&apos;s Fahrschule GmbH (nachfolgend „Fahrschule“) und
+          Fahrschülerinnen und Fahrschülern (nachfolgend „Kunde“) über Ausbildungsleistungen zur
+          Erlangung von Führerscheinberechtigungen sowie damit verbundene Nebenleistungen.
         </p>
 
         <section className={sectionClass}>
           <h2 className={headingClass}>1. Geltungsbereich</h2>
           <p className={pClass}>
-            Diese AGB gelten für alle Verträge über die Teilnahme an der Führerscheinausbildung
-            (Klassen B, BE, A, A1, A2, AM o.&#8203;ä.) sowie für damit verbundene Leistungen. Abweichende
-            Bedingungen des Kunden werden nicht anerkannt, sofern wir nicht ausdrücklich schriftlich
-            zugestimmt haben.
+            Diese AGB gelten für alle Leistungen der Fahrschule, insbesondere für die theoretische
+            und praktische Ausbildung in den angebotenen Klassen (z. B. Klasse B und begleitetes
+            Fahren ab 17 / BF17, soweit angeboten). Entgegenstehende oder abweichende Bedingungen des
+            Kunden finden keine Anwendung, es sei denn, deren Geltung ist schriftlich ausdrücklich
+            vereinbart.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>2. Vertragsschluss</h2>
+          <h2 className={headingClass}>2. Rechtsgrundlagen der Ausbildung</h2>
           <p className={pClass}>
-            Die Anmeldung über die Website oder vor Ort stellt ein verbindliches Angebot des Kunden
-            dar. Der Vertrag kommt zustande, wenn wir die Anmeldung durch schriftliche oder
-            elektronische Bestätigung annehmen. Die aktuellen Preise und Leistungsumfang ergeben sich
-            aus der Leistungsbeschreibung bzw. der Preisliste zum Zeitpunkt der Anmeldung.
+            Die Ausbildung richtet sich nach den einschlägigen gesetzlichen Vorschriften,
+            insbesondere dem Fahrschulgesetz und der Fahrschüler-Ausbildungsordnung (Fahrschüler-AusbVO)
+            in der jeweils geltenden Fassung sowie den hierzu erlassenen Verwaltungsvorschriften.
+            Der Umfang der vertraglich geschuldeten Ausbildung bemisst sich danach, nicht nach einer
+            festen Stundenzahl, sofern nicht ausdrücklich anderes schriftlich vereinbart wurde.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>3. Leistungen und Preise</h2>
+          <h2 className={headingClass}>3. Vertragsschluss</h2>
           <p className={pClass}>
-            Die Fahrschule erbringt die vereinbarte theoretische und praktische Ausbildung gemäß
-            Fahrschüler-Ausbildungsordnung. Die Preise verstehen sich in Euro inkl. der gesetzlichen
-            MwSt., sofern nicht anders angegeben. Zusätzliche Kosten (z.&#8203;B. TÜV-Gebühren,
-            Führerscheinantrag) können gesondert anfallen und werden transparent kommuniziert.
+            Anmeldungen über die Website, schriftlich oder vor Ort sind für den Kunden verbindlich.
+            Der Ausbildungsvertrag kommt erst durch Annahmeerklärung der Fahrschule (schriftlich,
+            per E-Mail oder in Textform) zustande. Maßgeblich für Preise und Leistungsumfang sind die
+            zum Zeitpunkt der Annahme gültige Preisliste bzw. Leistungsbeschreibung der Fahrschule.
+          </p>
+          <p className={pClass}>
+            Online-Zahlungen auf der Website werden über den Zahlungsdienstleister Stripe abgewickelt;
+            je nach Angebot können u. a. Karte, Apple Pay, Google Pay, Sofort oder Klarna angeboten
+            werden. Soweit auf der Website nicht ausdrücklich anders ausgewiesen, umfasst die jeweils
+            bezahlte Online-Leistung die dort beschriebene Anmelde-/Paketposition (z. B. Anmeldegebühr
+            und App-Zugang) und nicht automatisch den gesamten Ausbildungsumfang; Fahrstunden,
+            Prüfungsgebühren und weitere Leistungen werden gesondert nach der gültigen Preisliste
+            abgerechnet, sofern nicht gesondert schriftlich vereinbart.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>4. Zahlung</h2>
+          <h2 className={headingClass}>4. Leistungen und Mitwirkung</h2>
           <p className={pClass}>
-            Die Zahlungsmodalitäten (Anzahlung, Raten, Fälligkeit) werden bei Vertragsschluss
-            vereinbart. Bei Verzug können Verzugszinsen und ggf. Mahngebühren berechnet werden.
-            Die Zahlung der vereinbarten Beträge ist Voraussetzung für die Durchführung der
-            Ausbildung.
+            Die Fahrschule erbringt die vereinbarte Ausbildung mit der gebotenen fachlichen
+            Sorgfalt. Der Kunde ist verpflichtet, den Anweisungen der Ausbilderinnen und Ausbilder
+            Folge zu leisten, pünktlich zu erscheinen, ausreichend zu lernen und alle für die
+            Ausbildung und Prüfung erforderlichen Unterlagen rechtzeitig zu beschaffen (z. B.
+            Sehtest, Erste-Hilfe-Kurs, Antragsunterlagen, ggf. ärztliche Bescheinigungen).
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>5. Stornierung und Rücktritt</h2>
+          <h2 className={headingClass}>5. Termine, Versäumnis, Rücktritt vom Einzeltermin</h2>
           <p className={pClass}>
-            Ein Rücktritt des Kunden von der Anmeldung bedarf der Schriftform. Über die
-            Rücktrittsfristen und ggf. anfallende Stornierungsgebühren informieren wir bei
-            Vertragsschluss bzw. in der Bestätigung. Das gesetzliche Widerrufsrecht für
-            Verbraucher bleibt unberührt, soweit anwendbar.
+            Vereinbarte Fahrstunden und Unterrichtstermine sind verbindlich. Versäumt der Kunde
+            einen Termin ohne rechtzeitige Absage oder liegt ein wichtiger Grund seitens des Kunden
+            nicht vor, kann die Fahrschule den vollen oder einen angemessenen Anteil der Gebühr für
+            die ausgefallene Einheit berechnen, sofern dies im Einzelfall gesondert vereinbart oder in
+            der Preisliste ausgewiesen ist. Eine rechtzeitige Absage ist in der Regel mindestens 24
+            Stunden vor dem Termin schriftlich oder telefonisch an die Fahrschule zu richten, sofern
+            nicht anderes vereinbart.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>6. Haftung</h2>
+          <h2 className={headingClass}>6. Preise und Zahlung</h2>
           <p className={pClass}>
-            Wir haften unbeschränkt für Vorsatz und grobe Fahrlässigkeit sowie für Schäden aus der
-            Verletzung des Lebens, des Körpers oder der Gesundheit. Im Übrigen ist die Haftung auf
-            den vorhersehbaren, typischerweise eintretenden Schaden begrenzt, sofern nicht
-            zwingende gesetzliche Vorschriften entgegenstehen.
+            Es gelten die veröffentlichten bzw. ausgehändigten Preise. Alle Preise verstehen sich in
+            Euro; die gesetzliche Umsatzsteuer ist enthalten, soweit nicht ausdrücklich als netto
+            gekennzeichnet. Gebühren Dritter (z. B. TÜV, Verwaltungsgebühren, ärztliche
+            Gutachten) trägt der Kunde gesondert, soweit gesetzlich vorgesehen.
+          </p>
+          <p className={pClass}>
+            Zahlungsmodalitäten (Anzahlung, Ratenzahlung, Fälligkeit) werden bei Vertragsschluss
+            vereinbart. Bei Zahlungsverzug sind die gesetzlichen Regelungen zur Mahnung und zu
+            Verzugszinsen anwendbar; die Fortsetzung der Ausbildung kann von der Erfüllung der
+            Zahlungsverpflichtungen abhängig gemacht werden.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>7. Schlussbestimmungen</h2>
+          <h2 className={headingClass}>7. Rücktritt und Kündigung</h2>
           <p className={pClass}>
-            Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand für Streitigkeiten ist,
-            soweit gesetzlich zulässig, der Sitz der Fahrschule. Sollten einzelne Klauseln unwirksam
-            sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
+            Ein Rücktritt vom Vertrag oder eine außerordentliche Kündigung bedürfen zu Beweiszwecken
+            der Textform, soweit nicht gesetzlich anderes vorgeschrieben ist. Bereits erbrachte
+            Leistungen und vereinbarte Pauschalen, soweit geschuldet, werden abgerechnet. Über
+            Rücktrittsfolgen und ggf. angemessene Stornokosten wird der Kunde bei Vertragsschluss
+            gesondert informiert.
+          </p>
+          <p className={pClass}>
+            Soweit für Verbraucher ein gesetzliches Widerrufsrecht bei Fernabsatzverträgen besteht,
+            erhalten Sie die gesetzlich vorgeschriebene Belehrung gesondert; es gelten die dort
+            genannten Fristen und Ausnahmen.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>8. Prüfung</h2>
+          <p className={pClass}>
+            Die Anmeldung zu theoretischen und praktischen Prüfungen erfolgt durch die Fahrschule
+            nur, wenn die Voraussetzungen der Fahrschüler-AusbVO erfüllt sind und der Kunde die
+            hierfür erforderlichen Nachweise erbracht hat. Prüfungstermine obliegen der Zulassungs-
+            und Prüfungsbehörde bzw. dem TÜV; die Fahrschule hat darauf keinen Einfluss. Bei
+            Nichtbestehen können erneute Prüfungsgebühren und weitere Ausbildungsleistungen
+            anfallen.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>9. Haftung</h2>
+          <p className={pClass}>
+            Die Fahrschule haftet unbeschränkt für Vorsatz und grobe Fahrlässigkeit sowie bei
+            Verletzung von Leben, Körper oder Gesundheit. Im Übrigen haftet die Fahrschule nur bei
+            Verletzung wesentlicher Vertragspflichten (Kardinalpflichten); in diesem Fall ist die
+            Haftung auf den typischerweise vorhersehbaren Schaden begrenzt, sofern nicht zwingendes
+            Recht entgegensteht.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>10. Datenschutz</h2>
+          <p className={pClass}>
+            Informationen zur Verarbeitung personenbezogener Daten finden Sie in unserer
+            Datenschutzerklärung auf dieser Website.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>11. Schlussbestimmungen</h2>
+          <p className={pClass}>
+            Es gilt das Recht der Bundesrepublik Deutschland. Zwingende Verbraucherschutzvorschriften
+            des Staates, in dem der Kunde seinen gewöhnlichen Aufenthalt hat, bleiben unberührt,
+            sofern sie günstiger sind.
+          </p>
+          <p className={pClass}>
+            Gerichtsstand für Kaufleute und für Personen ohne allgemeinen Gerichtsstand in
+            Deutschland ist der Sitz der Fahrschule, soweit zulässig. Für Verbraucher mit Wohnsitz in
+            der EU gilt der gesetzliche Gerichtsstand.
+          </p>
+          <p className={pClass}>
+            Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, bleibt die
+            Wirksamkeit der übrigen Regelungen unberührt. An die Stelle der unwirksamen Regelung
+            tritt – soweit möglich – eine wirtschaftlich gleichwertige, rechtswirksame Ersatzregelung.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>12. Änderungen der AGB</h2>
+          <p className={pClass}>
+            Für laufende Verträge gilt die zum Zeitpunkt des Vertragsschlusses gültige Fassung der
+            AGB. Änderungen für bestehende Verträge werden dem Kunden in Textform mitgeteilt; widerspricht
+            der Kunde nicht innerhalb einer angemessenen Frist, gelten die geänderten Bedingungen als
+            angenommen, sofern der Kunde hierauf ausdrücklich hingewiesen wurde und das Widerspruchsrecht
+            klar benannt war. Das gesetzliche Widerrufs- und Kündigungsrecht bleibt unberührt.
           </p>
         </section>
 
         <p className="mt-8 font-body text-xs text-text-muted">
-          Stand: März 2025. Maryo&apos;s Fahrschule GmbH behält sich Anpassungen der AGB vor;
-          die zum Zeitpunkt des Vertragsschlusses gültige Fassung gilt für den jeweiligen Vertrag.
+          Stand: März 2026. Maryo&apos;s Fahrschule GmbH, Mönchengladbach. Diese AGB ersetzen keine
+          individuelle Rechtsberatung; lassen Sie sie bei Bedarf von einer Kammer oder einem
+          Rechtsanwalt prüfen.
         </p>
 
         <Link href="/" className="btn-ghost mt-10 inline-block">

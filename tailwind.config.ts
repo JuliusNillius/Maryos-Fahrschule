@@ -52,10 +52,21 @@ const config: Config = {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        'fine-flash': {
+          '0%': { opacity: '0' },
+          '35%': { opacity: '0.92' },
+          '100%': { opacity: '0' },
+        },
+        'fine-pulse': {
+          '0%, 100%': { filter: 'drop-shadow(0 0 4px rgba(255,60,60,0.45))' },
+          '50%': { filter: 'drop-shadow(0 0 12px rgba(255,80,80,0.95))' },
+        },
       },
       animation: {
         'nav-stagger': 'nav-stagger 0.4s ease-out forwards',
         'trust-marquee': 'trust-marquee 40s linear infinite',
+        'fine-flash': 'fine-flash 0.15s ease-out forwards',
+        'fine-pulse': 'fine-pulse 2.2s ease-in-out infinite',
       },
     },
   },

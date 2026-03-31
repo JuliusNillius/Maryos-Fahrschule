@@ -80,7 +80,7 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
               {t('licenseClasses')}
             </h3>
             <p className="font-body text-sm text-text-muted">
-              B · BE · A · A2 · A1 · AM
+              {t('classOffer')}
             </p>
           </div>
 

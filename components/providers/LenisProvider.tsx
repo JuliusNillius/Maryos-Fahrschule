@@ -14,11 +14,13 @@ gsap.registerPlugin(ScrollTrigger);
  * Every pixel of scroll feels weighted and intentional.
  */
 const LENIS_OPTIONS = {
-  duration: 0.65,
+  // Kürzeres Smoothing = direktere Reaktion auf Rad/Touch (Hero-Pin fühlt sich sonst „schwer“ an)
+  duration: 0.42,
   easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
-  wheelMultiplier: 1.1,
-  touchMultiplier: 2,
+  wheelMultiplier: 1.35,
+  touchMultiplier: 2.4,
+  syncTouch: true,
   autoResize: true,
 };
 

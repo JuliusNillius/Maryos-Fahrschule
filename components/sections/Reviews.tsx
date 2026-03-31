@@ -30,7 +30,7 @@ const REVIEWS = [
     initials: 'SB',
     name: 'Selin B.',
     date: 'Dez. 2025',
-    text: "Can ist der beste Motorrad-Lehrer. Er nimmt sich Zeit und erklärt alles Schritt für Schritt.",
+    text: "Can ist ein super Fahrlehrer. Er nimmt sich Zeit und erklärt alles Schritt für Schritt.",
   },
   {
     initials: 'DM',

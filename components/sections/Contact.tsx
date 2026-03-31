@@ -21,7 +21,6 @@ type ContactProps = {
 
 export default function Contact({ contact }: ContactProps) {
   const phone = contact?.phone ?? '0178 4557528';
-  const whatsapp = (contact?.whatsapp ?? '491784557528').replace(/\s/g, '');
   const address = contact?.street && contact?.zip && contact?.city
     ? `${contact.street}, ${contact.zip} ${contact.city}`
     : 'Bahnhofstraße 25, 41236 Mönchengladbach';
@@ -96,16 +95,9 @@ export default function Contact({ contact }: ContactProps) {
                 {phone}
               </a>
             </p>
-            <p className="flex items-center gap-3 font-body text-text-muted">
+            <p className="flex items-start gap-3 font-body text-sm text-text-muted">
               <span aria-hidden>💬</span>
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text transition-colors hover:text-green-primary"
-              >
-                WhatsApp
-              </a>
+              <span>{t('floatActionsHint')}</span>
             </p>
             <p className="flex items-center gap-3 font-body text-text-muted">
               <span aria-hidden>🕐</span>

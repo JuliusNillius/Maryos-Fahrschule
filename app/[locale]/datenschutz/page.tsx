@@ -1,15 +1,36 @@
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { getSiteData } from '@/lib/site-data';
 
 type Props = { params: Promise<{ locale: string }> };
 
+const FALLBACK = {
+  company: "Maryo's Fahrschule GmbH",
+  street: 'Bahnhofstraße 25',
+  zip: '41236',
+  city: 'Mönchengladbach',
+  phone: '0178 4557528',
+};
+
 const sectionClass = 'mt-8';
-const headingClass = 'font-heading text-lg font-bold italic uppercase text-green-primary mt-6 first:mt-0';
+const headingClass =
+  'font-heading text-lg font-bold italic uppercase text-green-primary mt-6 first:mt-0';
 const pClass = 'font-body text-sm leading-relaxed text-text-muted mt-2';
+const ulClass = 'mt-2 list-disc pl-5 font-body text-sm leading-relaxed text-text-muted';
 
 export default async function DatenschutzPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const siteData = await getSiteData();
+  const imp = siteData.settings.impressum ?? {};
+  const contact = siteData.settings.contact ?? {};
+  const company = imp.company ?? FALLBACK.company;
+  const street = imp.street ?? FALLBACK.street;
+  const zip = imp.zip ?? FALLBACK.zip;
+  const city = imp.city ?? FALLBACK.city;
+  const phone = contact.phone ?? FALLBACK.phone;
+  const email = contact.email?.trim();
+  const plausibleEnabled = Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN?.trim());
 
   return (
     <main className="min-h-screen bg-bg px-4 py-20 text-text">
@@ -18,90 +39,186 @@ export default async function DatenschutzPage({ params }: Props) {
           Datenschutzerklärung
         </h1>
         <p className="mt-4 font-body text-sm leading-relaxed text-text-muted">
-          Maryo&apos;s Fahrschule GmbH verarbeitet personenbezogene Daten im Einklang mit der
-          Datenschutz-Grundverordnung (DSGVO) und dem Bundesdatenschutzgesetz (BDSG).
+          Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Nachfolgend informieren wir Sie
+          gemäß Art. 13 und 14 DSGVO über die Verarbeitung bei Nutzung unserer Website und
+          Online-Anmeldung bei {company}.
         </p>
 
         <section className={sectionClass}>
           <h2 className={headingClass}>1. Verantwortlicher</h2>
           <p className={pClass}>
-            Verantwortlich für die Datenverarbeitung ist: Maryo&apos;s Fahrschule GmbH, Bahnhofstraße 25,
-            41236 Mönchengladbach. Kontakt: siehe Impressum bzw. Kontaktseite.
+            Verantwortlich für die Datenverarbeitung ist:
+            <br />
+            <br />
+            {company}
+            <br />
+            {street}, {zip} {city}
+            <br />
+            Telefon: {phone}
+            {email ? (
+              <>
+                <br />
+                E-Mail:{' '}
+                <a href={`mailto:${email}`} className="text-green-primary underline">
+                  {email}
+                </a>
+              </>
+            ) : (
+              <>
+                <br />
+                (E-Mail-Adresse siehe ggf. Kontaktbereich der Website oder Impressum, sobald
+                hinterlegt.)
+              </>
+            )}
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>2. Erhebung und Verarbeitung personenbezogener Daten</h2>
+          <h2 className={headingClass}>2. Allgemeines zur Datenverarbeitung</h2>
           <p className={pClass}>
-            Wir erheben personenbezogene Daten nur, soweit dies für die Bereitstellung unserer
-            Leistungen, die Anmeldung zum Führerscheinkurs, die Kommunikation (z.&#8203;B. Kontaktformular,
-            E-Mail-Benachrichtigungen) sowie zur Erfüllung gesetzlicher Pflichten erforderlich ist.
-            Dazu können gehören: Name, Anschrift, E-Mail, Telefonnummer, Geburtsdatum sowie
-            fuhrerscheinbezogene Angaben.
+            Personenbezogene Daten sind alle Informationen, die sich auf eine identifizierte oder
+            identifizierbare natürliche Person beziehen. Wir verarbeiten solche Daten nur, soweit dies
+            zur Bereitstellung der Website, zur Bearbeitung von Anfragen und Anmeldungen, zur
+            Durchführung von Fahrschulverträgen sowie zur Erfüllung gesetzlicher Pflichten erforderlich
+            ist oder Sie eingewilligt haben.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>3. Zweck und Rechtsgrundlage</h2>
+          <h2 className={headingClass}>3. Hosting und technische Bereitstellung</h2>
           <p className={pClass}>
-            Die Verarbeitung erfolgt auf Grundlage von Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO),
-            berechtigtem Interesse (Art. 6 Abs. 1 lit. f DSGVO) sowie ggf. Ihrer Einwilligung (Art. 6
-            Abs. 1 lit. a DSGVO). Einzelheiten zu den jeweiligen Verarbeitungszwecken können Sie bei
-            den konkreten Erhebungen (z.&#8203;B. Anmeldeformular, Kontakt) entnehmen.
+            Unsere Website wird über einen Hosting- bzw. Plattform-Anbieter (Cloud-Hosting)
+            bereitgestellt. Dabei können insbesondere IP-Adressen, Zeitstempel und technische
+            Metadaten verarbeitet werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag
+            bzw. vorvertragliche Maßnahmen) und Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+            sicherem, stabilem Betrieb). Mit dem Hoster besteht – soweit erforderlich – ein Vertrag
+            zur Auftragsverarbeitung gemäß Art. 28 DSGVO.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>4. Speicherdauer</h2>
+          <h2 className={headingClass}>4. Server-Logdateien</h2>
           <p className={pClass}>
-            Personenbezogene Daten werden nur so lange gespeichert, wie es für die genannten Zwecke
-            erforderlich ist oder gesetzliche Aufbewahrungsfristen (z.&#8203;B. steuer- oder
-            handelsrechtlich) bestehen. Danach werden die Daten gelöscht oder anonymisiert.
+            Beim Aufruf der Website können automatisch Informationen in Server-Logdateien
+            gespeichert werden, etwa Browsertyp, System, Referrer-URL, Zeitpunkt der Anfrage und eine
+            gekürzte oder pseudonymisierte IP-Adresse, je nach Konfiguration des Hosters. Die
+            Verarbeitung dient der Sicherheit (z. B. Abwehr von Angriffen) und der technischen
+            Fehleranalyse. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>5. Ihre Rechte (Betroffenenrechte)</h2>
+          <h2 className={headingClass}>5. Online-Anmeldung, Datenbank (Supabase)</h2>
           <p className={pClass}>
-            Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16 DSGVO),
-            Löschung (Art. 17 DSGVO), Einschränkung der Verarbeitung (Art. 18 DSGVO),
-            Datenübertragbarkeit (Art. 20 DSGVO) und Widerspruch (Art. 21 DSGVO). Sie haben ferner
-            das Recht, sich bei einer Aufsichtsbehörde zu beschweren (Art. 77 DSGVO).
+            Wenn Sie sich über unsere Website anmelden, verarbeiten wir die von Ihnen eingegebenen
+            Daten (z. B. Name, Kontaktdaten, Adresse, Geburtsdatum, gewünschte Führerscheinklasse,
+            Präferenzen zur Ausbildung, ggf. Zahlungsbezug) zur Bearbeitung der Anmeldung und zur
+            Vorbereitung bzw. Durchführung des Fahrschulvertrags. Die Speicherung erfolgt über den
+            Dienst Supabase (Anbieter: Supabase Inc., mit EU-Bezug über zulässige Übermittlungsmechanismen
+            wie Standardvertragsklauseln, soweit relevant). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b
+            DSGVO. Mit Supabase besteht ein Auftragsverarbeitungsvertrag, soweit gesetzlich
+            vorgeschrieben.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>6. Cookies und lokale Speicherung</h2>
+          <h2 className={headingClass}>6. Zahlungsabwicklung (Stripe)</h2>
           <p className={pClass}>
-            Diese Website setzt technisch notwendige Speicherungen (z.&#8203;B. Session, Formular-Entwürfe)
-            ein. Soweit wir optional Analyse- oder Marketing-Tools nutzen, erfolgt dies nur auf Basis
-            Ihrer Einwilligung oder in anonymisierter Form. Details zu verwendeten Diensten finden Sie
-            ggf. in den nachfolgenden Abschnitten.
+            Soweit Sie Online-Zahlungen nutzen, erfolgt die Zahlungsabwicklung über Stripe
+            (Stripe Technology Europe Ltd. bzw. verbundene Unternehmen, je nach Produktkonfiguration).
+            Dabei werden Zahlungsdaten von Stripe verarbeitet; wir erhalten keine vollständigen
+            Kreditkartendaten. Es gelten die Datenschutzhinweise von Stripe. Rechtsgrundlage ist Art.
+            6 Abs. 1 lit. b DSGVO.
+          </p>
+        </section>
+
+        {plausibleEnabled ? (
+          <section className={sectionClass}>
+            <h2 className={headingClass}>7. Webanalyse (Plausible)</h2>
+            <p className={pClass}>
+              Diese Website kann Plausible Analytics (Plausible Insights OÜ) nutzen. Plausible wird
+              häufig ohne Cookies und mit anonymisierten bzw. aggregierten Statistiken betrieben.
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (Analyse der Nutzung zur Optimierung des
+              Angebots). Näheres entnehmen Sie der Datenschutzerklärung von Plausible unter{' '}
+              <a
+                href="https://plausible.io/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-primary underline"
+              >
+                plausible.io/privacy
+              </a>
+              .
+            </p>
+          </section>
+        ) : null}
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>{plausibleEnabled ? '8' : '7'}. Schriftarten (Google Fonts / Next.js)</h2>
+          <p className={pClass}>
+            Zur einheitlichen Darstellung können Schriftarten über die eingesetzte Website-Software
+            (Next.js) eingebunden werden. Je nach Konfiguration können die Schriftdateien auf unserer
+            eigenen Domain ausgeliefert werden, sodass beim Seitenaufruf keine Verbindung zu Google
+            zu Ihrem Endgerät nötig ist. Sollte eine direkte Einbindung durch einen Drittanbieter
+            erfolgen, geschieht dies zur berechtigten Darstellung unseres Online-Angebots (Art. 6
+            Abs. 1 lit. f DSGVO).
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>7. Empfänger und Dienste (Drittanbieter)</h2>
+          <h2 className={headingClass}>{plausibleEnabled ? '9' : '8'}. Google Maps</h2>
           <p className={pClass}>
-            Zur Bereitstellung der Website und der Anmelde-/Buchungsfunktionen können Daten an
-            Diensteanbieter weitergegeben werden (z.&#8203;B. Hosting, E-Mail-Versand, Datenbanken,
-            Zahlungsabwicklung). Diese handeln als Auftragsverarbeiter im Sinne von Art. 28 DSGVO.
-            Sofern wir Dienste mit Sitz außerhalb des EWR nutzen, wird ein angemessenes
-            Datenschutzniveau (z.&#8203;B. Standardvertragsklauseln) sichergestellt. Auf Wunsch können
-            wir Ihnen die konkreten Empfänger und Garantien nennen.
+            Wenn wir eine Karte von Google Maps einbinden, kann Google (insb. Google Ireland
+            Limited) Daten verarbeiten (z. B. IP-Adresse, Nutzungsdaten). Rechtsgrundlage ist Art. 6
+            Abs. 1 lit. f DSGVO (Anfahrtsplan) bzw. bei Einwilligung Art. 6 Abs. 1 lit. a DSGVO. Es
+            gelten die Datenschutzhinweise von Google.
           </p>
         </section>
 
         <section className={sectionClass}>
-          <h2 className={headingClass}>8. Kontakt zum Datenschutz</h2>
+          <h2 className={headingClass}>{plausibleEnabled ? '10' : '9'}. Kontakt per E-Mail oder Telefon</h2>
           <p className={pClass}>
-            Für Fragen zum Datenschutz und zur Ausübung Ihrer Rechte wenden Sie sich bitte an uns
-            über die im Impressum angegebenen Kontaktdaten.
+            Wenn Sie uns kontaktieren, verwenden wir Ihre Angaben ausschließlich zur Bearbeitung der
+            Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO oder Art. 6 Abs. 1 lit. f DSGVO.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>{plausibleEnabled ? '11' : '10'}. Speicherdauer</h2>
+          <p className={pClass}>
+            Wir speichern personenbezogene Daten nur so lange, wie der Zweck es erfordert oder
+            gesetzliche Aufbewahrungsfristen (z. B. handels- oder steuerrechtlich) bestehen.
+            Anschließend löschen oder anonymisieren wir die Daten.
+          </p>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>{plausibleEnabled ? '12' : '11'}. Ihre Rechte</h2>
+          <p className={pClass}>Sie haben insbesondere folgende Rechte:</p>
+          <ul className={ulClass}>
+            <li>Auskunft (Art. 15 DSGVO)</li>
+            <li>Berichtigung (Art. 16 DSGVO)</li>
+            <li>Löschung (Art. 17 DSGVO)</li>
+            <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+            <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+            <li>Widerspruch gegen Verarbeitungen auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (Art. 21 DSGVO)</li>
+            <li>Widerruf erteilter Einwilligungen mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+            <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO), z. B. der für uns zuständigen Landesbehörde</li>
+          </ul>
+        </section>
+
+        <section className={sectionClass}>
+          <h2 className={headingClass}>{plausibleEnabled ? '13' : '12'}. SSL/TLS</h2>
+          <p className={pClass}>
+            Diese Website nutzt aus Sicherheitsgründen Verschlüsselung (SSL/TLS), erkennbar an
+            „https://“ und dem Schloss-Symbol im Browser.
           </p>
         </section>
 
         <p className="mt-8 font-body text-xs text-text-muted">
-          Stand: März 2025. Diese Datenschutzerklärung kann bei Bedarf angepasst werden.
+          Stand: März 2026. Diese Erklärung soll unsere aktuellen Verarbeitungen abbilden; bei
+          Änderungen der Technik oder Anbieter passen wir sie an. Bitte lassen Sie die Fassung durch
+          eine Rechtsberatung prüfen, wenn Sie unsicher sind.
         </p>
 
         <Link href="/" className="btn-ghost mt-10 inline-block">

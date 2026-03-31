@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { getStripeAmountCentsForOffer, parseOfferType } from '@/lib/pricing';
 
 export async function POST(request: Request) {
   if (!stripe) {
     return NextResponse.json({ error: 'Stripe not configured' }, { status: 503 });
   }
   try {
-    const { email, licenceClass } = await request.json();
-    const amount = 9900; // 99.00 EUR in cents
+    const { email, licenceClass, offerType } = await request.json();
+    const amount = getStripeAmountCentsForOffer(parseOfferType(offerType));
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'eur',

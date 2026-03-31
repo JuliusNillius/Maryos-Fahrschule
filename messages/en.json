@@ -14,7 +14,8 @@
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
     "whatsapp": "WhatsApp",
-    "phone": "Call"
+    "phone": "Call",
+    "floatActionsHint": "WhatsApp & appointments: green buttons bottom-right."
   },
   "homeTabs": {
     "ariaLabel": "Home page topics",
@@ -256,7 +257,7 @@
     "q7Q": "What happens after online registration?",
     "q7A": "We'll contact you within 24h at 0178 4557528 and go through next steps.",
     "q8Q": "When are you open?",
-    "q8A": "Mon–Fri 12:00–18:00. Bahnhofstraße 25, 41236 Mönchengladbach. WhatsApp: 0178 4557528",
+    "q8A": "Mon–Fri 12:00–18:00. Bahnhofstraße 25, 41236 Mönchengladbach. Messages & appointments: green buttons bottom-right on the site; phone: 0178 4557528",
     "q9Q": "Can I sign up for BF17 / accompanied driving?",
     "q9A": "Yes, from 17 with an eligible accompanying person."
   },
@@ -264,7 +265,8 @@
     "heading": "VISIT US",
     "hours": "Mon–Fri: 12:00–18:00",
     "closed": "Sat & Sun: Closed",
-    "mapTitle": "Maryo's Fahrschule location"
+    "mapTitle": "Maryo's Fahrschule location",
+    "floatActionsHint": "WhatsApp and booking a slot: use the green quick-action buttons bottom-right (chat and calendar). For calls see phone above."
   },
   "footer": {
     "tagline": "FAHR IN DEIN GLÜCK",
@@ -336,6 +338,15 @@
     "sourceRecommendation": "Recommendation",
     "sourceWalkby": "Walk-by",
     "sourceOther": "Other",
+    "offerLabel": "Choose offer",
+    "offerStandardTitle": "Standard registration",
+    "offerStandardDesc": "One-time registration + learning app. Book driving lessons as usual after signing up.",
+    "offerBundleTitle": "Promo: 10 lessons with 1 free hour",
+    "offerBundleDesc": "You pay registration + app plus {price} € × 9 lessons. One lesson is included as a promo (10 hours total).",
+    "paymentExplainerBundle": "This package reserves 10 lesson hours in billing; one hour counts as a promotional offer. Scheduling is with the school as usual.",
+    "feeBundleLessons": "{paid} lessons at {price} € (of 10 hours)",
+    "feePromoLesson": "{n} lesson(s) included as promo",
+    "summaryOffer": "Offer",
     "summary": "Summary",
     "summaryText": "One-time registration fee",
     "summaryClass": "Class",

@@ -8,7 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 import { setRegistrationClass } from '@/lib/registration';
 
-const CLASS_IDS = ['b', 'be', 'a', 'a2', 'a1', 'am'] as const;
+/** Nur PKW: Klasse B und BF17 */
+const CLASS_IDS = ['b', 'bf17'] as const;
 
 type ClassesProps = { embedded?: boolean };
 
@@ -44,7 +45,7 @@ export default function Classes({ embedded }: ClassesProps) {
   }, []);
 
   const scrollToAnmelden = (classId: string) => {
-    setRegistrationClass(classId.toUpperCase());
+    setRegistrationClass(classId === 'b' ? 'B' : 'BF17');
     const el = document.getElementById('anmelden');
     el?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -63,10 +64,12 @@ export default function Classes({ embedded }: ClassesProps) {
         >
           {t('heading')}
         </h2>
+        <p className="-mt-8 mb-10 text-center font-body text-sm text-text-muted md:text-base">{t('intro')}</p>
 
-        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
           {CLASS_IDS.map((id, i) => {
-            const badge = id === 'b' ? t('badgePopular') : id === 'a' ? t('badgePro') : null;
+            const badge = id === 'b' ? t('badgePopular') : null;
+            const label = id === 'b' ? 'B' : 'BF17';
             return (
               <div
                 key={id}
@@ -79,11 +82,11 @@ export default function Classes({ embedded }: ClassesProps) {
                   className="pointer-events-none absolute right-4 top-4 font-display text-7xl font-bold text-green-primary opacity-[0.04] sm:text-8xl"
                   aria-hidden
                 >
-                  {id.toUpperCase()}
+                  {label}
                 </span>
                 <div className="relative">
                   <h3 className="font-heading text-xl font-bold italic uppercase tracking-tight text-white">
-                    {id.toUpperCase()} — {t(`${id}Title`)}
+                    {label} — {t(`${id}Title`)}
                   </h3>
                   <p className="mt-1 font-body text-sm text-green-primary">{t(`${id}Subtitle`)}</p>
                   <p className="mt-3 font-body text-sm leading-relaxed text-text-muted">
@@ -98,10 +101,8 @@ export default function Classes({ embedded }: ClassesProps) {
                     type="button"
                     onClick={() => scrollToAnmelden(id)}
                     className="btn-ghost mt-4 gap-2"
-                    data-cta
-                    data-testid={`classes-cta-${id}`}
                   >
-                    → {t('cta')}
+                    {t('cta')}
                   </button>
                 </div>
               </div>

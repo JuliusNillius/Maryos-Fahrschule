@@ -12,8 +12,8 @@ const ITEM_KEYS = [
   'item1',  // ⭐ 5.0 Google
   'item3',  // Apple Pay
   'item4',  // Sofort & Klarna
-  'item10', // B · BE · A · A1 · A2 · AM
-  'item6',  // 10 Sprachen
+  'item10', // B · BF17 · 65 € / Fahrstunde
+  'item6',  // 3 Sprachen
   'item2',  // 18 Rezensionen
   'item8',  // WhatsApp Support
   'item9',  // Gegründet 2025

@@ -11,6 +11,15 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/backoffice')) {
     return NextResponse.next();
   }
+  // Alte URLs /en/… und /ru/… auf Deutsch umleiten
+  const seg = path.split('/').filter(Boolean)[0];
+  if (seg === 'en' || seg === 'ru') {
+    const rest = path.split('/').slice(2).join('/');
+    const target = rest ? `/de/${rest}` : '/de';
+    const url = request.nextUrl.clone();
+    url.pathname = target;
+    return NextResponse.redirect(url);
+  }
   return intlMiddleware(request);
 }
 

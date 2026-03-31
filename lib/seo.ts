@@ -4,49 +4,36 @@
  */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryos-fahrschule.de';
 
-export const DEFAULT_TITLE = "Maryo's Fahrschule | Mönchengladbach | B, BE, A, A1, A2, AM";
+export const DEFAULT_TITLE = "Maryo's Fahrschule | Mönchengladbach | PKW B & BF17";
 export const DEFAULT_DESCRIPTION =
-  "Fahrschule in Mönchengladbach. Führerschein Klasse B, BE, A, A1, A2, AM. Lehrer wählen, online anmelden, Apple Pay. 5.0 ★ Google. 0178 4557528";
+  "Fahrschule in Mönchengladbach. Führerschein Klasse B & BF17 (PKW). Lehrer wählen, online anmelden, Apple Pay. 5.0 ★ Google. 0178 4557528";
 
-export type Locale = 'de' | 'en' | 'tr' | 'ar' | 'ru';
+export type Locale = 'de' | 'tr' | 'ar';
 
 export const METADATA: Record<
   Locale,
   { title: string; description: string; openGraphTitle?: string; openGraphDescription?: string }
 > = {
   de: {
-    title: "Maryo's Fahrschule | Mönchengladbach | B, BE, A, A1, A2, AM",
+    title: "Maryo's Fahrschule | Mönchengladbach | PKW B & BF17",
     description:
-      "Fahrschule in Mönchengladbach. Führerschein Klasse B, BE, A, A1, A2, AM. Lehrer wählen, online anmelden, Apple Pay. 5.0 ★ Google. 0178 4557528",
-  },
-  en: {
-    title: "Maryo's Driving School | Mönchengladbach | B, BE, A, A1, A2, AM",
-    description:
-      "Driving school in Mönchengladbach. License classes B, BE, A, A1, A2, AM. Choose your instructor, register online, Apple Pay. 5.0 ★ Google. 0178 4557528",
+      "Fahrschule in Mönchengladbach. Führerschein Klasse B & BF17 (PKW). Lehrer wählen, online anmelden, Apple Pay. 5.0 ★ Google. 0178 4557528",
   },
   tr: {
-    title: "Maryo's Fahrschule | Mönchengladbach | B, BE, A, A1, A2, AM",
+    title: "Maryo's Fahrschule | Mönchengladbach | PKW B & BF17",
     description:
-      "Mönchengladbach'da sürücü kursu. B, BE, A, A1, A2, AM sınıfları. Öğretmen seçin, online kayıt, Apple Pay. 5.0 ★ Google. 0178 4557528",
+      "Mönchengladbach'da sürücü kursu. Sadece otomobil B ve BF17. Öğretmen seçin, online kayıt, Apple Pay. 5.0 ★ Google. 0178 4557528",
   },
   ar: {
-    title: "مدرسة ماريو للقيادة | مونشنغلادباخ | B, BE, A, A1, A2, AM",
+    title: "مدرسة ماريو للقيادة | مونشنغلادباخ | سيارة B و BF17",
     description:
-      "مدرسة قيادة في مونشنغلادباخ. رخصة B, BE, A, A1, A2, AM. اختر معلمك، سجّل أونلاين، Apple Pay. 5.0 ★ Google. 0178 4557528",
-  },
-  ru: {
-    title: "Maryo's Fahrschule | Мёнхенгладбах | B, BE, A, A1, A2, AM",
-    description:
-      "Автошкола в Мёнхенгладбахе. Категории B, BE, A, A1, A2, AM. Выбор инструктора, запись онлайн, Apple Pay. 5.0 ★ Google. 0178 4557528",
+      "مدرسة قيادة في مونشنغلادباخ. رخصة سيارة B و BF17 فقط. اختر معلمك، سجّل أونلاين، Apple Pay. 5.0 ★ Google. 0178 4557528",
   },
 };
 
+/** Canonical-URL mit Locale-Prefix (/de, /tr, /ar) — entspricht next-intl `localePrefix: 'always'`. */
 export function getCanonicalUrl(path: string, locale: Locale): string {
   const base = SITE_URL.replace(/\/$/, '');
-  const pathClean = path.startsWith('/') ? path : `/${path}`;
-  if (locale === 'de') {
-    return pathClean === '/' ? base : `${base}${pathClean}`;
-  }
-  const localePath = pathClean === '/' ? `/${locale}` : `/${locale}${pathClean}`;
-  return `${base}${localePath}`;
+  const pathClean = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
+  return `${base}/${locale}${pathClean}`;
 }

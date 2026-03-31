@@ -19,10 +19,8 @@ const mainNavItems = [
 
 const languages = [
   { code: 'de' as const, flag: '🇩🇪', label: 'DE' },
-  { code: 'en' as const, flag: '🇬🇧', label: 'EN' },
   { code: 'tr' as const, flag: '🇹🇷', label: 'TR' },
   { code: 'ar' as const, flag: '🇸🇦', label: 'AR' },
-  { code: 'ru' as const, flag: '🇷🇺', label: 'RU' },
 ];
 
 export default function Navbar() {
@@ -200,16 +198,9 @@ export default function Navbar() {
             </nav>
 
           <div className="border-t border-[rgba(93,196,34,0.2)] p-4">
-            <a
-              href="https://wa.me/491784557528"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mb-3 flex w-full items-center justify-center gap-2"
-              data-cta
-            >
-              <span aria-hidden>💬</span>
-              {t('whatsapp')}
-            </a>
+            <p className="mb-3 text-center font-body text-xs text-text-muted">
+              {t('floatActionsHint')}
+            </p>
             <a
               href="tel:+491784557528"
               className="btn-primary flex w-full items-center justify-center gap-2"

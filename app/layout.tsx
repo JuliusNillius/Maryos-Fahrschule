@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import {
   Barlow_Condensed,
@@ -38,13 +38,18 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryos-fahrschule.de'),
   title: { default: "Maryo's Fahrschule | Mönchengladbach", template: "%s | Maryo's Fahrschule" },
-  description: "Fahrschule in Mönchengladbach. Führerschein B, BE, A, A1, A2, AM. 5.0 ★ Google.",
+  description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. 5.0 ★ Google.",
   robots: { index: true, follow: true },
-  themeColor: '#080808',
-  viewport: { width: 'device-width', initialScale: 1, viewportFit: 'cover' },
   icons: {
     apple: [{ url: '/logo.svg', type: 'image/svg+xml' }],
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#080808',
 };
 
 export default function RootLayout({

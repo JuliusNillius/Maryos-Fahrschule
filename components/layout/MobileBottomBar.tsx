@@ -3,6 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 
+/**
+ * WhatsApp & Termin nur über FloatingActions — hier Anruf + Anmeldung für schnellen Daumen-Zugriff.
+ */
 export default function MobileBottomBar() {
   const t = useTranslations('mobileBar');
 
@@ -15,16 +18,6 @@ export default function MobileBottomBar() {
       >
         <span aria-hidden>📞</span>
         {t('call')}
-      </a>
-      <a
-        href="https://wa.me/491784557528"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex flex-1 flex-col items-center gap-1 py-3 font-body text-xs font-medium text-text-muted transition-colors active:bg-surface2"
-        aria-label="WhatsApp"
-      >
-        <span aria-hidden>💬</span>
-        {t('whatsapp')}
       </a>
       <Link
         href="/anmelden"

@@ -4,31 +4,21 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Link } from '@/i18n/navigation';
+import {
+  PRICING_REGISTRATION_EUR,
+  PRICING_APP_EUR,
+  PRICING_LESSON_HOUR_EUR,
+  PRICING_TUV_EUR,
+  PRICING_OTHER_EUR,
+} from '@/lib/pricing';
 
 /**
- * §12 INTERACTIVE PRICE CALCULATOR
- * Step 1: Class selector (B, BE, A, A2, A1, AM) — green border + glow, scale 1.05
- * Step 2: Fahrstunden slider 10–60, Schaltung/Automatik (B only), Intensivkurs toggle
- * Step 3: Live total (count-up), collapsible breakdown, CTA
+ * Nur PKW Klasse B / BF17 — Anmeldung + App, Fahrstunden 65 €, Richtwerte Gesamtbudget.
  */
-const CLASSES = ['B', 'BE', 'A', 'A2', 'A1', 'AM'] as const;
+const CLASSES = ['B', 'BF17'] as const;
 type ClassId = (typeof CLASSES)[number];
 
-const REGISTRATION = 99;
-const TUV = 170;
-const OTHER = 270;
 const THEORY = 0;
-const MANUAL_SURCHARGE_B = 200;
-const INTENSIVE_SURCHARGE = 150;
-
-const EUR_PER_HOUR: Record<ClassId, number> = {
-  B: 60,
-  BE: 25,
-  A: 45,
-  A2: 40,
-  A1: 35,
-  AM: 30,
-};
 
 function useCountUp(value: number, duration = 0.6) {
   const [display, setDisplay] = useState(0);
@@ -52,20 +42,20 @@ function useCountUp(value: number, duration = 0.6) {
 export default function PriceCalculator() {
   const t = useTranslations('priceCalculator');
   const [selectedClass, setSelectedClass] = useState<ClassId | null>(null);
-  const [hours, setHours] = useState(30);
-  const [transmission, setTransmission] = useState<'manual' | 'automatic'>('manual');
-  const [intensive, setIntensive] = useState(false);
+  const [hours, setHours] = useState(24);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
 
-  const isB = selectedClass === 'B';
-  const hoursCost = selectedClass ? hours * EUR_PER_HOUR[selectedClass] : 0;
-  const manualSurcharge = isB && transmission === 'manual' ? MANUAL_SURCHARGE_B : 0;
-  const intensiveSurcharge = intensive ? INTENSIVE_SURCHARGE : 0;
+  const hoursCost = selectedClass ? hours * PRICING_LESSON_HOUR_EUR : 0;
 
   const total =
     selectedClass == null
       ? 0
-      : REGISTRATION + hoursCost + THEORY + TUV + OTHER + manualSurcharge + intensiveSurcharge;
+      : PRICING_REGISTRATION_EUR +
+        PRICING_APP_EUR +
+        hoursCost +
+        THEORY +
+        PRICING_TUV_EUR +
+        PRICING_OTHER_EUR;
 
   const displayTotal = useCountUp(total);
 
@@ -82,30 +72,31 @@ export default function PriceCalculator() {
         <p className="mt-3 text-center font-body text-lg text-text-muted">
           {t('sub')}
         </p>
+        <p className="mx-auto mt-4 max-w-2xl text-center font-body text-sm text-text-muted">
+          {t('budgetHint')}
+        </p>
 
-        {/* Step 1 — Class selector */}
         <p className="mt-10 font-body text-sm font-medium uppercase tracking-wide text-text-muted">
           {t('step1')}
         </p>
-        <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-6">
+        <div className="mt-3 flex flex-wrap justify-center gap-3">
           {CLASSES.map((cls) => (
             <button
               key={cls}
               type="button"
               onClick={() => setSelectedClass(cls)}
               data-testid={`calculator-class-${cls}`}
-              className={`flex h-14 items-center justify-center rounded-xl border-2 font-display text-xl font-bold transition-all duration-300 ${
+              className={`min-w-[140px] rounded-xl border-2 px-6 py-4 font-heading text-lg font-bold italic uppercase transition-all duration-300 ${
                 selectedClass === cls
                   ? 'scale-105 border-green-500 bg-green-500/10 text-green-500 shadow-glow'
                   : 'border-white/15 bg-card text-white hover:border-green-500/40'
               }`}
             >
-              {cls}
+              {cls === 'B' ? t('classBLabel') : t('classBF17Label')}
             </button>
           ))}
         </div>
 
-        {/* Step 2 — Sliders / toggles (stagger after class select) */}
         {selectedClass && (
           <div className="mt-10 space-y-6">
             <div>
@@ -114,72 +105,17 @@ export default function PriceCalculator() {
               </label>
               <input
                 type="range"
-                min={10}
-                max={60}
+                min={15}
+                max={38}
                 value={hours}
                 onChange={(e) => setHours(Number(e.target.value))}
                 className="mt-2 h-2 w-full appearance-none rounded-full bg-card accent-green-500"
               />
-            </div>
-
-            {isB && (
-              <div className="flex items-center gap-4">
-                <span className="font-body text-sm text-text-muted">{t('step2Transmission')}</span>
-                <div className="flex rounded-lg border border-white/15 bg-card p-1">
-                  <button
-                    type="button"
-                    onClick={() => setTransmission('manual')}
-                    data-testid="calculator-transmission-manual"
-                    className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                      transmission === 'manual'
-                        ? 'bg-green-500/20 text-green-500'
-                        : 'text-text-muted hover:text-white'
-                    }`}
-                  >
-                    Schaltung
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTransmission('automatic')}
-                    data-testid="calculator-transmission-automatic"
-                    className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                      transmission === 'automatic'
-                        ? 'bg-green-500/20 text-green-500'
-                        : 'text-text-muted hover:text-white'
-                    }`}
-                  >
-                    Automatik
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div className="flex items-center gap-4">
-              <span className="font-body text-sm text-text-muted">{t('step2Intensive')}</span>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={intensive}
-                onClick={() => setIntensive((v) => !v)}
-                data-testid="calculator-intensive-toggle"
-                className={`relative h-8 w-14 rounded-full transition-colors ${
-                  intensive ? 'bg-green-500' : 'bg-card'
-                }`}
-              >
-                <span
-                  className={`absolute top-1 h-6 w-6 rounded-full bg-white transition-transform ${
-                    intensive ? 'left-8 translate-x-[-22px]' : 'left-1'
-                  }`}
-                />
-              </button>
-              {intensive && (
-                <span className="font-body text-xs text-green-500">+{INTENSIVE_SURCHARGE} €</span>
-              )}
+              <p className="mt-2 font-body text-xs text-text-muted">{t('hoursHint')}</p>
             </div>
           </div>
         )}
 
-        {/* Step 3 — Live result */}
         {selectedClass && (
           <div className="mt-12 rounded-xl border border-[rgba(93,196,34,0.2)] bg-card p-6 md:p-8">
             <p className="font-body text-sm uppercase tracking-wide text-text-muted">
@@ -195,7 +131,7 @@ export default function PriceCalculator() {
               className="mt-4 flex w-full items-center justify-between font-body text-sm text-text-muted hover:text-white"
               data-testid="calculator-breakdown-toggle"
             >
-              <span>Aufschlüsselung</span>
+              <span>{t('breakdownToggle')}</span>
               <span className="transition-transform" style={{ transform: breakdownOpen ? 'rotate(180deg)' : 'none' }}>
                 ▼
               </span>
@@ -204,10 +140,16 @@ export default function PriceCalculator() {
               <ul className="mt-4 space-y-2 border-t border-white/10 pt-4 font-body text-sm">
                 <li className="flex justify-between">
                   <span className="text-text-muted">✓ {t('breakdownRegistration')}</span>
-                  <span className="font-display text-white">99 €</span>
+                  <span className="font-display text-white">{PRICING_REGISTRATION_EUR} €</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-text-muted">✓ {t('breakdownHours')} ({hours})</span>
+                  <span className="text-text-muted">✓ {t('breakdownApp')}</span>
+                  <span className="font-display text-white">{PRICING_APP_EUR} €</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-text-muted">
+                    ✓ {t('breakdownHours')} ({hours} × {PRICING_LESSON_HOUR_EUR} €)
+                  </span>
                   <span className="font-display text-white">{hoursCost.toLocaleString('de-DE')} €</span>
                 </li>
                 <li className="flex justify-between">
@@ -216,30 +158,16 @@ export default function PriceCalculator() {
                 </li>
                 <li className="flex justify-between">
                   <span className="text-text-muted">✓ {t('breakdownTuv')}</span>
-                  <span className="font-display text-white">ca. 170 €</span>
+                  <span className="font-display text-white">ca. {PRICING_TUV_EUR} €</span>
                 </li>
                 <li className="flex justify-between">
                   <span className="text-text-muted">~ {t('breakdownOther')}</span>
-                  <span className="font-display text-white">ca. 270 €</span>
+                  <span className="font-display text-white">ca. {PRICING_OTHER_EUR} €</span>
                 </li>
-                {manualSurcharge > 0 && (
-                  <li className="flex justify-between">
-                    <span className="text-text-muted">+ Schaltung</span>
-                    <span className="font-display text-white">200 €</span>
-                  </li>
-                )}
-                {intensiveSurcharge > 0 && (
-                  <li className="flex justify-between">
-                    <span className="text-text-muted">+ {t('intensiveSurcharge')}</span>
-                    <span className="font-display text-white">{INTENSIVE_SURCHARGE} €</span>
-                  </li>
-                )}
               </ul>
             )}
 
-            <p className="mt-4 text-xs text-text-muted">
-              {t('disclaimer')}
-            </p>
+            <p className="mt-4 text-xs text-text-muted">{t('disclaimer')}</p>
 
             <Link
               href="/anmelden"

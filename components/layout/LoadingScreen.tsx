@@ -1,26 +1,58 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
-/**
- * Ladebildschirm: Exakt das Kleeblatt aus dem Logo (Bild),
- * setzt sich in 4 Schritten zusammen (Maske pro „Blatt“), dann Vorhang hoch.
- */
+/** Gleiche Grün-Werte wie Brand — Glow + Kleeblatt wirken aus einem Guss */
+const G = '93,196,34';
+const CLOVER_MASK = "url('/kleeblatt-logo.png')";
 
-const MASK_ID = 'clover-reveal-mask';
+/**
+ * Schwarze Kontur nur um die Form (kein Rechteck-Rahmen): filter drop-shadow entlang der Alpha-Kante.
+ * Zusätzlich mask-image luminance: schwarze Fläche im PNG blendet aus → nur grünes Kleeblatt + Glow dahinter.
+ */
+const CLOVER_FILTERS = [
+  'drop-shadow(1px 0 0 #000)',
+  'drop-shadow(-1px 0 0 #000)',
+  'drop-shadow(0 1px 0 #000)',
+  'drop-shadow(0 -1px 0 #000)',
+  'drop-shadow(1px 1px 0 #000)',
+  'drop-shadow(-1px -1px 0 #000)',
+  'drop-shadow(1px -1px 0 #000)',
+  'drop-shadow(-1px 1px 0 #000)',
+  `drop-shadow(0 0 10px rgba(${G},0.5))`,
+  `drop-shadow(0 0 22px rgba(${G},0.28))`,
+].join(' ');
+
+/** Vendor-Mask-Props fehlen teils in React.CSSProperties */
+const cloverImgStyle = {
+  WebkitMaskImage: CLOVER_MASK,
+  maskImage: CLOVER_MASK,
+  WebkitMaskSize: 'contain',
+  maskSize: 'contain',
+  WebkitMaskRepeat: 'no-repeat',
+  maskRepeat: 'no-repeat',
+  WebkitMaskPosition: 'center',
+  maskPosition: 'center',
+  WebkitMaskMode: 'luminance',
+  maskMode: 'luminance',
+  filter: CLOVER_FILTERS,
+  WebkitBackfaceVisibility: 'hidden',
+  backfaceVisibility: 'hidden',
+} as React.CSSProperties;
+
+/**
+ * Ladebildschirm: grünes Kleeblatt auf stimmigem Grün-Glow, schwarze Linienführung nur um die Form (kein Kasten-Rahmen).
+ * GSAP-Cleanup in try/catch.
+ */
 
 export default function LoadingScreen({ children }: { children: React.ReactNode }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const burstRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
-  const maskRectRefs = [
-    useRef<SVGRectElement>(null),
-    useRef<SVGRectElement>(null),
-    useRef<SVGRectElement>(null),
-    useRef<SVGRectElement>(null),
-  ];
+  const imgRef = useRef<HTMLImageElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const loadSnapTweenRef = useRef<gsap.core.Tween | null>(null);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -30,9 +62,9 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
 
     const overlay = overlayRef.current;
     const progressBar = progressRef.current;
-    const rects = maskRectRefs.map((r) => r.current).filter(Boolean) as SVGRectElement[];
+    const img = imgRef.current;
 
-    if (!overlay || !burstRef.current || !glowRef.current || !progressBar || rects.length !== 4) {
+    if (!overlay || !burstRef.current || !glowRef.current || !progressBar || !img) {
       const fallback = setTimeout(hideLoader, 400);
       return () => {
         clearTimeout(safetyTimer);
@@ -40,25 +72,57 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
       };
     }
 
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      try {
+        gsap.set(burstRef.current, { scale: 1, opacity: 0.4 });
+        gsap.set(glowRef.current, { scale: 1, opacity: 0.9 });
+        gsap.set(img, { opacity: 1 });
+        gsap.set(progressBar, { scaleX: 1, transformOrigin: 'left center' });
+      } catch {
+        hideLoader();
+        return () => clearTimeout(safetyTimer);
+      }
+      const t = window.setTimeout(() => {
+        try {
+          gsap.to(overlay, {
+            y: '-100%',
+            duration: 0.35,
+            ease: 'power2.inOut',
+            onComplete: hideLoader,
+          });
+        } catch {
+          hideLoader();
+        }
+      }, 280);
+      return () => {
+        clearTimeout(safetyTimer);
+        clearTimeout(t);
+        try {
+          gsap.killTweensOf(overlay);
+        } catch {
+          /* ignore */
+        }
+      };
+    }
+
     let cancelled = false;
+    let hideAfterCurtainTimer: number | undefined;
+
     try {
       gsap.set(burstRef.current, { scale: 0.3, opacity: 0 });
       gsap.set(glowRef.current, { scale: 0.5, opacity: 0 });
+      gsap.set(img, { opacity: 0 });
       gsap.set(progressBar, { scaleX: 0, transformOrigin: 'left center' });
-      rects.forEach((r) => gsap.set(r, { opacity: 0 }));
 
       const progress = { value: 0 };
 
       const applyProgress = (p: number) => {
         if (cancelled || !progressBar) return;
         const clamped = Math.min(1, Math.max(0, p));
-        rects.forEach((rect, i) => {
-          const segmentStart = i / 4;
-          const segmentEnd = (i + 1) / 4;
-          const t =
-            clamped <= segmentStart ? 0 : clamped >= segmentEnd ? 1 : (clamped - segmentStart) / (segmentEnd - segmentStart);
-          rect.style.opacity = String(t);
-        });
         progressBar.style.transform = `scaleX(${clamped})`;
       };
 
@@ -66,46 +130,80 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
 
       tl.to(burstRef.current, {
         scale: 1,
-        opacity: 0.35,
+        opacity: 0.38,
         duration: 0.5,
         ease: 'power2.out',
       });
 
-      tl.to(glowRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-      }, 0.2);
+      tl.to(
+        glowRef.current,
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        0.2,
+      );
 
-      // Dynamisches Pulsieren des grünen Lichts (Endlosschleife bis Vorhang)
-      tl.to(glowRef.current, {
-        scale: 1.15,
-        opacity: 0.7,
-        duration: 1.2,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      }, 0.5);
-      tl.to(burstRef.current, {
-        scale: 1.08,
-        opacity: 0.5,
-        duration: 1.4,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      }, 0.5);
+      tl.to(
+        img,
+        {
+          opacity: 1,
+          duration: 1.15,
+          ease: 'power2.out',
+        },
+        0.15,
+      );
 
-      tl.to(progress, {
-        value: 1,
-        duration: 2.2,
-        ease: 'none',
-        onUpdate: () => applyProgress(progress.value),
-      }, 0.4);
+      tl.to(
+        glowRef.current,
+        {
+          scale: 1.12,
+          opacity: 0.72,
+          duration: 1.2,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        },
+        0.5,
+      );
+      tl.to(
+        burstRef.current,
+        {
+          scale: 1.06,
+          opacity: 0.48,
+          duration: 1.4,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        },
+        0.5,
+      );
+
+      tl.to(
+        progress,
+        {
+          value: 1,
+          duration: 2.2,
+          ease: 'none',
+          onUpdate: () => applyProgress(progress.value),
+        },
+        0.4,
+      );
 
       const onComplete = () => {
         if (cancelled) return;
-        gsap.to(progress, { value: 1, duration: 0.2, onUpdate: () => applyProgress(progress.value) });
+        try {
+          loadSnapTweenRef.current?.kill();
+          loadSnapTweenRef.current = gsap.to(progress, {
+            value: 1,
+            duration: 0.2,
+            onUpdate: () => applyProgress(progress.value),
+          });
+        } catch {
+          applyProgress(1);
+        }
       };
       if (typeof document !== 'undefined') {
         if (document.readyState === 'complete') onComplete();
@@ -114,14 +212,23 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
 
       tl.to(overlay, { y: '-100%', duration: 0.7, ease: 'expo.inOut' }, 2.9);
       tl.add(() => {
-        if (!cancelled) setTimeout(hideLoader, 100);
+        if (!cancelled) {
+          hideAfterCurtainTimer = window.setTimeout(hideLoader, 100);
+        }
       }, 2.9 + 0.7);
 
       return () => {
         cancelled = true;
         clearTimeout(safetyTimer);
-        tl.kill();
-        gsap.killTweensOf([glowRef.current, burstRef.current]);
+        if (hideAfterCurtainTimer !== undefined) clearTimeout(hideAfterCurtainTimer);
+        try {
+          tl.kill();
+          loadSnapTweenRef.current?.kill();
+          loadSnapTweenRef.current = null;
+          gsap.killTweensOf([glowRef.current, burstRef.current, img]);
+        } catch {
+          /* ignore */
+        }
         if (typeof window !== 'undefined') window.removeEventListener('load', onComplete);
       };
     } catch {
@@ -135,69 +242,46 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
       {visible && (
         <div
           ref={overlayRef}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black will-change-transform"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg will-change-transform"
           aria-hidden="true"
         >
-          {/* Weicher grüner Burst nur hinter dem Kleeblatt (Mitte) */}
-          <div
-            ref={burstRef}
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-            style={{
-              width: '320px',
-              height: '320px',
-              maxWidth: '90vw',
-              maxHeight: '90vw',
-              background:
-                'radial-gradient(circle, rgba(93,196,34,0.4) 0%, rgba(93,196,34,0.12) 40%, transparent 70%)',
-            }}
-            aria-hidden
-          />
-          {/* Grünes Licht hinter dem Kleeblatt – pulsierend */}
-          <div
-            ref={glowRef}
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-            style={{
-              width: '280px',
-              height: '280px',
-              maxWidth: '85vw',
-              maxHeight: '85vw',
-              background:
-                'radial-gradient(circle, rgba(93,196,34,0.5) 0%, rgba(93,196,34,0.2) 40%, transparent 70%)',
-              filter: 'blur(20px)',
-            }}
-            aria-hidden
-          />
-
           <div className="relative z-10 flex flex-col items-center gap-6">
-            {/* Exakt das Kleeblatt-Bild – Maske blendet es in 4 Schritten ein (oben, rechts, unten, links) */}
-            <div className="relative h-[160px] w-[160px] flex-shrink-0">
-              <svg width="0" height="0" aria-hidden>
-                <defs>
-                  <mask id={MASK_ID} maskContentUnits="objectBoundingBox">
-                    <rect x="0" y="0" width="1" height="1" fill="black" />
-                    <rect ref={maskRectRefs[0]} x="0.2" y="0" width="0.6" height="0.4" fill="white" />
-                    <rect ref={maskRectRefs[1]} x="0.6" y="0.2" width="0.4" height="0.6" fill="white" />
-                    <rect ref={maskRectRefs[2]} x="0.2" y="0.6" width="0.6" height="0.4" fill="white" />
-                    <rect ref={maskRectRefs[3]} x="0" y="0.2" width="0.4" height="0.6" fill="white" />
-                  </mask>
-                </defs>
-              </svg>
+            {/* kein bg / keine rounded border — nur Glow + Bild, kein Kasten-Rahmen */}
+            <div className="relative isolate flex h-[160px] w-[160px] shrink-0 items-center justify-center overflow-visible">
+              <div
+                ref={burstRef}
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  width: 'min(300px, 88vw)',
+                  height: 'min(300px, 88vw)',
+                  background: `radial-gradient(circle closest-side, rgba(${G},0.44) 0%, rgba(${G},0.12) 52%, transparent 100%)`,
+                }}
+                aria-hidden
+              />
+              <div
+                ref={glowRef}
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  width: 'min(260px, 82vw)',
+                  height: 'min(260px, 82vw)',
+                  background: `radial-gradient(circle closest-side, rgba(${G},0.52) 0%, rgba(${G},0.16) 48%, transparent 100%)`,
+                  filter: 'blur(20px)',
+                }}
+                aria-hidden
+              />
               <img
+                ref={imgRef}
                 src="/kleeblatt-logo.png"
                 alt=""
                 width={160}
                 height={160}
-                className="h-full w-full object-contain"
-                style={{
-                  mask: `url(#${MASK_ID})`,
-                  WebkitMaskImage: `url(#${MASK_ID})`,
-                  maskSize: 'cover',
-                  WebkitMaskSize: 'cover',
-                  mixBlendMode: 'lighten',
-                }}
+                loading="eager"
+                className="relative z-10 block h-full w-full max-h-[160px] max-w-[160px] object-contain"
+                style={cloverImgStyle}
+                draggable={false}
               />
             </div>
-            <p className="font-heading text-sm font-bold italic uppercase tracking-wider text-white/80">
+            <p className="font-heading text-sm font-bold italic uppercase tracking-wider text-white/90 [text-shadow:0_0_24px_rgba(0,0,0,0.85),0_2px_8px_rgba(0,0,0,0.9)]">
               MARYO&apos;S FAHRSCHULE
             </p>
           </div>

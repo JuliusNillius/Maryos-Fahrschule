@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 
-const CLASSES = ['B', 'BE', 'A', 'A1', 'A2', 'AM'];
+const CLASSES = ['B', 'BF17'];
 
 type FleetItem = {
   id: string;
@@ -39,6 +39,15 @@ export default function BackofficeFlottePage() {
     if (supabase) fetchList();
     else setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!editing) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [editing]);
 
   function openEdit(item: FleetItem) {
     setEditing(item);
@@ -175,11 +184,23 @@ export default function BackofficeFlottePage() {
       </div>
 
       {editing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-white/10 bg-[#0F0F0F] p-6">
-            <h2 className="font-heading text-lg font-bold italic text-white mb-4">
-              {editing.id ? 'Fahrzeug bearbeiten' : 'Neues Fahrzeug'}
-            </h2>
+        <div
+          data-lenis-prevent className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/80 p-4 md:p-6"
+          role="presentation"
+          onClick={() => setEditing(null)}
+        >
+          <div
+            className="my-auto flex w-full max-w-lg min-h-0 max-h-[min(92vh,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-xl border border-white/10 bg-[#0F0F0F] shadow-xl"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="shrink-0 border-b border-white/10 px-5 pt-5 pb-3">
+              <h2 className="font-heading text-lg font-bold italic text-white">
+                {editing.id ? 'Fahrzeug bearbeiten' : 'Neues Fahrzeug'}
+              </h2>
+            </div>
+            <div className="max-h-[min(72vh,calc(100dvh-11rem))] min-h-0 shrink overflow-y-auto overscroll-y-contain px-5 py-4 touch-pan-y [-webkit-overflow-scrolling:touch]">
             <div className="space-y-4">
               <div>
                 <label className="block text-sm text-text-muted mb-1">Modell / Bezeichnung</label>
@@ -256,7 +277,8 @@ export default function BackofficeFlottePage() {
                 />
               </div>
             </div>
-            <div className="mt-6 flex gap-2">
+            </div>
+            <div className="shrink-0 flex gap-2 border-t border-white/10 bg-[#0F0F0F] px-5 py-4">
               <button type="button" onClick={() => setEditing(null)} className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white hover:bg-white/10">
                 Abbrechen
               </button>

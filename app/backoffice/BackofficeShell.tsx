@@ -28,7 +28,7 @@ export default function BackofficeShell({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen bg-[#0A0A0A]">
-      <aside className="w-56 shrink-0 border-r border-white/10 bg-[#0F0F0F] p-4">
+      <aside className="sticky top-0 flex h-screen w-56 shrink-0 flex-col overflow-y-auto border-r border-white/10 bg-[#0F0F0F] p-4">
         <p className="font-heading text-lg font-bold italic text-green-500 mb-6">Backoffice</p>
         <nav className="space-y-1">
           {nav.map(({ href, label }) => (

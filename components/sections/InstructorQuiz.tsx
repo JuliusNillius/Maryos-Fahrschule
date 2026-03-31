@@ -9,28 +9,13 @@ import { type Instructor, type InstructorLang, type InstructorClass } from '@/li
 import { setRegistrationInstructor } from '@/lib/registration';
 
 type Step = 1 | 2 | 3 | 'result';
-const LANG_OPTIONS: InstructorLang[] = ['de', 'ar', 'tr', 'ru', 'en', 'fr'];
-const CLASS_OPTIONS: { value: 'pkw' | 'motorrad'; classes: InstructorClass[] }[] = [
-  { value: 'pkw', classes: ['B', 'BE'] },
-  { value: 'motorrad', classes: ['A', 'A1', 'A2', 'AM'] },
-];
 
-function matchInstructor(
-  list: Instructor[],
-  lang: InstructorLang,
-  classType: 'pkw' | 'motorrad'
-): Instructor | null {
-  const hasPkw = (c: InstructorClass[]) => c.some((x) => x === 'B' || x === 'BE');
-  const hasMoto = (c: InstructorClass[]) => c.some((x) => ['A', 'A1', 'A2', 'AM'].includes(x));
-  const wantPkw = classType === 'pkw';
-  const filtered = list.filter((i) => {
-    if (!i.languages.includes(lang)) return false;
-    if (wantPkw && !hasPkw(i.classes)) return false;
-    if (!wantPkw && !hasMoto(i.classes)) return false;
-    return true;
-  });
+function matchInstructor(list: Instructor[], lang: InstructorLang): Instructor | null {
+  const hasPkw = (c: InstructorClass[]) => c.some((x) => x === 'B' || x === 'BF17');
+  const filtered = list.filter((i) => i.languages.includes(lang) && hasPkw(i.classes));
   const available = filtered.filter((i) => i.available);
   const pool = available.length ? available : filtered;
+  if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)] ?? null;
 }
 
@@ -41,25 +26,21 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
   const t = useTranslations('instructorQuiz');
   const [step, setStep] = useState<Step>(1);
   const [lang, setLang] = useState<InstructorLang | null>(null);
-  const [classType, setClassType] = useState<'pkw' | 'motorrad' | null>(null);
   const [result, setResult] = useState<Instructor | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const LANG_OPTIONS: InstructorLang[] = ['de', 'ar', 'tr'];
+
+  const goResult = (l: InstructorLang | null) => {
+    if (l) setResult(matchInstructor(list, l));
+    else setResult(null);
+    setStep('result');
+  };
+
   const handleLang = (l: InstructorLang) => {
     setLang(l);
     setStep(2);
-  };
-  const handleClass = (c: 'pkw' | 'motorrad') => {
-    setClassType(c);
-    setStep(3);
-  };
-  const handleFinish = () => {
-    if (lang && classType) {
-      const inst = matchInstructor(list, lang, classType);
-      setResult(inst);
-    }
-    setStep('result');
   };
 
   useEffect(() => {
@@ -67,6 +48,8 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
       gsap.fromTo(cardRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' });
     }
   }, [step]);
+
+  const stepDots = [1, 2, 3] as const;
 
   return (
     <section
@@ -87,11 +70,11 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
 
         {step !== 'result' && (
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            {[1, 2, 3].map((s) => (
+            {stepDots.map((s) => (
               <span
                 key={s}
                 className={`h-2 w-8 rounded-full transition-colors ${
-                  step >= s ? 'bg-green-500' : 'bg-white/20'
+                  typeof step === 'number' && step >= s ? 'bg-green-500' : 'bg-white/20'
                 }`}
                 aria-hidden
               />
@@ -121,38 +104,39 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
         {step === 2 && (
           <div className="mt-10">
             <p className="mb-4 font-body font-medium text-white">{t('q2')}</p>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={() => handleClass('pkw')}
-                data-testid="quiz-class-pkw"
-                className="rounded-xl border border-white/20 bg-card px-6 py-3 font-body text-white transition-all hover:border-green-500 hover:bg-green-500/10"
-              >
-                🚗 {t('pkw')}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleClass('motorrad')}
-                data-testid="quiz-class-motorrad"
-                className="rounded-xl border border-white/20 bg-card px-6 py-3 font-body text-white transition-all hover:border-green-500 hover:bg-green-500/10"
-              >
-                🏍️ {t('motorrad')}
-              </button>
+            <div className="flex flex-col gap-3">
+              {(['q2a', 'q2b', 'q2c'] as const).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="rounded-xl border border-white/20 bg-card px-5 py-4 text-left font-body text-white transition-all hover:border-green-500 hover:bg-green-500/10"
+                  data-testid={`quiz-q2-${key}`}
+                >
+                  {t(key)}
+                </button>
+              ))}
             </div>
           </div>
         )}
 
         {step === 3 && (
           <div className="mt-10 text-center">
-            <p className="mb-6 font-body text-text-muted">{t('q3')}</p>
-            <button
-              type="button"
-              onClick={handleFinish}
-              className="btn-primary px-8 py-4"
-              data-testid="quiz-finish"
-            >
-              {t('showResult')}
-            </button>
+            <p className="mb-4 text-left font-body font-medium text-white">{t('q3')}</p>
+            <div className="flex flex-col gap-3">
+              {(['q3a', 'q3b', 'q3c'] as const).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => goResult(lang)}
+                  className="rounded-xl border border-white/20 bg-card px-5 py-4 text-left font-body text-white transition-all hover:border-green-500 hover:bg-green-500/10"
+                  data-testid={`quiz-q3-${key}`}
+                >
+                  {t(key)}
+                </button>
+              ))}
+            </div>
+            <p className="mt-6 font-body text-xs text-text-muted">{t('q3Hint')}</p>
           </div>
         )}
 
@@ -200,7 +184,11 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
             )}
             <button
               type="button"
-              onClick={() => { setStep(1); setLang(null); setClassType(null); setResult(null); }}
+              onClick={() => {
+                setStep(1);
+                setLang(null);
+                setResult(null);
+              }}
               className="mt-4 w-full font-body text-sm text-text-muted underline hover:text-white"
               data-testid="quiz-restart"
             >

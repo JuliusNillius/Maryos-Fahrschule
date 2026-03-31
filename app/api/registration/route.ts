@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
+import { getOfferDbFields, parseOfferType } from '@/lib/pricing';
 
 const CODE_PREFIX = 'MARYO-';
 const CODE_LENGTH = 6;
@@ -21,6 +22,8 @@ export async function POST(request: Request) {
 
     const referrerCodeRaw = body.referrerCode ?? body.referrer_code ?? '';
     const referrerCode = typeof referrerCodeRaw === 'string' ? referrerCodeRaw.trim().toUpperCase() || null : null;
+    const offer = parseOfferType(body.offerType ?? body.offer_type);
+    const offerFields = getOfferDbFields(offer);
 
     const row = {
       first_name: body.firstName ?? body.first_name ?? '',
@@ -43,6 +46,9 @@ export async function POST(request: Request) {
       time_slots: Array.isArray(body.timeSlots) ? body.timeSlots : (body.time_slots ?? null),
       source: body.source ?? null,
       referrer_code: referrerCode,
+      offer_type: offerFields.offer_type,
+      bundle_lesson_hours: offerFields.bundle_lesson_hours,
+      promo_lesson_hours: offerFields.promo_lesson_hours,
       payment_status: 'pending',
       stripe_payment_intent_id: null,
       paid_at: null,

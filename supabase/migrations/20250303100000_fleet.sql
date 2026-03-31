@@ -21,14 +21,11 @@ begin
   execute 'create policy "Service role full access fleet" on public.fleet for all using (true) with check (true)';
 end $$;
 
--- Optionale Seed-Daten (nur wenn Tabelle leer)
+-- Optionale Seed-Daten (nur PKW B/BF17, nur wenn Tabelle leer)
 insert into public.fleet (model, transmission, classes, image, sort_order)
 select * from (values
-  ('VW Golf 8'::text, 'manual'::text, '{B}'::text[], 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&h=400&fit=crop'::text, 0),
-  ('VW Golf 8', 'automatic', '{B,BE}', 'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&h=400&fit=crop', 1),
-  ('Audi A3', 'manual', '{B}', 'https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?w=600&h=400&fit=crop', 2),
-  ('Honda CB500F', 'manual', '{A2,A}', 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=400&fit=crop', 3),
-  ('Honda CBF125', 'manual', '{A1}', 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=600&h=400&fit=crop', 4),
-  ('Peugeot 50ccm', 'manual', '{AM}', 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=600&h=400&fit=crop', 5)
+  ('VW Golf 8'::text, 'manual'::text, '{B,BF17}'::text[], 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&h=400&fit=crop'::text, 0),
+  ('VW Golf 8', 'automatic', '{B,BF17}', 'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&h=400&fit=crop', 1),
+  ('Audi A3', 'manual', '{B,BF17}', 'https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?w=600&h=400&fit=crop', 2)
 ) as v(model, transmission, classes, image, sort_order)
 where (select count(*) from public.fleet) = 0;

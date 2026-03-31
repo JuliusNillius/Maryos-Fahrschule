@@ -58,6 +58,28 @@ export default function Team() {
             </div>
           </div>
         </div>
+
+        {/* Bürokräfte & Fahrlehrer — unterhalb der Geschäftsführung, kompakter */}
+        <div className="mt-20 border-t border-[rgba(93,196,34,0.12)] pt-16 md:mt-28 md:pt-20">
+          <h3 className="mb-10 text-center font-heading text-xl font-bold italic uppercase tracking-wide text-white sm:text-2xl">
+            {t('staffHeading')}
+          </h3>
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-center sm:gap-8 md:gap-10">
+            <div
+              className="flex h-36 w-36 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-green-500/10 font-display text-3xl font-bold text-green-500/60 sm:h-40 sm:w-40 sm:text-4xl"
+              aria-hidden
+            >
+              LF
+            </div>
+            <div className="min-w-0 text-center sm:max-w-sm sm:text-left">
+              <p className="font-display text-[10px] uppercase tracking-wider text-green-500 sm:text-xs">
+                {t('lauraRole')}
+              </p>
+              <p className="mt-1 font-heading text-lg font-bold italic text-white sm:text-xl">{t('lauraName')}</p>
+              <p className="mt-2 font-body text-sm leading-relaxed text-text-muted sm:text-[15px]">{t('lauraText')}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

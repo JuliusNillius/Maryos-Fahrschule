@@ -7,10 +7,8 @@ const SUBPAGES = ['', 'impressum', 'datenschutz', 'agb'] as const;
 
 function pathForLocale(locale: string, subpage: string): string {
   const base = SITE_URL.replace(/\/$/, '');
-  if (locale === 'de') {
-    return subpage ? `${base}/${subpage}` : base;
-  }
-  return subpage ? `${base}/${locale}/${subpage}` : `${base}/${locale}`;
+  const suffix = subpage ? `/${subpage}` : '';
+  return `${base}/${locale}${suffix}`;
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -10,15 +10,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * §10 HERO — Video läuft, „Fahr in dein Glück“ + Buttons sofort sichtbar (keine Scroll-Einblendung).
- * 0–75% Headline sichtbar, 75–95% Ausblendung, 95–100% Blur.
+ * Scroll über PIN_SCROLL % Viewport: Ausblendung/Blur in Phasen (Endwerte skalieren mit PIN_SCROLL).
  */
-const PIN_SCROLL = 75; // % viewport – kurz, damit man nicht ewig scrollt und nicht dran vorbeirauscht
+// Pin-Distanz: zu hoch = viel Scroll ohne sichtbare Bewegung (Lenis + Pin). ~18–22% wirkt flüssiger.
+const PIN_SCROLL = 20; // % viewport-Höhe als Scroll-Strecke während Pin
 
 // Ein Video: Auto Nacht / Autobahn. Eigenes File: public/videos/hero.mp4 (z. B. von Pexels/Coverr „car driving night highway“)
 const HERO_VIDEO = '/videos/hero.mp4';
 const FALLBACK_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
 
-const DEFAULT_STATS = [5, 18, 10, 6] as const; // Google-Bewertung, Bewertungen, Sprachen, Klassen
+const DEFAULT_STATS = [5, 18, 3, 2] as const; // Google, Reviews, Sprachen, Ausbildungsangebote (B + BF17)
 
 type HeroProps = {
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number } | null;
@@ -80,7 +81,8 @@ export default function Hero({ stats }: HeroProps) {
       start: 'top top',
       end: `+=${PIN_SCROLL}%`,
       pin: true,
-      scrub: 0.5,
+      pinSpacing: true,
+      anticipatePin: 1,
     });
 
     const st = (progress: number) => `${progress * PIN_SCROLL}%`;
@@ -252,10 +254,10 @@ export default function Hero({ stats }: HeroProps) {
       />
 
       {/* Content – kräftige weiße Schrift + Schatten für bessere Lesbarkeit auf dem Video */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pt-20 pb-28 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center md:pt-36 lg:pt-40">
         <p
           ref={eyebrowRef}
-          className="mb-6 rounded-full border border-green-400/50 bg-black/50 px-4 py-1.5 font-display text-[11px] uppercase tracking-[0.2em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)]"
+          className="mb-6 rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 font-display text-[11px] uppercase tracking-[0.2em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)]"
         >
           🍀 {t('badge')}
         </p>

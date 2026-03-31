@@ -11,6 +11,14 @@ import { getRegistrationClass, getRegistrationInstructor } from '@/lib/registrat
 import type { Instructor } from '@/lib/instructors';
 import { Link } from '@/i18n/navigation';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
+import {
+  getOfferCheckout,
+  PRICING_APP_EUR,
+  PRICING_LESSON_HOUR_EUR,
+  PRICING_REGISTRATION_EUR,
+  type OfferType,
+} from '@/lib/pricing';
+import { validateIdFile } from '@/lib/id-documents';
 
 const stripePromise = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
@@ -20,12 +28,14 @@ function Step3PayButton({
   formData,
   validate,
   onBack,
+  checkoutTotal,
   t,
 }: {
   formData: FormData;
   validate: () => boolean;
   onBack: () => void;
-  t: (key: string) => string;
+  checkoutTotal: number;
+  t: (key: string, values?: Record<string, string | number>) => string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -69,25 +79,72 @@ function Step3PayButton({
           data-cta
           data-testid="registration-step3-pay"
         >
-          🏁 {loading ? '…' : t('submit')} — 99 €
+          🏁 {loading ? '…' : t('submitPay', { total: checkoutTotal })}
         </button>
       </div>
     </>
   );
 }
 
-const LICENCE_CLASSES = ['B', 'BE', 'A', 'A2', 'A1', 'AM'] as const;
+function IdUploadSlot({
+  label,
+  dropLabel,
+  clearLabel,
+  file,
+  onPick,
+}: {
+  label: string;
+  dropLabel: string;
+  clearLabel: string;
+  file: File | null;
+  onPick: (f: File | null) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0] ?? null;
+    onPick(f);
+    e.target.value = '';
+  };
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const f = e.dataTransfer.files?.[0];
+    if (f) onPick(f);
+  };
+  return (
+    <div
+      className={`rounded-xl border border-dashed border-white/25 bg-surface2/50 p-4 transition-colors hover:border-green-primary/40 ${file ? 'border-green-primary/40' : ''}`}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={onDrop}
+    >
+      <p className="mb-2 font-body text-sm font-medium text-white">{label}</p>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="sr-only"
+        onChange={onChange}
+      />
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="w-full rounded-lg border border-white/15 bg-surface2 px-4 py-3 text-left font-body text-sm text-text-muted hover:border-green-primary/40 hover:text-white"
+      >
+        {file ? <span className="text-white">{file.name}</span> : dropLabel}
+      </button>
+      {file && (
+        <button type="button" className="mt-2 font-body text-xs text-red-400 underline hover:text-red-300" onClick={() => onPick(null)}>
+          {clearLabel}
+        </button>
+      )}
+    </div>
+  );
+}
+
+const LICENCE_CLASSES = ['B', 'BF17'] as const;
 const LANGUAGES = [
   { value: 'de', label: 'Deutsch' },
   { value: 'ar', label: 'Arabisch' },
   { value: 'tr', label: 'Türkisch' },
-  { value: 'ru', label: 'Russisch' },
-  { value: 'en', label: 'Englisch' },
-  { value: 'fr', label: 'Französisch' },
-  { value: 'uk', label: 'Ukrainisch' },
-  { value: 'pl', label: 'Polnisch' },
-  { value: 'es', label: 'Spanisch' },
-  { value: 'other', label: 'Sonstige' },
 ];
 const TIME_PILLS = [
   { value: 'morning', labelKey: 'timeMorning' as const },
@@ -125,6 +182,9 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
   const defaultInstructor = typeof window !== 'undefined' ? getRegistrationInstructor() : null;
 
   const [myReferralCode, setMyReferralCode] = useState<string | null>(null);
+  const [idFrontFile, setIdFrontFile] = useState<File | null>(null);
+  const [idBackFile, setIdBackFile] = useState<File | null>(null);
+  const [idDocErr, setIdDocErr] = useState<string | null>(null);
 
   const {
     register,
@@ -142,6 +202,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
       bf17: false,
       timeSlots: [],
       source: 'google',
+      offerType: 'standard' as OfferType,
       referrerCode: initialRefCode,
       acceptTerms: false,
       acceptPrivacy: false,
@@ -150,6 +211,8 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
 
   const licenceClass = watch('licenceClass');
   const motherTongue = watch('motherTongue');
+  const offerType = (watch('offerType') ?? 'standard') as OfferType;
+  const checkout = getOfferCheckout(offerType);
 
   useEffect(() => {
     setValue('lessonLanguage', motherTongue as FormData['lessonLanguage']);
@@ -172,8 +235,14 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
   }, [setValue, initialRefCode]);
 
   useEffect(() => {
-    if (defaultClass && ['B', 'BE', 'A', 'A2', 'A1', 'AM'].includes(defaultClass)) {
-      setValue('licenceClass', defaultClass as FormData['licenceClass']);
+    if (defaultClass) {
+      if (defaultClass === 'BF17' || defaultClass === 'bf17') {
+        setValue('licenceClass', 'BF17');
+        setValue('bf17', true);
+      } else if (defaultClass === 'B' || defaultClass === 'b') {
+        setValue('licenceClass', 'B');
+        setValue('bf17', false);
+      }
     }
   }, [defaultClass, setValue]);
 
@@ -227,13 +296,14 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
           motherTongue: data.motherTongue,
           referrerCode: data.referrerCode ?? '',
           licenceClass: data.licenceClass,
+          offerType: data.offerType,
           transmission: data.transmission,
           instructorId: data.instructorId,
           lessonLanguage: data.lessonLanguage,
           hasLicence: data.hasLicence,
           existingLicenceClass: data.existingLicenceClass,
           existingLicenceCountry: data.existingLicenceCountry,
-          bf17: data.bf17,
+          bf17: data.licenceClass === 'BF17',
           timeSlots: data.timeSlots,
           source: data.source,
         }),
@@ -241,6 +311,21 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
       const regJson = await regRes.json();
       if (!regRes.ok || !regJson.id) {
         setStripeError('Anmeldung konnte nicht gespeichert werden.');
+        return;
+      }
+      if (!idFrontFile || !idBackFile) {
+        setStripeError(t('idDocRequired'));
+        return;
+      }
+      const docFd = new FormData();
+      docFd.append('registrationId', regJson.id);
+      docFd.append('email', data.email);
+      docFd.append('front', idFrontFile);
+      docFd.append('back', idBackFile);
+      const docRes = await fetch('/api/registration/upload-id', { method: 'POST', body: docFd });
+      const docJson = await docRes.json().catch(() => ({}));
+      if (!docRes.ok) {
+        setStripeError(typeof docJson.error === 'string' ? docJson.error : 'Ausweis-Upload fehlgeschlagen.');
         return;
       }
       if (regJson.myReferralCode && typeof window !== 'undefined') {
@@ -275,10 +360,31 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
     }
   };
 
+  const idDocErrorMessage = (code: string | null) => {
+    if (!code) return null;
+    if (code === 'required') return t('idDocRequired');
+    if (code === 'empty') return t('idDocErrorEmpty');
+    if (code === 'size') return t('idDocErrorSize');
+    if (code === 'mime') return t('idDocErrorMime');
+    return code;
+  };
+
   const onStep1Next = () => {
     const data = watch();
     const result = registrationStep1Schema.safeParse(data);
     if (!result.success) return;
+    if (!idFrontFile || !idBackFile) {
+      setIdDocErr('required');
+      return;
+    }
+    for (const f of [idFrontFile, idBackFile]) {
+      const err = validateIdFile(f);
+      if (err) {
+        setIdDocErr(err);
+        return;
+      }
+    }
+    setIdDocErr(null);
     saveDraft(data);
     setStep(2);
   };
@@ -449,6 +555,28 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                     ))}
                   </select>
                 </div>
+                <div className="rounded-xl border border-white/10 bg-surface/40 p-4">
+                  <h4 className="mb-2 font-heading text-sm font-bold uppercase text-green-primary">{t('idDocSection')}</h4>
+                  <p className="mb-3 font-body text-xs text-text-muted">{t('idDocHint')}</p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <IdUploadSlot
+                      label={t('idDocFront')}
+                      dropLabel={t('idDocDrop')}
+                      clearLabel={t('idDocClear')}
+                      file={idFrontFile}
+                      onPick={setIdFrontFile}
+                    />
+                    <IdUploadSlot
+                      label={t('idDocBack')}
+                      dropLabel={t('idDocDrop')}
+                      clearLabel={t('idDocClear')}
+                      file={idBackFile}
+                      onPick={setIdBackFile}
+                    />
+                  </div>
+                  {idDocErr && <p className="mt-3 text-sm text-red-500">{idDocErrorMessage(idDocErr)}</p>}
+                  <p className="mt-3 font-body text-xs text-text-muted">{t('idDocPrivacy')}</p>
+                </div>
                 <div>
                   <label className="mb-1 block font-body text-sm text-text-muted">{t('referrerCode')}</label>
                   <input
@@ -477,19 +605,22 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                       <button
                         key={c}
                         type="button"
-                        onClick={() => setValue('licenceClass', c)}
+                        onClick={() => {
+                          setValue('licenceClass', c);
+                          setValue('bf17', c === 'BF17');
+                        }}
                         className={`rounded-lg border px-4 py-2 font-heading text-sm font-bold uppercase transition-colors ${
                           licenceClass === c
                             ? 'border-green-primary bg-green-primary/20 text-green-primary'
                             : 'border-white/20 bg-surface2 text-white hover:border-green-primary/50'
                         }`}
                       >
-                        {c}
+                        {c === 'B' ? t('licenceOptionB') : t('licenceOptionBF17')}
                       </button>
                     ))}
                   </div>
                 </div>
-                {(licenceClass === 'B' || licenceClass === 'BE') && (
+                {(licenceClass === 'B' || licenceClass === 'BF17') && (
                   <div className="flex gap-4">
                     <label className="flex cursor-pointer items-center gap-2">
                       <input type="radio" value="manual" {...register('transmission')} className="text-green-primary" />
@@ -527,10 +658,6 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                     <input type="checkbox" {...register('hasLicence')} className="rounded text-green-primary" />
                     <span className="font-body text-sm">{t('hasLicence')}</span>
                   </label>
-                  <label className="flex cursor-pointer items-center gap-2">
-                    <input type="checkbox" {...register('bf17')} className="rounded text-green-primary" />
-                    <span className="font-body text-sm">{t('bf17')}</span>
-                  </label>
                 </div>
                 <div>
                   <label className="mb-2 block font-body text-sm text-text-muted">{t('timeSlots')}</label>
@@ -567,6 +694,25 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                     ))}
                   </select>
                 </div>
+                <div className="rounded-xl border border-white/10 bg-surface/40 p-4">
+                  <p className="mb-3 font-heading text-sm font-bold uppercase text-green-primary">{t('offerLabel')}</p>
+                  <div className="space-y-3">
+                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
+                      <input type="radio" value="standard" {...register('offerType')} className="mt-1 text-green-primary" />
+                      <span>
+                        <span className="font-body font-medium text-white">{t('offerStandardTitle')}</span>
+                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerStandardDesc')}</span>
+                      </span>
+                    </label>
+                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
+                      <input type="radio" value="bundle_10_promo" {...register('offerType')} className="mt-1 text-green-primary" />
+                      <span>
+                        <span className="font-body font-medium text-white">{t('offerBundleTitle')}</span>
+                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerBundleDesc', { price: PRICING_LESSON_HOUR_EUR })}</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
                 <div className="flex gap-4">
                   <button type="button" onClick={() => setStep(1)} className="btn-ghost" data-testid="registration-step2-back">
                     ← {t('back')}
@@ -583,10 +729,42 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                 <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
                   {t('step3Title')}
                 </h3>
-                <div className="rounded-xl border border-[rgba(93,196,34,0.2)] bg-surface/80 p-6">
-                  <p className="font-body text-sm text-text-muted">
-                    {t('summaryText')} — {t('fee')}: 99,00 €
+                <p className="rounded-lg border border-white/10 bg-surface2/60 p-4 font-body text-xs leading-relaxed text-text-muted">
+                  {t('paymentExplainer')}
+                </p>
+                {offerType === 'bundle_10_promo' && (
+                  <p className="rounded-lg border border-green-primary/20 bg-green-primary/5 p-3 font-body text-xs text-text-muted">
+                    {t('paymentExplainerBundle')}
                   </p>
+                )}
+                <div className="rounded-xl border border-[rgba(93,196,34,0.2)] bg-surface/80 p-6">
+                  <p className="font-body text-sm text-text-muted">{t('summaryText')}</p>
+                  <ul className="mt-2 space-y-1 font-body text-sm text-white">
+                    <li className="flex justify-between gap-4">
+                      <span className="text-text-muted">{t('feeRegistration')}</span>
+                      <span>{PRICING_REGISTRATION_EUR},00 €</span>
+                    </li>
+                    <li className="flex justify-between gap-4">
+                      <span className="text-text-muted">{t('feeApp')}</span>
+                      <span>{PRICING_APP_EUR},00 €</span>
+                    </li>
+                    {checkout.lessonSubtotalEur > 0 && (
+                      <>
+                        <li className="flex justify-between gap-4">
+                          <span className="text-text-muted">
+                            {t('feeBundleLessons', { paid: checkout.paidLessonHours, price: PRICING_LESSON_HOUR_EUR })}
+                          </span>
+                          <span>{checkout.lessonSubtotalEur},00 €</span>
+                        </li>
+                        <li className="text-xs text-green-primary/90">{t('feePromoLesson', { n: checkout.promoLessonHours })}</li>
+                      </>
+                    )}
+                    <li className="mt-2 flex justify-between gap-4 border-t border-white/10 pt-2 font-heading font-bold text-green-primary">
+                      <span>{t('feeTotalNow')}</span>
+                      <span>{checkout.totalEur},00 €</span>
+                    </li>
+                  </ul>
+                  <p className="mt-2 text-xs text-text-muted">{t('inclVat')}</p>
                 </div>
                 {stripeError && (
                   <p className="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-sm text-amber-400">
@@ -601,7 +779,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                         <input type="checkbox" {...register('acceptTerms')} className="mt-1 rounded text-green-primary" />
                         <span className="font-body text-sm text-text-muted">
                           {t('acceptTerms')}{' '}
-                          <a href="/agb" className="text-green-primary underline">{t('termsLink')}</a>.
+                          <Link href="/agb" className="text-green-primary underline">{t('termsLink')}</Link>.
                         </span>
                       </label>
                       {errors.acceptTerms && <p className="text-sm text-red-500">{errors.acceptTerms.message}</p>}
@@ -609,7 +787,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                         <input type="checkbox" {...register('acceptPrivacy')} className="mt-1 rounded text-green-primary" />
                         <span className="font-body text-sm text-text-muted">
                           {t('acceptPrivacy')}{' '}
-                          <a href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</a>
+                          <Link href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</Link>
                           {t('acceptPrivacySuffix')}
                         </span>
                       </label>
@@ -618,6 +796,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                         formData={watch()}
                         validate={() => registrationStep3Schema.safeParse(watch()).success}
                         onBack={() => setStep(2)}
+                        checkoutTotal={checkout.totalEur}
                         t={t}
                       />
                     </Elements>
@@ -629,7 +808,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                       <input type="checkbox" {...register('acceptTerms')} className="mt-1 rounded text-green-primary" />
                       <span className="font-body text-sm text-text-muted">
                         {t('acceptTerms')}{' '}
-                        <a href="/agb" className="text-green-primary underline">{t('termsLink')}</a>.
+                        <Link href="/agb" className="text-green-primary underline">{t('termsLink')}</Link>.
                       </span>
                     </label>
                     {errors.acceptTerms && <p className="text-sm text-red-500">{errors.acceptTerms.message}</p>}
@@ -637,7 +816,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                       <input type="checkbox" {...register('acceptPrivacy')} className="mt-1 rounded text-green-primary" />
                       <span className="font-body text-sm text-text-muted">
                         {t('acceptPrivacy')}{' '}
-                        <a href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</a>
+                        <Link href="/datenschutz" className="text-green-primary underline">{t('privacyLink')}</Link>
                         {t('acceptPrivacySuffix')}
                       </span>
                     </label>
@@ -652,7 +831,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                         className="btn-primary flex-1"
                         data-cta
                       >
-                        🏁 {t('submit')} — 99 €
+                        🏁 {t('submitPay', { total: checkout.totalEur })}
                       </button>
                     </div>
                   </>
@@ -669,7 +848,9 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
               <dl className="mt-4 space-y-2 font-body text-sm text-text-muted">
                 <div>
                   <dt>{t('summaryClass')}</dt>
-                  <dd className="font-medium text-white">{watch('licenceClass') ?? '–'}</dd>
+                  <dd className="font-medium text-white">
+                    {watch('licenceClass') === 'BF17' ? t('licenceOptionBF17') : watch('licenceClass') === 'B' ? t('licenceOptionB') : '–'}
+                  </dd>
                 </div>
                 <div>
                   <dt>{t('summaryInstructor')}</dt>
@@ -683,8 +864,14 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                 </div>
                 <hr className="border-white/10" />
                 <div>
-                  <dt>{t('fee')}</dt>
-                  <dd className="font-display font-bold text-green-primary">99,00 €</dd>
+                  <dt>{t('summaryOffer')}</dt>
+                  <dd className="font-medium text-white">
+                    {offerType === 'bundle_10_promo' ? t('offerBundleTitle') : t('offerStandardTitle')}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{t('feeTotalNow')}</dt>
+                  <dd className="font-display font-bold text-green-primary">{checkout.totalEur},00 €</dd>
                 </div>
                 <p className="text-xs text-text-muted">({t('inclVat')})</p>
               </dl>

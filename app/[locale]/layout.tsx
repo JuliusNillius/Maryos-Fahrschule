@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: meta.openGraphDescription ?? meta.description,
       url: canonical,
       siteName: "Maryo's Fahrschule",
-      locale: locale === 'de' ? 'de_DE' : locale === 'en' ? 'en_GB' : locale,
+      locale: locale === 'de' ? 'de_DE' : locale === 'tr' ? 'tr_TR' : locale === 'ar' ? 'ar_SA' : locale,
       type: 'website',
       images: [{ url: ogImage, width: 1200, height: 630, alt: "Maryo's Fahrschule" }],
     },
@@ -55,7 +55,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!(routing.locales as readonly string[]).includes(locale)) {
     notFound();
   }
-  setRequestLocale(locale as 'de' | 'en' | 'tr' | 'ar' | 'ru');
+  setRequestLocale(locale as 'de' | 'tr' | 'ar');
   const messages = await getMessages();
   const isRtl = locale === 'ar';
 

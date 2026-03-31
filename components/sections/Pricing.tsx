@@ -12,11 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const PRICING_FALLBACK = [
   { id: 'b', price: '1.800', popular: true },
-  { id: 'be', price: '500', note: 'addOn' },
-  { id: 'a', price: '900' },
-  { id: 'a2', price: '800' },
-  { id: 'a1', price: '700' },
-  { id: 'am', price: '500' },
+  { id: 'bf17', price: '1.800', popular: false },
 ] as const;
 
 type PricingProps = { pricing?: PricingItem[] | null; embedded?: boolean };

@@ -28,3 +28,10 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Playwright / E2E Artefakte
+test-results/
+playwright-report/
+
+# Supabase CLI cache
+supabase/.temp/

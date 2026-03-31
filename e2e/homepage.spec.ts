@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * E2E-Tests Startseite.
+ * E2E-Tests Startseite & zentrale Unterseiten.
  * Verwendet data-testid aus docs/BUTTON-CHECKLIST.md.
  */
 test.describe('Startseite', () => {
@@ -25,8 +25,8 @@ test.describe('Startseite', () => {
     await expect(page).toHaveURL(/\#anmelden|anmelden/);
   });
 
-  test('FAQ-Accordion öffnet sich per Klick', async ({ page }) => {
-    await page.goto('/#faq');
+  test('FAQ-Accordion öffnet sich per Klick (FAQ-Seite)', async ({ page }) => {
+    await page.goto('/de/faq');
     const secondFaq = page.getByTestId('faq-toggle-1');
     await expect(secondFaq).toBeVisible();
     await secondFaq.click();
@@ -46,8 +46,8 @@ test.describe('Startseite', () => {
     await expect(whatsapp).toHaveAttribute('href', /wa\.me|whatsapp/);
   });
 
-  test('Nav-Anker: Preise-Sektion erreichbar', async ({ page }) => {
-    await page.goto('/#preise');
-    await expect(page.locator('#preise')).toBeVisible();
+  test('Preise-Seite: Preisrechner erreichbar', async ({ page }) => {
+    await page.goto('/de/preise');
+    await expect(page.locator('#preisrechner')).toBeVisible();
   });
 });

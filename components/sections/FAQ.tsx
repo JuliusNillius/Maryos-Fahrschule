@@ -67,8 +67,8 @@ export default function FAQ({ faq, locale = 'de' }: FAQProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [openId, setOpenId] = useState<number | null>(0);
 
-  const qKey = locale === 'en' ? 'question_en' : locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : locale === 'ru' ? 'question_ru' : 'question_de';
-  const aKey = locale === 'en' ? 'answer_en' : locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : locale === 'ru' ? 'answer_ru' : 'answer_de';
+  const qKey = locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : 'question_de';
+  const aKey = locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : 'answer_de';
   const faqItems = faq?.length
     ? faq.map((item, i) => ({
         id: i,

@@ -10,7 +10,7 @@ const jsonLd = {
   '@id': `${SITE_URL}/#organization`,
   name: "Maryo's Fahrschule GmbH",
   alternateName: "MARYO'S FAHRSCHULE",
-  description: "Fahrschule in Mönchengladbach. Führerschein B, BE, A, A1, A2, AM. FAHR IN DEIN GLÜCK.",
+  description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. FAHR IN DEIN GLÜCK.",
   url: SITE_URL,
   telephone: '+491784557528',
   address: {

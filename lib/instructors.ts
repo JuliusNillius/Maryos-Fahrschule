@@ -1,5 +1,5 @@
 export type InstructorLang = 'de' | 'ar' | 'tr' | 'ru' | 'en' | 'fr';
-export type InstructorClass = 'B' | 'BE' | 'A' | 'A1' | 'A2' | 'AM';
+export type InstructorClass = 'B' | 'BF17';
 
 export interface Instructor {
   id: string;
@@ -20,7 +20,7 @@ export const INSTRUCTORS: Instructor[] = [
     name: 'Maryo A.',
     title: 'Inhaber',
     languages: ['de', 'ar', 'en'],
-    classes: ['B', 'BE', 'A'],
+    classes: ['B', 'BF17'],
     specialty: 'Prüfungscoach',
     tags: ['Geduldig', 'Erfahren', 'Motivierend'],
     quote: 'Ich bringe dich sicher ans Ziel.',
@@ -32,7 +32,7 @@ export const INSTRUCTORS: Instructor[] = [
     name: 'Anna K.',
     title: 'Angst-Expertin',
     languages: ['de', 'ru'],
-    classes: ['B', 'AM'],
+    classes: ['B', 'BF17'],
     specialty: 'Angst-Expertin',
     tags: ['Einfühlsam', 'Ruhig', 'Strukturiert'],
     quote: 'Gemeinsam schaffen wir das.',
@@ -42,12 +42,12 @@ export const INSTRUCTORS: Instructor[] = [
   {
     id: 'can',
     name: 'Can T.',
-    title: 'Motorrad-Spezialist',
+    title: 'Fahrlehrer',
     languages: ['de', 'tr', 'en'],
-    classes: ['B', 'A1', 'A2', 'A'],
-    specialty: 'Motorrad-Spezialist',
+    classes: ['B', 'BF17'],
+    specialty: 'Prüfungsvorbereitung',
     tags: ['Leidenschaftlich', 'Präzise', 'Humorvoll'],
-    quote: 'Motorrad ist Freiheit — ich zeige dir wie.',
+    quote: 'Gemeinsam sicher ans Ziel — Schritt für Schritt.',
     available: true,
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop',
   },
@@ -56,7 +56,7 @@ export const INSTRUCTORS: Instructor[] = [
     name: 'Elena V.',
     title: 'Automatik-Expertin',
     languages: ['de', 'ru'],
-    classes: ['B', 'BE'],
+    classes: ['B', 'BF17'],
     specialty: 'Automatik-Expertin',
     tags: ['Professionell', 'Freundlich', 'Geduldig'],
     quote: 'Automatik ist die Zukunft.',
@@ -68,7 +68,7 @@ export const INSTRUCTORS: Instructor[] = [
     name: 'Ahmad M.',
     title: 'Neueinsteiger-Coach',
     languages: ['de', 'ar', 'fr'],
-    classes: ['B', 'AM', 'A1'],
+    classes: ['B', 'BF17'],
     specialty: 'Neueinsteiger-Coach',
     tags: ['Verständnisvoll', 'Locker', 'Unterstützend'],
     quote: 'Jeder fängt mal an — ich bin dabei.',
@@ -90,10 +90,3 @@ export function getLangFlag(lang: InstructorLang): string {
   return LANG_FLAGS[lang];
 }
 
-export function getClassesForFilter(classes: InstructorClass[]): 'pkw' | 'motorrad' | 'both' {
-  const hasPkw = classes.some((c) => c === 'B' || c === 'BE');
-  const hasMotorrad = classes.some((c) => c === 'A' || c === 'A1' || c === 'A2');
-  if (hasPkw && hasMotorrad) return 'both';
-  if (hasMotorrad) return 'motorrad';
-  return 'pkw';
-}

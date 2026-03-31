@@ -1,22 +1,30 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 
-const KLASSEN = ['B', 'BE', 'A', 'A2', 'A1', 'AM'] as const;
+/** Nur Angebotsklassen; URLs kleingeschrieben (/b, /bf17). */
+const KLASSEN_SLUG = ['b', 'bf17'] as const;
 
 type Props = {
   params: Promise<{ locale: string; klasse: string }>;
 };
 
 export function generateStaticParams() {
-  return KLASSEN.map((klasse) => ({ klasse }));
+  return KLASSEN_SLUG.map((klasse) => ({ klasse }));
+}
+
+function normalizeKlasse(slug: string): 'B' | 'BF17' | null {
+  const u = slug.toUpperCase();
+  if (u === 'B') return 'B';
+  if (u === 'BF17') return 'BF17';
+  return null;
 }
 
 export default async function FuehrerscheinKlassePage({ params }: Props) {
   const { locale, klasse } = await params;
   setRequestLocale(locale);
-  const upper = klasse.toUpperCase();
-  if (!KLASSEN.includes(upper as (typeof KLASSEN)[number])) {
+  const upper = normalizeKlasse(klasse);
+  if (!upper) {
     notFound();
   }
 
@@ -29,10 +37,7 @@ export default async function FuehrerscheinKlassePage({ params }: Props) {
         <p className="mt-4 text-text-muted">
           Detailseite für Führerscheinklasse {upper}. Content aus Spec §14.
         </p>
-        <Link
-          href={locale === 'de' ? '/' : `/${locale}`}
-          className="mt-6 inline-block text-green-500 underline"
-        >
+        <Link href="/" className="mt-6 inline-block text-green-500 underline">
           Zur Startseite
         </Link>
       </div>

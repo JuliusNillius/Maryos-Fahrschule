@@ -7,11 +7,7 @@ type PricingRow = { id: string; class_id: string; price: string; popular: boolea
 
 const CLASS_LABELS: Record<string, string> = {
   b: 'Klasse B',
-  be: 'Klasse BE',
-  a: 'Klasse A',
-  a2: 'Klasse A2',
-  a1: 'Klasse A1',
-  am: 'Klasse AM',
+  bf17: 'BF17 (begleitetes Fahren ab 17)',
 };
 
 export default function BackofficePreisePage() {
