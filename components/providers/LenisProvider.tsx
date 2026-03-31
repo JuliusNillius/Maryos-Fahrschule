@@ -33,6 +33,15 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    // Mobile/Touch: native scroll ist zuverlässiger & fühlt sich korrekt an.
+    // Lenis (v.a. touchMultiplier/syncTouch) kann Scrollen „zu schnell“ wirken lassen.
+    const isTouchLike =
+      typeof window !== 'undefined' &&
+      (window.matchMedia?.('(pointer: coarse)').matches ||
+        window.matchMedia?.('(hover: none)').matches ||
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0));
+    if (isTouchLike) return;
+
     const lenis = new Lenis(LENIS_OPTIONS);
     lenisRef.current = lenis;
 

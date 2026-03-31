@@ -134,7 +134,7 @@ export default function TheoryTeaser() {
 
         <div ref={ctaRef} className="mt-12 text-center">
           <Link
-            href="/ablauf"
+            href="/flotte"
             className="btn-primary inline-flex h-14 items-center gap-2 px-8 text-base"
             data-cta
           >

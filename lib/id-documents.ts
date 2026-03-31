@@ -1,5 +1,7 @@
 /** Ausweis-Upload: gleiche Regeln Client + API */
-export const ID_DOCUMENT_MAX_BYTES = 5 * 1024 * 1024;
+// WICHTIG: Auf Deployments (z. B. Vercel) kann multipart/form-data schnell an Plattform-Limits stoßen.
+// 2 MB pro Seite ist ein guter Praxiswert (Fotos vorher komprimieren/als JPG exportieren).
+export const ID_DOCUMENT_MAX_BYTES = 2 * 1024 * 1024;
 export const ID_DOCUMENT_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
 export type IdDocumentMime = (typeof ID_DOCUMENT_MIME_TYPES)[number];

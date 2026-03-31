@@ -2,6 +2,8 @@ import { getSupabaseAdmin } from '@/lib/supabase';
 import type { Instructor } from '@/lib/instructors';
 import type { FleetVehicle } from '@/lib/fleet';
 import { mapFleetRow } from '@/lib/fleet';
+import { unstable_noStore as noStore } from 'next/cache';
+import { headers } from 'next/headers';
 
 export type PricingItem = { id: string; class_id: string; price: string; popular: boolean; note: string | null };
 
@@ -79,6 +81,11 @@ const empty: SiteData = {
 };
 
 export async function getSiteData(): Promise<SiteData> {
+  // Wichtig: Backoffice-Änderungen sollen sofort live sichtbar sein.
+  // Next.js cached Server-Fetches sonst ggf. über Deployments/ISR hinweg.
+  noStore();
+  // Erzwingt dynamisches Rendering (verhindert Build-Time Snapshot/SSG).
+  headers();
   const supabase = getSupabaseAdmin();
 
   // Im Development ohne Supabase-Zugriff starten, damit localhost sofort lädt (Supabase ggf. langsam/blockiert)

@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     for (const f of [front, back]) {
       if (f.size > ID_DOCUMENT_MAX_BYTES || !isAllowedIdMime(f.type)) {
         return NextResponse.json(
-          { error: 'Ungültige Datei: nur JPEG/PNG/Webp, max. 5 MB pro Seite' },
+          { error: 'Ungültige Datei: nur JPEG/PNG/Webp, max. 2 MB pro Seite' },
           { status: 400 }
         );
       }

@@ -12,6 +12,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },
       { protocol: 'https', hostname: 'cdn.sanity.io' },
+      // Supabase Storage Public URLs (Bilder aus Backoffice-Uploads)
+      { protocol: 'https', hostname: 'alsiyzkemxhsbeyqqbuq.supabase.co' },
     ],
   },
   async redirects() {

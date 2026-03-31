@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import type { PricingItem, FaqItem } from '@/lib/site-data';
 import type { Instructor } from '@/lib/instructors';
 import Classes from '@/components/sections/Classes';
-import HowItWorks from '@/components/sections/HowItWorks';
 import Fleet from '@/components/sections/Fleet';
 import Pricing from '@/components/sections/Pricing';
 import RegistrationForm from '@/components/sections/RegistrationForm';
@@ -37,9 +36,6 @@ export default function HomeTabs({ instructors, pricing, faq, fleet, locale }: H
         <Classes embedded />
         <Pricing pricing={pricing} embedded />
       </section>
-      {/* Ablauf & Flotte (ohne Nav-Anker) */}
-      <HowItWorks />
-      <Fleet vehicles={fleet} sectionId="fahrzeuge" />
       {/* Anmelden (RegistrationForm hat id="anmelden") */}
       <RegistrationForm instructors={instructors} />
       {/* Bewertungen & FAQ */}

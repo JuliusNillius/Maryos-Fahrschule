@@ -7,7 +7,7 @@
     "termine": "Termin anfragen",
     "more": "Über uns",
     "fleet": "Flotte",
-    "process": "Ablauf & Flotte",
+    "process": "Ablauf",
     "faqContact": "FAQ & Kontakt",
     "blog": "Blog",
     "contact": "Kontakt",
@@ -242,8 +242,9 @@
     "disclaimer": "Fahrstunden werden nach tatsächlichem Bedarf abgerechnet. Anmeldegebühr bei Abschluss fällig. Alle Preise inkl. MwSt. Ratenzahlung via Klarna möglich."
   },
   "reviews": {
-    "subtext": "18 verifizierte Google-Bewertungen",
-    "viaGoogle": "via Google"
+    "headingFallback": "Bewertungen",
+    "subtextGeneric": "Google-Bewertungen",
+    "subtextCount": "{count} Google-Bewertungen"
   },
   "faq": {
     "heading": "HÄUFIGE FRAGEN",
@@ -319,11 +320,11 @@
     "idDocBack": "Rückseite Ausweis / Aufenthaltstitel",
     "idDocDrop": "Foto wählen oder hier ablegen",
     "idDocClear": "Entfernen",
-    "idDocHint": "JPEG, PNG oder WebP, max. 5 MB pro Bild. Gut lesbar, keine starken Spiegelungen.",
+    "idDocHint": "JPEG, PNG oder WebP, max. 2 MB pro Bild. Gut lesbar, keine starken Spiegelungen.",
     "idDocPrivacy": "Wir speichern die Bilder verschlüsselt in unserem System nur zur Prüfung deiner Anmeldung (Art. 6 Abs. 1 lit. b DSGVO). Keine Weitergabe an Dritte außer gesetzlich erforderlich.",
     "idDocRequired": "Bitte Vorder- und Rückseite hochladen.",
     "idDocErrorEmpty": "Bitte beide Seiten auswählen.",
-    "idDocErrorSize": "Datei zu groß (max. 5 MB).",
+    "idDocErrorSize": "Datei zu groß (max. 2 MB).",
     "idDocErrorMime": "Nur JPEG, PNG oder WebP.",
     "paymentExplainer": "Ablauf: (1) Daten prüfen und AGB akzeptieren. (2) Mit „Anmelden & zahlen“ öffnet sich das sichere Stripe-Fenster. (3) Dort wählst du deine Zahlungsart — z. B. Karte, Apple/Google Pay, Klarna (Ratenzahlung / Sofort, je nach Verfügbarkeit in deinem Stripe-Konto). (4) Die 399 € decken Anmeldung + Lern-App; Fahrstunden und TÜV-Gebühren zahlst du separat laut AGB/Preisliste. Klarna & Co. aktivierst du im Stripe-Dashboard unter Zahlungsmethoden.",
     "referrerCode": "Empfehlungscode (optional)",

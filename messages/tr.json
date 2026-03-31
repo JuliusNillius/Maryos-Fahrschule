@@ -7,7 +7,7 @@
     "termine": "Randevu al",
     "more": "Hakkımızda",
     "fleet": "Filo",
-    "process": "Süreç & Filo",
+    "process": "Süreç",
     "faqContact": "SSS & İletişim",
     "blog": "Blog",
     "contact": "İletişim",
@@ -242,8 +242,9 @@
     "disclaimer": "Direksiyon dersleri ihtiyaca göre faturalandırılır. Kayıt ücreti kayıtta tahsil edilir. Tüm fiyatlar KDV dahil. Klarna ile taksit imkânı."
   },
   "reviews": {
-    "subtext": "18 doğrulanmış Google yorumu",
-    "viaGoogle": "Google üzerinden"
+    "headingFallback": "Yorumlar",
+    "subtextGeneric": "Google yorumları",
+    "subtextCount": "{count} Google yorumu"
   },
   "faq": {
     "heading": "SIKÇA SORULAN SORULAR",
@@ -319,11 +320,11 @@
     "idDocBack": "Kimlik arka yüzü",
     "idDocDrop": "Fotoğraf seç veya sürükle-bırak",
     "idDocClear": "Kaldır",
-    "idDocHint": "JPEG, PNG veya WebP, dosya başına en fazla 5 MB.",
+    "idDocHint": "JPEG, PNG veya WebP, dosya başına en fazla 2 MB.",
     "idDocPrivacy": "Görseller yalnızca kayıt kontrolü için güvenli şekilde saklanır.",
     "idDocRequired": "Ön ve arka yüz gerekli.",
     "idDocErrorEmpty": "Her iki tarafı da yükle.",
-    "idDocErrorSize": "Dosya çok büyük (en fazla 5 MB).",
+    "idDocErrorSize": "Dosya çok büyük (en fazla 2 MB).",
     "idDocErrorMime": "Yalnızca JPEG, PNG veya WebP.",
     "paymentExplainer": "Akış: Onayla → Stripe ödeme → Kart, Apple/Google Pay veya Klarna (hesabınızda açıksa). 399 € kayıt + uygulama; dersler ve TÜV ayrı.",
     "licenceClass": "Eğitim seçimi",

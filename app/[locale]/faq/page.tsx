@@ -15,7 +15,7 @@ export default async function FAQPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
       <div className="pt-20">
-        <Reviews />
+        <Reviews stats={siteData.settings.stats} />
         <FAQ faq={siteData.faq} locale={locale} />
       </div>
       <Contact contact={siteData.settings.contact} />

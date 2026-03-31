@@ -6,6 +6,10 @@ import Footer from '@/components/layout/Footer';
 
 type Props = { params: Promise<{ locale: string }> };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 export default async function FlottePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);

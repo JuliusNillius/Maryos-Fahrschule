@@ -7,7 +7,7 @@
     "termine": "طلب موعد",
     "more": "عنّا",
     "fleet": "الأسطول",
-    "process": "الإجراء والأسطول",
+    "process": "الإجراء",
     "faqContact": "الأسئلة والاتصال",
     "blog": "المدونة",
     "contact": "اتصل",
@@ -242,8 +242,9 @@
     "disclaimer": "دروس القيادة تُفوتر حسب الحاجة. رسوم التسجيل مستحقة عند التسجيل. جميع الأسعار شاملة ض.ق.م. تقسيط عبر Klarna متاح."
   },
   "reviews": {
-    "subtext": "١٨ تقييمًا على Google",
-    "viaGoogle": "عبر Google"
+    "headingFallback": "التقييمات",
+    "subtextGeneric": "تقييمات Google",
+    "subtextCount": "{count} تقييمًا على Google"
   },
   "faq": {
     "heading": "الأسئلة الشائعة",
@@ -319,11 +320,11 @@
     "idDocBack": "ظهر البطاقة",
     "idDocDrop": "اختر صورة أو اسحبها هنا",
     "idDocClear": "إزالة",
-    "idDocHint": "JPEG أو PNG أو WebP، بحد أقصى 5 ميجابايت لكل صورة.",
+    "idDocHint": "JPEG أو PNG أو WebP، بحد أقصى 2 ميجابايت لكل صورة.",
     "idDocPrivacy": "نخزن الصور بأمان فقط للتحقق من التسجيل وفق القانون المعمول به.",
     "idDocRequired": "يلزم الوجه والظهر.",
     "idDocErrorEmpty": "ارفع الجانبين.",
-    "idDocErrorSize": "الملف كبير جداً (حد أقصى 5 ميجابايت).",
+    "idDocErrorSize": "الملف كبير جداً (حد أقصى 2 ميجابايت).",
     "idDocErrorMime": "يُسمح فقط بـ JPEG أو PNG أو WebP.",
     "paymentExplainer": "بعد الموافقة تفتح نافذة Stripe الآمنة: بطاقة، Apple/Google Pay أو Klarna إن كانت مفعّلة. ٣٩٩ € للتسجيل والتطبيق؛ الدروس وTÜV منفصلة. فعّل Klarna من لوحة Stripe.",
     "licenceClass": "اختيار التدريب",

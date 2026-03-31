@@ -7,7 +7,7 @@
     "termine": "Request appointment",
     "more": "About us",
     "fleet": "Fleet",
-    "process": "Process & Fleet",
+    "process": "Process",
     "faqContact": "FAQ & Contact",
     "blog": "Blog",
     "contact": "Contact",
@@ -237,8 +237,9 @@
     "disclaimer": "Driving lessons are billed as needed. Registration fee due on sign-up. All prices incl. VAT. Installment payment via Klarna available."
   },
   "reviews": {
-    "subtext": "18 verified Google reviews",
-    "viaGoogle": "via Google"
+    "headingFallback": "Reviews",
+    "subtextGeneric": "Google reviews",
+    "subtextCount": "{count} Google reviews"
   },
   "faq": {
     "heading": "FAQ",

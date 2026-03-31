@@ -5,7 +5,6 @@ import { Link } from '@/i18n/navigation';
 
 const topics = [
   { href: '/preise', key: 'prices' as const },
-  { href: '/ablauf', key: 'process' as const },
   { href: '/lehrer', key: 'teachers' as const },
   { href: '/team', key: 'more' as const },
   { href: '/anmelden', key: 'register' as const },

@@ -11,7 +11,7 @@ import Logo from '@/components/layout/Logo';
  */
 const mainNavItems = [
   { href: '/preise', key: 'prices' as const },
-  { href: '/ablauf', key: 'process' as const },
+  { href: '/flotte', key: 'fleet' as const },
   { href: '/lehrer', key: 'teachers' as const },
   { href: '/team', key: 'more' as const },
   { href: '/faq', key: 'faqContact' as const },

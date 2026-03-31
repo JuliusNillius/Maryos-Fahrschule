@@ -22,6 +22,7 @@ export default function BackofficeFlottePage() {
   const [editing, setEditing] = useState<FleetItem | null>(null);
   const [form, setForm] = useState<Partial<FleetItem>>({});
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   async function fetchList() {
     const { data: { session } } = await supabase!.auth.getSession();
@@ -121,6 +122,35 @@ export default function BackofficeFlottePage() {
       }
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function uploadImage(file: File) {
+    if (!supabase) return;
+    setUploadingImage(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      const fd = new FormData();
+      fd.set('file', file);
+      fd.set('scope', 'fleet');
+      if (editing?.id) fd.set('id', editing.id);
+
+      const res = await fetch('/api/backoffice/upload-image', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(json.error || 'Upload fehlgeschlagen');
+        return;
+      }
+      setForm((f) => ({ ...f, image: json.publicUrl || '' }));
+    } finally {
+      setUploadingImage(false);
     }
   }
 
@@ -246,7 +276,19 @@ export default function BackofficeFlottePage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-text-muted mb-1">Bild-URL</label>
+                <label className="block text-sm text-text-muted mb-1">Bild</label>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) uploadImage(f);
+                  }}
+                  className="w-full rounded-lg border border-white/10 bg-surface2 px-3 py-2 text-white file:mr-3 file:rounded file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:text-white"
+                />
+                <div className="mt-2 text-xs text-text-muted">
+                  {uploadingImage ? 'Lade Bild hoch …' : 'Oder alternativ eine Bild-URL einfügen:'}
+                </div>
                 <input
                   value={form.image ?? ''}
                   onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
