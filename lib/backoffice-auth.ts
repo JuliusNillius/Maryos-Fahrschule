@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
+import { resolveSupabaseUrl } from '@/lib/supabase';
 
 export async function getBackofficeUser(request: Request): Promise<{ email: string } | NextResponse> {
+  const url = resolveSupabaseUrl();
+  const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? '').trim();
   const authHeader = request.headers.get('authorization');
   const token = authHeader?.replace(/^Bearer\s+/i, '');
   if (!token || !url || !serviceRoleKey) {
@@ -29,6 +29,8 @@ export async function getBackofficeUser(request: Request): Promise<{ email: stri
 }
 
 export function getSupabaseAdmin() {
-  if (!url || !serviceRoleKey) return null;
-  return createClient(url, serviceRoleKey);
+  const url = resolveSupabaseUrl();
+  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? '').trim();
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
