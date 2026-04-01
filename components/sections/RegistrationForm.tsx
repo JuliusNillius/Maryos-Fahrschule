@@ -29,12 +29,14 @@ function Step3PayButton({
   validate,
   onBack,
   checkoutTotal,
+  registrationId,
   t,
 }: {
   formData: FormData;
   validate: () => boolean;
   onBack: () => void;
   checkoutTotal: number;
+  registrationId: string | null;
   t: (key: string, values?: Record<string, string | number>) => string;
 }) {
   const stripe = useStripe();
@@ -45,14 +47,18 @@ function Step3PayButton({
   const handlePay = async () => {
     if (!validate()) return;
     if (!stripe || !elements) return;
+    if (!registrationId) {
+      setPayError(t('paymentSessionStale'));
+      return;
+    }
     setPayError(null);
     setLoading(true);
     if (typeof window !== 'undefined') {
       sessionStorage.setItem(PENDING_PAYMENT_KEY, JSON.stringify(formData));
+      sessionStorage.setItem(PENDING_REGISTRATION_ID_KEY, registrationId);
     }
-    const returnUrl = typeof window !== 'undefined'
-      ? `${window.location.origin}${window.location.pathname}?payment=success`
-      : '';
+    const returnUrl =
+      typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : '';
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: { return_url: returnUrl },
@@ -60,7 +66,10 @@ function Step3PayButton({
     setLoading(false);
     if (error) {
       setPayError(error.message ?? 'Payment failed');
-      if (typeof window !== 'undefined') sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+        sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+      }
     }
   };
 
@@ -140,7 +149,7 @@ function IdUploadSlot({
   );
 }
 
-const LICENCE_CLASSES = ['B', 'BF17'] as const;
+const LICENCE_CLASSES = ['B', 'BF17', 'B197', 'BE'] as const;
 const LANGUAGES = [
   { value: 'de', label: 'Deutsch' },
   { value: 'ar', label: 'Arabisch' },
@@ -166,6 +175,7 @@ type TimeSlot = 'morning' | 'noon' | 'afternoon' | 'evening';
 
 const STORAGE_KEY = 'maryos-registration-draft';
 const PENDING_PAYMENT_KEY = 'maryos-payment-pending';
+const PENDING_REGISTRATION_ID_KEY = 'maryos-payment-registration-id';
 
 type RegistrationFormProps = { instructors?: Instructor[]; initialRefCode?: string };
 
@@ -175,6 +185,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
   const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentRegistrationId, setPaymentRegistrationId] = useState<string | null>(null);
   const [stripeError, setStripeError] = useState<string | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -188,7 +199,6 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
 
   const {
     register,
-    handleSubmit,
     watch,
     setValue,
     formState: { errors },
@@ -239,6 +249,12 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
       if (defaultClass === 'BF17' || defaultClass === 'bf17') {
         setValue('licenceClass', 'BF17');
         setValue('bf17', true);
+      } else if (defaultClass === 'B197' || defaultClass === 'b197') {
+        setValue('licenceClass', 'B197');
+        setValue('bf17', false);
+      } else if (defaultClass === 'BE' || defaultClass === 'be') {
+        setValue('licenceClass', 'BE');
+        setValue('bf17', false);
       } else if (defaultClass === 'B' || defaultClass === 'b') {
         setValue('licenceClass', 'B');
         setValue('bf17', false);
@@ -250,27 +266,92 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
     if (defaultInstructor) setValue('instructorId', defaultInstructor);
   }, [defaultInstructor, setValue]);
 
-  // Nach Rückkehr von Stripe-Zahlung: E-Mail senden und Success anzeigen
+  // Nach Stripe-Redirect: PaymentIntent serverseitig prüfen (nicht ?payment=success allein)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    if (params.get('payment') !== 'success') return;
-    const pending = sessionStorage.getItem(PENDING_PAYMENT_KEY);
-    const codeStored = sessionStorage.getItem('maryos-my-referral-code');
-    if (!pending) return;
-    try {
-      const data = JSON.parse(pending) as FormData;
-      if (codeStored) setMyReferralCode(codeStored);
-      sendConfirmationEmail(data);
-      sessionStorage.removeItem(PENDING_PAYMENT_KEY);
-      sessionStorage.removeItem(STORAGE_KEY);
-      sessionStorage.removeItem('maryos-my-referral-code');
-      setSuccess(true);
-      window.history.replaceState({}, '', window.location.pathname + window.location.hash || '');
-    } catch {
-      sessionStorage.removeItem(PENDING_PAYMENT_KEY);
-      sessionStorage.removeItem('maryos-my-referral-code');
-    }
+    const piId = params.get('payment_intent');
+    if (!piId) return;
+
+    let cancelled = false;
+
+    (async () => {
+      const pending = sessionStorage.getItem(PENDING_PAYMENT_KEY);
+      const regIdStored = sessionStorage.getItem(PENDING_REGISTRATION_ID_KEY);
+      const pathOnly = window.location.pathname + (window.location.hash || '');
+
+      const cleanupUrl = () => {
+        if (!cancelled) window.history.replaceState({}, '', pathOnly);
+      };
+
+      if (!pending || !regIdStored) {
+        cleanupUrl();
+        return;
+      }
+
+      let data: FormData;
+      try {
+        data = JSON.parse(pending) as FormData;
+      } catch {
+        sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+        sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+        cleanupUrl();
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/stripe/verify-return', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ paymentIntentId: piId }),
+        });
+        const json = (await res.json()) as {
+          ok?: boolean;
+          registrationId?: string;
+          email?: string;
+        };
+        if (cancelled) return;
+        if (!res.ok || !json.ok || !json.registrationId) {
+          sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+          sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+          cleanupUrl();
+          return;
+        }
+        if (json.registrationId !== regIdStored) {
+          sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+          sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+          cleanupUrl();
+          return;
+        }
+        const pendingEmail = (data.email ?? '').trim().toLowerCase();
+        if (json.email && pendingEmail && json.email !== pendingEmail) {
+          sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+          sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+          cleanupUrl();
+          return;
+        }
+
+        const codeStored = sessionStorage.getItem('maryos-my-referral-code');
+        if (codeStored) setMyReferralCode(codeStored);
+        sendConfirmationEmail(data);
+        sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+        sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+        sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem('maryos-my-referral-code');
+        setSuccess(true);
+        cleanupUrl();
+      } catch {
+        if (!cancelled) {
+          sessionStorage.removeItem(PENDING_PAYMENT_KEY);
+          sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+          cleanupUrl();
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // PaymentIntent erstellen, sobald Schritt 3 erreicht wird (nur einmal)
@@ -338,14 +419,23 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
       });
       const stripeJson = await stripeRes.json();
       if (stripeJson.error) setStripeError(stripeJson.error);
-      else if (stripeJson.clientSecret) setClientSecret(stripeJson.clientSecret);
+      else if (stripeJson.clientSecret) {
+        setClientSecret(stripeJson.clientSecret);
+        setPaymentRegistrationId(regJson.id);
+      }
     } catch {
       setStripeError('Zahlung derzeit nicht verfügbar.');
     }
   };
 
   useEffect(() => {
-    if (step !== 3) setClientSecret(null);
+    if (step !== 3) {
+      setClientSecret(null);
+      setPaymentRegistrationId(null);
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem(PENDING_REGISTRATION_ID_KEY);
+      }
+    }
   }, [step]);
 
   useEffect(() => {
@@ -395,32 +485,6 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
     if (!result.success) return;
     saveDraft(data);
     setStep(3);
-  };
-
-  const onSubmit = async (data: FormData) => {
-    const result = registrationStep3Schema.safeParse(data);
-    if (!result.success) return;
-    try {
-      const res = await fetch('/api/stripe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, licenceClass: data.licenceClass }),
-      });
-      const { clientSecret, error } = await res.json();
-      if (error || !clientSecret) {
-        setSuccess(true);
-        await sendConfirmationEmail(data);
-        if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
-        return;
-      }
-      setSuccess(true);
-      await sendConfirmationEmail(data);
-      if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
-    } catch {
-      setSuccess(true);
-      await sendConfirmationEmail(data);
-      if (typeof window !== 'undefined') sessionStorage.removeItem(STORAGE_KEY);
-    }
   };
 
   async function sendConfirmationEmail(data: FormData) {
@@ -485,7 +549,12 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
           />
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="lg:flex lg:gap-12">
+        <form
+          className="lg:flex lg:gap-12"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="lg:w-[60%]">
             {step === 1 && (
               <div className="space-y-6">
@@ -615,12 +684,21 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                             : 'border-white/20 bg-surface2 text-white hover:border-green-primary/50'
                         }`}
                       >
-                        {c === 'B' ? t('licenceOptionB') : t('licenceOptionBF17')}
+                        {c === 'B'
+                          ? t('licenceOptionB')
+                          : c === 'BF17'
+                            ? t('licenceOptionBF17')
+                            : c === 'B197'
+                              ? t('licenceOptionB197')
+                              : t('licenceOptionBE')}
                       </button>
                     ))}
                   </div>
                 </div>
-                {(licenceClass === 'B' || licenceClass === 'BF17') && (
+                {(licenceClass === 'B' ||
+                  licenceClass === 'BF17' ||
+                  licenceClass === 'B197' ||
+                  licenceClass === 'BE') && (
                   <div className="flex gap-4">
                     <label className="flex cursor-pointer items-center gap-2">
                       <input type="radio" value="manual" {...register('transmission')} className="text-green-primary" />
@@ -797,6 +875,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                         validate={() => registrationStep3Schema.safeParse(watch()).success}
                         onBack={() => setStep(2)}
                         checkoutTotal={checkout.totalEur}
+                        registrationId={paymentRegistrationId}
                         t={t}
                       />
                     </Elements>
@@ -849,7 +928,15 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                 <div>
                   <dt>{t('summaryClass')}</dt>
                   <dd className="font-medium text-white">
-                    {watch('licenceClass') === 'BF17' ? t('licenceOptionBF17') : watch('licenceClass') === 'B' ? t('licenceOptionB') : '–'}
+                    {watch('licenceClass') === 'BF17'
+                      ? t('licenceOptionBF17')
+                      : watch('licenceClass') === 'B'
+                        ? t('licenceOptionB')
+                        : watch('licenceClass') === 'B197'
+                          ? t('licenceOptionB197')
+                          : watch('licenceClass') === 'BE'
+                            ? t('licenceOptionBE')
+                            : '–'}
                   </dd>
                 </div>
                 <div>

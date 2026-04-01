@@ -52,6 +52,29 @@ body {
   animation: page-in 0.25s ease-out forwards;
 }
 
+/* Unter lg: kürzerer Seitenwechsel-Fade (wie Hero ohne Pin bis 1024px) */
+@media (max-width: 1023px) {
+  .animate-page-in {
+    animation-duration: 0.12s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-in {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+  .animate-trust-marquee {
+    animation: none;
+    transform: none;
+  }
+  .animate-reviews-marquee-left,
+  .animate-reviews-marquee-right {
+    animation: none;
+    transform: none;
+  }
+}
+
 @media (min-width: 768px) {
   body.custom-cursor-active {
     cursor: none;
@@ -147,8 +170,9 @@ body {
     min-height: 100%;
     width: auto;
     height: auto;
-    transform: translate(-50%, -50%);
+    /* Etwas weniger aggressiver Crop als „volle Cover-Fläche“ (wirkt weniger gezoomt) */
+    transform: translate(-50%, -50%) scale(0.9);
     object-fit: cover;
-    object-position: center center;
+    object-position: center 42%;
   }
 }

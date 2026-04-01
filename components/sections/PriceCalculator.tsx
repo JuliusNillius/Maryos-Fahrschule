@@ -10,12 +10,13 @@ import {
   PRICING_LESSON_HOUR_EUR,
   PRICING_TUV_EUR,
   PRICING_OTHER_EUR,
+  PRICING_ERSTE_HILFE_EUR,
 } from '@/lib/pricing';
 
 /**
- * Nur PKW Klasse B / BF17 — Anmeldung + App, Fahrstunden 65 €, Richtwerte Gesamtbudget.
+ * PKW: B, BF17, B197, BE — Anmeldung + App, Fahrstunden 65 €, Richtwerte Gesamtbudget.
  */
-const CLASSES = ['B', 'BF17'] as const;
+const CLASSES = ['B', 'BF17', 'B197', 'BE'] as const;
 type ClassId = (typeof CLASSES)[number];
 
 const THEORY = 0;
@@ -72,6 +73,12 @@ export default function PriceCalculator() {
         <p className="mt-3 text-center font-body text-lg text-text-muted">
           {t('sub')}
         </p>
+        <p className="mx-auto mt-2 max-w-2xl text-center font-body text-sm text-text-muted">
+          {t('ersteHilfeTeaser', { price: PRICING_ERSTE_HILFE_EUR })}{' '}
+          <Link href="/erste-hilfe" className="text-green-500 underline hover:text-green-400">
+            {t('ersteHilfeCta')}
+          </Link>
+        </p>
         <p className="mx-auto mt-4 max-w-2xl text-center font-body text-sm text-text-muted">
           {t('budgetHint')}
         </p>
@@ -92,7 +99,13 @@ export default function PriceCalculator() {
                   : 'border-white/15 bg-card text-white hover:border-green-500/40'
               }`}
             >
-              {cls === 'B' ? t('classBLabel') : t('classBF17Label')}
+              {cls === 'B'
+                ? t('classBLabel')
+                : cls === 'BF17'
+                  ? t('classBF17Label')
+                  : cls === 'B197'
+                    ? t('classB197Label')
+                    : t('classBELabel')}
             </button>
           ))}
         </div>

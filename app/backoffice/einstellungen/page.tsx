@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import type { GoogleReviewQuote } from '@/lib/site-data';
 
 type Settings = {
   contact?: {
@@ -18,6 +19,7 @@ type Settings = {
   impressum?: { company?: string; street?: string; zip?: string; city?: string; register?: string; owner?: string };
   social?: { instagram?: string; tiktok?: string; facebook?: string };
   email_welcome?: { subject?: string; body?: string };
+  google_review_quotes?: GoogleReviewQuote[];
 };
 
 export default function BackofficeEinstellungenPage() {
@@ -62,6 +64,21 @@ export default function BackofficeEinstellungenPage() {
   const imp = settings.impressum ?? {};
   const soc = settings.social ?? {};
   const ew = settings.email_welcome ?? {};
+  const reviewQuotes = settings.google_review_quotes ?? [];
+
+  function patchReviewQuote(index: number, patch: Partial<GoogleReviewQuote>) {
+    const next = [...reviewQuotes];
+    const cur = next[index] ?? { author: '', rating: 5, text_de: '' };
+    next[index] = { ...cur, ...patch };
+    update('google_review_quotes', next);
+  }
+
+  function removeReviewQuote(index: number) {
+    update(
+      'google_review_quotes',
+      reviewQuotes.filter((_, j) => j !== index)
+    );
+  }
 
   return (
     <div>
@@ -135,6 +152,91 @@ export default function BackofficeEinstellungenPage() {
               <input type="number" value={st.classes ?? ''} onChange={(e) => update('stats', { ...st, classes: parseInt(e.target.value, 10) || 0 })} className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2 text-white focus:border-green-500 focus:outline-none" />
             </div>
           </div>
+          <p className="mt-4 text-xs text-text-muted leading-relaxed">
+            Google holt diese Zahlen nicht automatisch. Bei neuen Rezensionen Sterne und Anzahl hier anpassen — oder später z. B. Google Places API + Cronjob anbinden.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-white/10 bg-[#0F0F0F] p-6">
+          <h2 className="font-heading text-lg font-bold italic text-green-500 mb-2">Google-Rezensionen (FAQ-Seite)</h2>
+          <p className="mb-4 text-sm text-text-muted leading-relaxed">
+            Hier trägst du echte Zitate aus Google ein (Sterne + Text). Es gibt keinen automatischen Abruf von Google — Inhalte bitte selbst aus dem Unternehmensprofil übernehmen. Ohne deutschen Text wird eine Zeile nicht angezeigt.
+          </p>
+          <div className="space-y-4">
+            {reviewQuotes.map((q, i) => (
+              <div key={i} className="space-y-3 rounded-lg border border-white/10 bg-[#1a1a1a] p-4">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block text-xs text-text-muted">Name (wie auf Google oder gekürzt)</label>
+                    <input
+                      value={q.author}
+                      onChange={(e) => patchReviewQuote(i, { author: e.target.value })}
+                      className="w-full rounded-lg border border-white/10 bg-[#0F0F0F] px-3 py-2 text-sm text-white focus:border-green-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-text-muted">Sterne (1–5)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={q.rating}
+                      onChange={(e) =>
+                        patchReviewQuote(i, {
+                          rating: Math.min(5, Math.max(1, parseInt(e.target.value, 10) || 5)),
+                        })
+                      }
+                      className="w-full rounded-lg border border-white/10 bg-[#0F0F0F] px-3 py-2 text-sm text-white focus:border-green-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-text-muted">Zitat Deutsch (Pflicht für Anzeige)</label>
+                  <textarea
+                    value={q.text_de}
+                    onChange={(e) => patchReviewQuote(i, { text_de: e.target.value })}
+                    rows={4}
+                    className="w-full rounded-lg border border-white/10 bg-[#0F0F0F] px-3 py-2 text-sm text-white focus:border-green-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-text-muted">Zitat Türkisch (optional)</label>
+                  <textarea
+                    value={q.text_tr ?? ''}
+                    onChange={(e) => patchReviewQuote(i, { text_tr: e.target.value })}
+                    rows={2}
+                    className="w-full rounded-lg border border-white/10 bg-[#0F0F0F] px-3 py-2 text-sm text-white focus:border-green-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs text-text-muted">Zitat Arabisch (optional)</label>
+                  <textarea
+                    value={q.text_ar ?? ''}
+                    onChange={(e) => patchReviewQuote(i, { text_ar: e.target.value })}
+                    rows={2}
+                    className="w-full rounded-lg border border-white/10 bg-[#0F0F0F] px-3 py-2 text-sm text-white focus:border-green-500 focus:outline-none"
+                    dir="rtl"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeReviewQuote(i)}
+                  className="text-xs text-red-400 underline hover:text-red-300"
+                >
+                  Diese Rezension entfernen
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              update('google_review_quotes', [...reviewQuotes, { author: '', rating: 5, text_de: '' }])
+            }
+            className="btn-ghost mt-4 text-sm"
+          >
+            + Rezension hinzufügen
+          </button>
         </section>
 
         <section className="rounded-xl border border-white/10 bg-[#0F0F0F] p-6">

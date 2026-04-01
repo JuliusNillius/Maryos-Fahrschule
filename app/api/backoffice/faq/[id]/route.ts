@@ -10,6 +10,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const body = await request.json();
   const updates: Record<string, unknown> = {};
   if (typeof body.sort_order === 'number') updates.sort_order = body.sort_order;
+  if (typeof body.category === 'string') updates.category = body.category;
   if (typeof body.question_de === 'string') updates.question_de = body.question_de;
   if (typeof body.answer_de === 'string') updates.answer_de = body.answer_de;
   if (body.question_en !== undefined) updates.question_en = body.question_en;

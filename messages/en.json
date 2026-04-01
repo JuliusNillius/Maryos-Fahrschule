@@ -283,7 +283,11 @@
     "owner": "Owner",
     "imprint": "Imprint",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "paymentSecure": "Secure payment",
+    "paymentHint": "Processed via Stripe (encrypted). Depending on your device: Apple Pay, Google Pay, PayPal, card, Klarna, and more.",
+    "paymentAria": "Accepted payment methods",
+    "paymentDebit": "Debit card"
   },
   "whatsapp": {
     "tooltip": "Message us!",

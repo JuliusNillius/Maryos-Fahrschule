@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * §10 HERO — Video läuft, „Fahr in dein Glück“ + Buttons sofort sichtbar (keine Scroll-Einblendung).
- * Scroll über PIN_SCROLL % Viewport: Ausblendung/Blur in Phasen (Endwerte skalieren mit PIN_SCROLL).
+ * Pin + Scrub nur ab lg (1024px) und ohne prefers-reduced-motion — Telefon & Tablet port. = natives Scrollen.
  */
 // Pin-Distanz: zu hoch = viel Scroll ohne sichtbare Bewegung (Lenis + Pin). ~18–22% wirkt flüssiger.
 const PIN_SCROLL = 20; // % viewport-Höhe als Scroll-Strecke während Pin
@@ -19,7 +19,7 @@ const PIN_SCROLL = 20; // % viewport-Höhe als Scroll-Strecke während Pin
 const HERO_VIDEO = '/videos/hero.mp4';
 const FALLBACK_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
 
-const DEFAULT_STATS = [5, 18, 3, 2] as const; // Google, Reviews, Sprachen, Ausbildungsangebote (B + BF17)
+const DEFAULT_STATS = [5, 18, 3, 4] as const; // Google, Reviews, Sprachen, PKW-Angebote (B, BF17, B197, BE)
 
 type HeroProps = {
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number } | null;
@@ -59,7 +59,6 @@ export default function Hero({ stats }: HeroProps) {
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-    const vid = section.querySelector<HTMLVideoElement>('video');
     const eyebrow = eyebrowRef.current;
     const h1Part1 = h1Part1Ref.current;
     const h1Part2 = h1Part2Ref.current;
@@ -75,72 +74,86 @@ export default function Hero({ stats }: HeroProps) {
     gsap.set(subtext, { opacity: 1 });
     gsap.set(cta, { opacity: 1, y: 0 });
 
-    // Video läuft normal durch (nicht an Scroll koppeln – sonst spult Scroll vor/zurück)
-    const trigger = ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: `+=${PIN_SCROLL}%`,
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+      const created: ScrollTrigger[] = [];
+      const push = (t: ScrollTrigger) => {
+        created.push(t);
+        return t;
+      };
+
+      push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: `+=${PIN_SCROLL}%`,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+        }),
+      );
+
+      const st = (progress: number) => `${progress * PIN_SCROLL}%`;
+
+      push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: `top+=${st(0.75)} top`,
+          scrub: 0.4,
+          onUpdate: (self) => {
+            const p = self.progress;
+            if (eyebrow) gsap.set(eyebrow, { opacity: 1, y: 0 });
+            if (h1Part1) gsap.set(h1Part1, { opacity: 1, y: 0, x: 0 });
+            if (h1Part2) gsap.set(h1Part2, { opacity: 1, x: 0, scale: 1 });
+            if (cta) gsap.set(cta, { opacity: 1, y: 0 });
+            if (subtext) gsap.set(subtext, { opacity: Math.max(0, 1 - p * 1.2) });
+          },
+        }),
+      );
+
+      push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: `top+=${st(0.75)} top`,
+          end: `top+=${st(0.95)} top`,
+          scrub: 0.4,
+          onUpdate: (self) => {
+            const p = self.progress;
+            [eyebrow, h1Part1, h1Part2, cta].forEach((el) => el && gsap.set(el, { opacity: 1 - p }));
+            if (subtext) gsap.set(subtext, { opacity: 0 });
+            if (vignette) gsap.set(vignette, { opacity: 0.4 + p * 0.5 });
+            if (streak && p > 0.3 && p < 0.45) {
+              gsap.set(streak, { opacity: 1 });
+              gsap.to(streak, { opacity: 0, duration: 0.3, delay: 0.15 });
+            }
+          },
+        }),
+      );
+
+      push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: `top+=${st(0.95)} top`,
+          end: `top+=${st(1)} top`,
+          scrub: 0.4,
+          onUpdate: (self) => {
+            const p = self.progress;
+            if (section) gsap.set(section.querySelector('.hero-video-wrap'), { filter: `blur(${p * 2}px)` });
+          },
+        }),
+      );
+
+      return () => {
+        created.forEach((t) => t.kill());
+      };
     });
 
-    const st = (progress: number) => `${progress * PIN_SCROLL}%`;
-
-    // 0–75%: Headline + Buttons von Anfang an sichtbar, Subtext bleibt bzw. blendet langsam aus
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: `top+=${st(0.75)} top`,
-      scrub: 0.4,
-      onUpdate: (self) => {
-        const p = self.progress;
-        if (eyebrow) gsap.set(eyebrow, { opacity: 1, y: 0 });
-        if (h1Part1) gsap.set(h1Part1, { opacity: 1, y: 0, x: 0 });
-        if (h1Part2) gsap.set(h1Part2, { opacity: 1, x: 0, scale: 1 });
-        if (cta) gsap.set(cta, { opacity: 1, y: 0 });
-        if (subtext) gsap.set(subtext, { opacity: Math.max(0, 1 - p * 1.2) });
-      },
-    });
-
-    // 75–95%: Text ausblenden, Vignette, grüner Streak
-    ScrollTrigger.create({
-      trigger: section,
-      start: `top+=${st(0.75)} top`,
-      end: `top+=${st(0.95)} top`,
-      scrub: 0.4,
-      onUpdate: (self) => {
-        const p = self.progress;
-        [eyebrow, h1Part1, h1Part2, cta].forEach((el) => el && gsap.set(el, { opacity: 1 - p }));
-        if (subtext) gsap.set(subtext, { opacity: 0 });
-        if (vignette) gsap.set(vignette, { opacity: 0.4 + p * 0.5 });
-        if (streak && p > 0.3 && p < 0.45) {
-          gsap.set(streak, { opacity: 1 });
-          gsap.to(streak, { opacity: 0, duration: 0.3, delay: 0.15 });
-        }
-      },
-    });
-
-    // 95–100%: Blur
-    ScrollTrigger.create({
-      trigger: section,
-      start: `top+=${st(0.95)} top`,
-      end: `top+=${st(1)} top`,
-      scrub: 0.4,
-      onUpdate: (self) => {
-        const p = self.progress;
-        if (section) gsap.set(section.querySelector('.hero-video-wrap'), { filter: `blur(${p * 2}px)` });
-      },
-    });
-
-    // Scroll-Höhe nach Pin-Spacer neu berechnen, damit nicht „über das Ende hinaus“ gescrollt werden kann
-    ScrollTrigger.refresh();
+    requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => {
-      trigger.kill();
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === section) t.kill();
-      });
+      mm.revert();
     };
   }, []);
 
@@ -254,10 +267,10 @@ export default function Hero({ stats }: HeroProps) {
       />
 
       {/* Content – kräftige weiße Schrift + Schatten für bessere Lesbarkeit auf dem Video */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center md:pt-36 lg:pt-40">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center max-md:pr-20 md:pt-36 lg:pt-40">
         <p
           ref={eyebrowRef}
-          className="mb-6 rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 font-display text-[11px] uppercase tracking-[0.2em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)]"
+          className="mb-6 max-w-[calc(100vw-2.5rem)] rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:text-[11px] sm:tracking-[0.2em]"
         >
           🍀 {t('badge')}
         </p>

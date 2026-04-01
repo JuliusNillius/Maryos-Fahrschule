@@ -20,7 +20,7 @@ const STATS_FALLBACK = [
   { key: 'google', value: 5, decimals: 1, suffix: '' },
   { key: 'reviews', value: 18, decimals: 0, suffix: '' },
   { key: 'languages', value: 3, decimals: 0, suffix: '' },
-  { key: 'classes', value: 2, decimals: 0, suffix: '' },
+  { key: 'classes', value: 4, decimals: 0, suffix: '' },
 ] as const;
 
 export default function Stats({ stats }: StatsProps) {
@@ -30,7 +30,7 @@ export default function Stats({ stats }: StatsProps) {
         { key: 'google' as const, value: stats.googleRating ?? 5, decimals: 1, suffix: '' },
         { key: 'reviews' as const, value: stats.googleReviews ?? 18, decimals: 0, suffix: '' },
         { key: 'languages' as const, value: stats.languages ?? 3, decimals: 0, suffix: '' },
-        { key: 'classes' as const, value: stats.classes ?? 2, decimals: 0, suffix: '' },
+        { key: 'classes' as const, value: stats.classes ?? 4, decimals: 0, suffix: '' },
       ]
     : STATS_FALLBACK;
   const sectionRef = useRef<HTMLElement>(null);

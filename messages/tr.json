@@ -1,5 +1,6 @@
 {
   "nav": {
+    "firstAid": "İlk yardım",
     "license": "Ehliyet",
     "teachers": "Öğretmenler",
     "prices": "Fiyatlar",
@@ -17,6 +18,20 @@
     "phone": "Ara",
     "floatActionsHint": "WhatsApp ve randevu: sağ alttaki yeşil düğmeler."
   },
+  "ersteHilfePage": {
+    "metaTitle": "Ehliyet için ilk yardım | Mönchengladbach",
+    "metaDescription": "Ehliyet başvurusu için ilk yardım kursu Mönchengladbach: 50 €, ayrı rezervasyon — ehliyet kayıt paketine dahil değil.",
+    "kicker": "Ek hizmet",
+    "heading": "Ehliyet için ilk yardım",
+    "priceLine": "{price} € · KDV dahil",
+    "intro": "İlk yardım kursu ehliyet başvurusu için zorunludur. Kursu doğrudan sürücü kursunda yaparsın — resmi sertifika ile.",
+    "notInLicensePackage": "Önemli: Kurs, ehliyet kayıt ücreti + uygulama paketine dahil değildir. Ayrı rezerve edilir ve ödenir.",
+    "bullet1": "Resmi kurumlar için sertifika",
+    "bullet2": "Yoğun kurs, randevu anlaşmasına göre",
+    "bullet3": "Yer: Maryo's Fahrschule, Mönchengladbach",
+    "ctaTermin": "Randevu al",
+    "ctaPrices": "Ehliyet fiyatlarına git"
+  },
   "homeTabs": {
     "ariaLabel": "Ana sayfa konuları",
     "aboutUs": "Hakkımızda",
@@ -32,25 +47,25 @@
     "badge": "Mönchengladbach'ın 1 Numaralı Sürücü Kursu",
     "headline": "MUTLULUĞA SÜR",
     "headlineHighlight": "MUTLULUK",
-    "subheadline": "Ehliyetini şimdi al — yanındayız. Şu an sadece araba: B ve BF17.",
+    "subheadline": "Ehliyetini şimdi al — yanındayız. Araba: B, BF17, B197 ve BE (römork). İlk yardım ayrı.",
     "ctaPrimary": "HEMEN KAYIT OL",
     "ctaSecondary": "ÖĞRETMENLERİMİZ →",
     "statGoogle": "5.0 ★ Google",
     "statReviews": "18 Yorum",
     "statLanguages": "3 Dil",
-    "statClasses": "B & BF17"
+    "statClasses": "B · BF17 · B197 · BE"
   },
   "trustBar": {
     "item1": "⭐ 5.0 Google",
     "item2": "18 Yorum",
     "item3": "Apple Pay",
     "item4": "Sofort & Klarna",
-    "item5": "Sadece otomobil: B & BF17",
+    "item5": "Otomobil: B · BF17 · B197 · BE",
     "item6": "3 Dil (DE · TR · AR)",
     "item7": "Mönchengladbach",
     "item8": "WhatsApp Destek",
     "item9": "2025 Kuruluş",
-    "item10": "B · BF17 · 65 € / ders",
+    "item10": "B · BF17 · B197 · BE · 65 € / ders",
     "item11": "100% Online",
     "item12": "TÜV Sınavı"
   },
@@ -61,7 +76,7 @@
     "card1Title": "Öğretmenini seç",
     "card1Desc": "Dil, sempati ve müsaitliğe göre seç.",
     "card2Title": "Odak: otomobil",
-    "card2Desc": "Şu an sadece B ve BF17 — ehliyetini net şekilde tamamlaman için.",
+    "card2Desc": "B, BF17, B197 ve BE — ehliyetini net şekilde tamamlaman için.",
     "card3Title": "3 dil",
     "card3Desc": "Almanca, Arapça ve Türkçe — site ve öğretmen testindeki gibi.",
     "card4Title": "5.0 yıldız",
@@ -73,7 +88,7 @@
   },
   "classes": {
     "heading": "EHLİYETİN — OTOMOBİL",
-    "intro": "Ehliyetini alıyorsun — net ve şeffaf. Şu an yalnızca otomobil: B veya BF17 (17'den refakatli).",
+    "intro": "Ehliyetini alıyorsun — net ve şeffaf. Otomobil: B, BF17 (17'den refakatli), B197 ve BE (römork). İlk yardım menüden ayrı.",
     "badgePopular": "KLASİK",
     "cta": "Şimdi kayıt ol",
     "bTitle": "B sınıfı",
@@ -81,7 +96,13 @@
     "bDetail": "Manuel veya otomatik. Kayıt 349 € KDV dahil, öğrenme uygulaması 50 € KDV dahil, direksiyon dersi 65 € KDV dahil.",
     "bf17Title": "BF17",
     "bf17Subtitle": "17'den refakatli sürüş",
-    "bf17Detail": "B ile aynı eğitim, reşit olana kadar refakatlı sürüş — aynı kayıt, uygulama ve ders ücretleri."
+    "bf17Detail": "B ile aynı eğitim, reşit olana kadar refakatlı sürüş — aynı kayıt, uygulama ve ders ücretleri.",
+    "b197Title": "B197",
+    "b197Subtitle": "Otomatik sınav, manuel de sürebilirsin",
+    "b197Detail": "Pratik sınav otomatik — vites yeterliliği kanıtlanırsa manuel araç da sürebilirsin. Kayıt ve ders ücretleri B ile aynı.",
+    "beTitle": "BE",
+    "beSubtitle": "Römork ehliyeti",
+    "beDetail": "Daha büyük römorklar: manevra, bağlama ve güvenli sürüş. Süre ve ücret duruma göre — danışmanlık veriyoruz."
   },
   "instructors": {
     "heading": "ÖĞRETMENİN. SEÇİMİN.",
@@ -102,7 +123,7 @@
     "google": "Google yıldız",
     "reviews": "Yorum",
     "languages": "Dil",
-    "classes": "B & BF17"
+    "classes": "B · BF17 · B197 · BE"
   },
   "booking": {
     "cta": "Slot talep et"
@@ -136,7 +157,7 @@
     "q2a": "Sakin & sabırlı — zamana ve net adımlara ihtiyacım var",
     "q2b": "Düzenli & tempolu — doğrudan söyle, neyi iyileştireyim",
     "q2c": "Rahat & dürüst — mizahla daha kolay öğrenirim",
-    "q3": "Sürüşte en çok neye heveslisin? (yön — yalnızca B / BF17 sunuyoruz)",
+    "q3": "Sürüşte en çok neye heveslisin? (yön — B, BF17, B197, BE sunuyoruz)",
     "q3a": "Manuel vites — klasik",
     "q3b": "Otomatik — rahat",
     "q3c": "Henüz bilmiyorum / fark etmez",
@@ -204,7 +225,11 @@
   },
   "priceCalculator": {
     "heading": "SÜRÜCÜ KURSU NE KADAR?",
-    "sub": "Sadece otomobil — B veya BF17. Tüm tutarlar KDV dahil.",
+    "sub": "Otomobil — B, BF17, B197 veya BE. Tüm tutarlar KDV dahil.",
+    "ersteHilfeTeaser": "İlk yardım (ekstra, ehliyet paketinde yok): {price} €.",
+    "ersteHilfeCta": "İlk yardım sayfası →",
+    "classB197Label": "B197",
+    "classBELabel": "BE (römork)",
     "budgetHint": "Toplam bütçe yönlendirmesi: çok hızlı öğrenenler için ~2.000 € (~18 ders), ortalama ~2.400 € (~24 ders), daha fazla pratik için ~2.800 € (~30 ders, örn. endişe).",
     "step1": "Sınıf seç",
     "step2Hours": "Direksiyon dersi (tahmini)",
@@ -230,12 +255,18 @@
   "pricing": {
     "heading": "UYGUN FİYATLAR. SÜRPRİZ YOK.",
     "badgePopular": "POPÜLER",
+    "classNames": {
+      "b": "B sınıfı",
+      "bf17": "BF17",
+      "b197": "B197",
+      "be": "BE (römork)"
+    },
+    "exclFirstAid": "İlk yardım (ayrı, menü „İlk yardım“)",
     "from": "itibaren",
     "addOnNote": "B sınıfına ek olarak",
     "inclRegistration": "Kayıt ücreti",
     "inclMaterial": "Öğrenme materyali",
     "inclTheory": "Teori dersleri (sınırsız)",
-    "inclFirstAid": "İlk yardım kursu (bilgi)",
     "exclDriving": "Direksiyon dersleri (ihtiyaca göre)",
     "exclExam": "TÜV sınav ücretleri",
     "cta": "Şimdi kayıt ol",
@@ -244,7 +275,11 @@
   "reviews": {
     "headingFallback": "Yorumlar",
     "subtextGeneric": "Google yorumları",
-    "subtextCount": "{count} Google yorumu"
+    "subtextCount": "{count} Google yorumu",
+    "quotesHeading": "Öğrencilerimiz ne diyor?",
+    "sourceGoogle": "Google",
+    "anonymousReviewer": "Öğrenci (Google)",
+    "quotesHint": "Google yorumlarından alıntılar. Metinleri Backoffice'te „Google-Rezensionen“ bölümünden girin."
   },
   "faq": {
     "heading": "SIKÇA SORULAN SORULAR",
@@ -267,6 +302,69 @@
     "q9Q": "BF17 için kayıt olabilir miyim?",
     "q9A": "Evet, 17 yaşında uygun refakatçi ile."
   },
+  "faqPage": {
+    "metaTitle": "SSS ehliyet Mönchengladbach | Maryo's Sürücü Kursu",
+    "metaDescription": "B, BF17, B197, BE, fiyatlar, Jobcenter, İlk Yardım ve süreç hakkında sorular — Mönchengladbach'ta Maryo's.",
+    "kicker": "Merak ettiklerin",
+    "heroTitle": "Sıkça sorulan sorular",
+    "heroLead": "Mönchengladbach ve çevresindeki adayların en çok sorduğu konular: maliyet, destek, BF17 ve B197. Aşağıdan konuya göre süzebilir veya arayabilirsin.",
+    "searchLabel": "SSS ara",
+    "searchPlaceholder": "ör. Jobcenter, fiyat, BF17 …",
+    "filterAria": "Konu filtresi",
+    "filterAll": "Tümü",
+    "categories": {
+      "allgemein": "Genel",
+      "preise": "Fiyatlar",
+      "klassen": "Sınıflar",
+      "foerderung": "Destek",
+      "anmeldung": "Kayıt"
+    },
+    "ctaPreise": "Fiyatlar",
+    "ctaAnmelden": "Kayıt ol",
+    "empty": "Sonuç yok — filtreyi veya aramayı değiştir.",
+    "footerHint": "Yanıtları Backoffice'ten düzenleyebilirsin; sayfa veritabanından canlı gelir."
+  },
+  "preisePage": {
+    "metaTitle": "Ehliyet fiyatları Mönchengladbach | B BF17 B197 BE hesap",
+    "metaDescription": "Şeffaf ücretler: kayıt, uygulama, ders 65 €, TÜV ve İlk Yardım — Maryo's Mönchengladbach, interaktif hesap makinesi.",
+    "kicker": "Maliyet özeti",
+    "heading": "Mönchengladbach'ta ehliyet fiyatları",
+    "intro1": "Rheydt, Wickrath veya başka bir semtte otur — Bahnhofstraße'deki merkezimizde tüm PKW adayları için aynı net fiyatlar geçerlidir.",
+    "intro2": "Kayıt ve öğrenme uygulaması başlangıçtır; direksiyon dersleri ihtiyaca göre ödenir. TÜV ve İlk Yardım ayrı kalemlerdir. Jobcenter ve destek için SSS'ye bak.",
+    "intro3": "Aşağıdaki hesap makinesinde B, BF17, B197 veya BE için farklı saat sayılarını dene."
+  },
+  "fuehrerscheinPage": {
+    "ctaPreise": "Fiyatlar ve hesap",
+    "ctaAnmelden": "Online kayıt",
+    "ctaErsteHilfe": "İlk yardım",
+    "ctaFaq": "SSS: Jobcenter ve daha fazlası",
+    "bMetaTitle": "B sınıfı ehliyet Mönchengladbach | Maryo's",
+    "bMetaDescription": "Mönchengladbach'ta otomobil B: eğitim, fiyatlar, İlk Yardım, B197 ve BE özeti — Bahnhofstraße.",
+    "bKicker": "Sınıf B",
+    "bH1": "Otomobil ehliyeti sınıf B",
+    "bLead": "18 yaşından itibaren klasik otomobil ehliyeti — modern kayıt, adil fiyatlar, Almanca, Türkçe veya Arapça ders. Mönchengladbach'taki okulumuza toplu taşıma veya araçla kolayca ulaşılır.",
+    "bH2Ausbildung": "Teori, pratik, sınav",
+    "bBodyAusbildung": "Teoriyi (uygulama dahil) tamamlar, özel ve genel sürüş saatleri yapar, TÜV'de teori ve pratik sınava girersin. Kaç saat gerektiği kişiye göre değişir — ilk derslerden sonra net geri bildirim veririz.",
+    "bH2MG": "Mönchengladbach'ta sürücü kursu",
+    "bBodyMG": "Şehir içinde yanınızdayız; çevre semtlerden gelen çok sayıda öğrenci var. WhatsApp veya telefonla net iletişim, şehir trafiği ve tipik sınav güzergâhlarına hakim ekip.",
+    "bH2Weitere": "B197, BE ve İlk Yardım",
+    "bBodyWeitere": "B'ye ek olarak BF17 (17 yaş eşlikli), B197 (otomatik sınav + vites yetkinliği) ve BE (römork) sunuyoruz. İlk yardım kayıt için zorunludur ve ayrıca rezerve edilir — menüden „İlk Yardım“.",
+    "bH2Preise": "Ne kadar tutar?",
+    "bBodyPreise": "Kayıt 349 € ve uygulama 50 € (KDV dahil), ders saati 65 € KDV dahil. TÜV ve İlk Yardım ayrı — toplam tablo için hesap makinesi ve SSS.",
+    "bf17MetaTitle": "BF17 eşlikli sürüş Mönchengladbach | Maryo's",
+    "bf17MetaDescription": "17 yaştan BF17 Mönchengladbach'ta: eşlikli sürüş, B ile aynı PKW eğitimi — kayıt ve fiyatlar Maryo's'ta.",
+    "bf17Kicker": "BF17",
+    "bf17H1": "17 yaştan eşlikli sürüş (BF17)",
+    "bf17Lead": "BF17 ile daha erken pratik yaparsın — eğitim özünde B ile aynıdır; 18'e kadar uygun bir refakatçiyle trafikte olursun. Mönchengladbach'ta evrak ve derslerde yanınızdayız.",
+    "bf17H2Ausbildung": "BF17'nin özellikleri",
+    "bf17BodyAusbildung": "B'deki gibi özel ve bölüler arası sürüşleri tamamlar, ardından eşlikli modda pratik yaparsın. Refakatçi yasal şartları sağlamalı — detayları yüz yüze anlatırız.",
+    "bf17H2MG": "Mönchengladbach'ta pratik",
+    "bf17BodyMG": "Şehir trafiği, dönel ve tipik durumları düzenli çalışırsın — okul, iş veya komşu ilçe için hazırlık.",
+    "bf17H2Weitere": "Sonra: tam B ehliyeti",
+    "bf17BodyWeitere": "Reşit olduktan ve sınavı geçtikten sonra normal otomobil ehliyetin olur. İstersen B197 veya BE için de bilgi alabilirsin.",
+    "bf17H2Preise": "B ile aynı fiyat yapısı",
+    "bf17BodyPreise": "Kayıt, uygulama ve ders ücretleri B ile aynı şeffaf tarifedir — hesap makinesinden senaryonu gör. Jobcenter/İş Ajansı desteği onayla mümkün; ayrıntılar SSS'de."
+  },
   "contact": {
     "heading": "BİZİ ZİYARET EDİN",
     "hours": "Pzt–Cuma: 12:00–18:00",
@@ -283,13 +381,17 @@
     "prices": "Fiyatlar",
     "register": "Kayıt",
     "licenseClasses": "Güncel teklif",
-    "classOffer": "B · BF17 (sadece otomobil)",
+    "classOffer": "B · BF17 · B197 · BE · İlk yardım",
     "contact": "İletişim",
     "hours": "Pzt–Cuma 12:00–18:00",
     "owner": "Sahip",
     "imprint": "İmza",
     "privacy": "Gizlilik",
-    "terms": "Şartlar"
+    "terms": "Şartlar",
+    "paymentSecure": "Güvenli ödeme",
+    "paymentHint": "Ödeme Stripe üzerinden (şifreli). Cihaza göre Apple Pay, Google Pay, PayPal, kart, Klarna ve diğer yöntemler.",
+    "paymentAria": "Kabul edilen ödeme yöntemleri",
+    "paymentDebit": "Banka / debit kart"
   },
   "whatsapp": {
     "tooltip": "Bize yaz!",
@@ -326,10 +428,13 @@
     "idDocErrorEmpty": "Her iki tarafı da yükle.",
     "idDocErrorSize": "Dosya çok büyük (en fazla 2 MB).",
     "idDocErrorMime": "Yalnızca JPEG, PNG veya WebP.",
+    "paymentSessionStale": "Ödeme oturumu geçersiz. Lütfen „Ödemeyi başlat“ seçeneğini tekrar kullanın.",
     "paymentExplainer": "Akış: Onayla → Stripe ödeme → Kart, Apple/Google Pay veya Klarna (hesabınızda açıksa). 399 € kayıt + uygulama; dersler ve TÜV ayrı.",
     "licenceClass": "Eğitim seçimi",
     "licenceOptionB": "B sınıfı (18+)",
     "licenceOptionBF17": "BF17 (17'den refakatli)",
+    "licenceOptionB197": "B197 (otomatik + vites yetkinliği)",
+    "licenceOptionBE": "BE (römork ehliyeti)",
     "transmissionManual": "Manuel",
     "transmissionAuto": "Otomatik",
     "instructor": "Tercih edilen öğretmen",

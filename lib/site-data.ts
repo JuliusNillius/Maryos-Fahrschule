@@ -7,6 +7,15 @@ import { headers } from 'next/headers';
 
 export type PricingItem = { id: string; class_id: string; price: string; popular: boolean; note: string | null };
 
+/** Zitate von Google-Bewertungen (manuell im Backoffice pflegen). */
+export type GoogleReviewQuote = {
+  author: string;
+  rating: number;
+  text_de: string;
+  text_tr?: string;
+  text_ar?: string;
+};
+
 export type SiteSettings = {
   contact?: {
     phone?: string;
@@ -21,11 +30,14 @@ export type SiteSettings = {
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number };
   impressum?: { company?: string; street?: string; zip?: string; city?: string; register?: string; owner?: string };
   social?: { instagram?: string; tiktok?: string; facebook?: string };
+  google_review_quotes?: GoogleReviewQuote[];
 };
 
 export type FaqItem = {
   id: string;
   sort_order: number;
+  /** Filter-Kategorie auf der FAQ-Seite (z. B. preise, klassen). */
+  category?: string;
   question_de: string;
   answer_de: string;
   question_en: string | null;
@@ -131,6 +143,7 @@ export async function getSiteData(): Promise<SiteData> {
     const faq: FaqItem[] = (faqRes.data ?? []).map((r: Record<string, unknown>) => ({
       id: r.id as string,
       sort_order: (r.sort_order as number) ?? 0,
+      category: (r.category as string | undefined) ?? 'allgemein',
       question_de: (r.question_de as string) ?? '',
       answer_de: (r.answer_de as string) ?? '',
       question_en: (r.question_en as string | null) ?? null,

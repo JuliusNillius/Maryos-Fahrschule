@@ -12,7 +12,18 @@ const jsonLd = {
   alternateName: "MARYO'S FAHRSCHULE",
   description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. FAHR IN DEIN GLÜCK.",
   url: SITE_URL,
+  logo: `${SITE_URL.replace(/\/$/, '')}/logo.svg`,
+  image: [`${SITE_URL.replace(/\/$/, '')}/logo.png`],
   telephone: '+491784557528',
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: '+491784557528',
+      contactType: 'customer service',
+      areaServed: 'DE',
+      availableLanguage: ['de', 'tr', 'ar'],
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Bahnhofstraße 25',
@@ -20,6 +31,27 @@ const jsonLd = {
     addressLocality: 'Mönchengladbach',
     addressCountry: 'DE',
   },
+  areaServed: [
+    {
+      '@type': 'AdministrativeArea',
+      name: 'Mönchengladbach',
+    },
+    {
+      '@type': 'PostalCode',
+      postalCode: '41061',
+      addressCountry: 'DE',
+    },
+    {
+      '@type': 'PostalCode',
+      postalCode: '41063',
+      addressCountry: 'DE',
+    },
+    {
+      '@type': 'PostalCode',
+      postalCode: '41236',
+      addressCountry: 'DE',
+    },
+  ],
   geo: {
     '@type': 'GeoCoordinates',
     latitude: 51.1952,
@@ -49,6 +81,66 @@ const jsonLd = {
   owner: {
     '@type': 'Person',
     name: 'Yaako Maryo Asoo',
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Führerschein-Angebote',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Führerschein Klasse B',
+          serviceType: 'Driving lessons (Class B)',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Begleitetes Fahren (BF17)',
+          serviceType: 'Driving lessons (BF17)',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'B197 (Automatikprüfung mit Schaltkompetenz)',
+          serviceType: 'Driving lessons (B197)',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'BE (Anhängerführerschein)',
+          serviceType: 'Driving lessons (Class BE)',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Erste-Hilfe-Kurs (Führerschein)',
+          serviceType: 'First aid course for driver licensing',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Beratung zur Kostenübernahme / Förderung',
+          serviceType: 'Consultation',
+          areaServed: 'Mönchengladbach',
+        },
+      },
+    ],
   },
   sameAs: [
     'https://www.instagram.com/',

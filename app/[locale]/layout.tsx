@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!LOCALES.includes(locale)) return {};
   const meta = METADATA[locale as Locale];
   const canonical = getCanonicalUrl('/', locale as Locale);
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryos-fahrschule.de';
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryosfahrschule.de';
   const ogImage = `${base}/logo.png`;
   return {
     title: meta.title,

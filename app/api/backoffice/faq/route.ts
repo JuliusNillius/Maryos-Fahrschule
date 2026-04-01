@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     .from('faq')
     .insert({
       sort_order: body.sort_order ?? 0,
+      category: typeof body.category === 'string' && body.category ? body.category : 'allgemein',
       question_de: body.question_de ?? '',
       answer_de: body.answer_de ?? '',
       question_en: body.question_en ?? null,

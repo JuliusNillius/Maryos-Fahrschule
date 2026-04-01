@@ -8,8 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 import { setRegistrationClass } from '@/lib/registration';
 
-/** Nur PKW: Klasse B und BF17 */
-const CLASS_IDS = ['b', 'bf17'] as const;
+/** PKW: B, BF17, B197, BE */
+const CLASS_IDS = ['b', 'bf17', 'b197', 'be'] as const;
 
 type ClassesProps = { embedded?: boolean };
 
@@ -45,7 +45,8 @@ export default function Classes({ embedded }: ClassesProps) {
   }, []);
 
   const scrollToAnmelden = (classId: string) => {
-    setRegistrationClass(classId === 'b' ? 'B' : 'BF17');
+    const map: Record<string, string> = { b: 'B', bf17: 'BF17', b197: 'B197', be: 'BE' };
+    setRegistrationClass(map[classId] ?? 'B');
     const el = document.getElementById('anmelden');
     el?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -66,10 +67,10 @@ export default function Classes({ embedded }: ClassesProps) {
         </h2>
         <p className="-mt-8 mb-10 text-center font-body text-sm text-text-muted md:text-base">{t('intro')}</p>
 
-        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 xl:grid-cols-4">
           {CLASS_IDS.map((id, i) => {
             const badge = id === 'b' ? t('badgePopular') : null;
-            const label = id === 'b' ? 'B' : 'BF17';
+            const label = id === 'b' ? 'B' : id === 'bf17' ? 'BF17' : id === 'b197' ? 'B197' : 'BE';
             return (
               <div
                 key={id}

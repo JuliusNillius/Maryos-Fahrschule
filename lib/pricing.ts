@@ -75,3 +75,6 @@ export function getOfferDbFields(offer: OfferType): {
 /** Preisrechner: TÜV Praxisprüfung (nicht in Anmeldung enthalten, Richtwert) */
 export const PRICING_TUV_EUR = 250;
 export const PRICING_OTHER_EUR = 270;
+
+/** Erste-Hilfe-Kurs (eigene Leistung, nicht im Führerschein-Paket) */
+export const PRICING_ERSTE_HILFE_EUR = 50;

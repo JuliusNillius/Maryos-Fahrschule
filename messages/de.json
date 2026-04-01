@@ -1,5 +1,6 @@
 {
   "nav": {
+    "firstAid": "Erste Hilfe",
     "license": "Führerscheine",
     "teachers": "Lehrer",
     "prices": "Preise",
@@ -17,6 +18,20 @@
     "phone": "Anrufen",
     "floatActionsHint": "WhatsApp & Termin: feste grüne Buttons unten rechts."
   },
+  "ersteHilfePage": {
+    "metaTitle": "Erste Hilfe für den Führerschein | Mönchengladbach",
+    "metaDescription": "Erste-Hilfe-Kurs für den Führerschein in Mönchengladbach: 50 €, separat buchbar — nicht im Führerschein-Anmeldepaket enthalten.",
+    "kicker": "Extra-Leistung",
+    "heading": "Erste Hilfe für den Führerschein",
+    "priceLine": "{price} € · inkl. MwSt.",
+    "intro": "Der Erste-Hilfe-Kurs ist für die Führerscheinanmeldung vorgeschrieben. Bei uns machst du den Kurs direkt in der Fahrschule — mit offizieller Bescheinigung.",
+    "notInLicensePackage": "Wichtig: Der Kurs ist nicht in der Führerschein-Anmeldung (Anmeldegebühr + App-Paket) enthalten. Er wird separat gebucht und bezahlt.",
+    "bullet1": "Bescheinigung für die Behörde / Führerscheinstelle",
+    "bullet2": "Kompakter Kurs, Termine nach Absprache",
+    "bullet3": "Ort: Maryo's Fahrschule, Mönchengladbach",
+    "ctaTermin": "Termin vereinbaren",
+    "ctaPrices": "Zu den Führerschein-Preisen"
+  },
   "homeTabs": {
     "ariaLabel": "Themen der Startseite",
     "aboutUs": "Über uns",
@@ -32,25 +47,25 @@
     "badge": "Mönchengladbach's #1 Fahrschule",
     "headline": "FAHR IN DEIN GLÜCK",
     "headlineHighlight": "GLÜCK",
-    "subheadline": "Jetzt deinen Führerschein machen — wir begleiten dich. Aktuell nur Auto: Klasse B & BF17.",
+    "subheadline": "Jetzt deinen Führerschein machen — wir begleiten dich. PKW: Klasse B, BF17, B197 und BE (Anhänger). Erste Hilfe separat.",
     "ctaPrimary": "JETZT ANMELDEN",
     "ctaSecondary": "UNSERE LEHRER →",
     "statGoogle": "5.0 ★ Google",
     "statReviews": "18 Rezensionen",
     "statLanguages": "3 Sprachen",
-    "statClasses": "B & BF17"
+    "statClasses": "B · BF17 · B197 · BE"
   },
   "trustBar": {
     "item1": "⭐ 5.0 Google",
     "item2": "18 Rezensionen",
     "item3": "Apple Pay",
     "item4": "Sofort & Klarna",
-    "item5": "Nur PKW: B & BF17",
+    "item5": "PKW: B · BF17 · B197 · BE",
     "item6": "3 Sprachen (DE · TR · AR)",
     "item7": "Mönchengladbach",
     "item8": "WhatsApp Support",
     "item9": "Gegründet 2025",
-    "item10": "B · BF17 · 65 € / Fahrstunde",
+    "item10": "B · BF17 · B197 · BE · 65 € / Fahrstunde",
     "item11": "100% Online",
     "item12": "TÜV-Prüfung"
   },
@@ -61,7 +76,7 @@
     "card1Title": "Deinen Lehrer wählen",
     "card1Desc": "Wähle nach Sprache, Sympathie und Verfügbarkeit.",
     "card2Title": "Fokus Auto",
-    "card2Desc": "Aktuell nur PKW: Klasse B und BF17 — damit du klar deinen Führerschein machst.",
+    "card2Desc": "PKW: B, BF17, B197 und BE — damit du deinen Führerschein klar und passend machst.",
     "card3Title": "3 Sprachen",
     "card3Desc": "Deutsch, Arabisch und Türkisch — wie auf der Website und beim Lehrer-Quiz.",
     "card4Title": "5.0 Sterne",
@@ -73,7 +88,7 @@
   },
   "classes": {
     "heading": "DEIN FÜHRERSCHEIN — AUTO",
-    "intro": "Du machst jetzt deinen Führerschein — transparent und auf den Punkt. Aktuell bieten wir nur PKW-Ausbildung: Klasse B oder BF17 (begleitetes Fahren ab 17).",
+    "intro": "Du machst jetzt deinen Führerschein — transparent und auf den Punkt. PKW: Klasse B, BF17 (begleitet ab 17), B197 (Automatik + Schaltkompetenz) und BE (Anhänger). Erste Hilfe buchst du separat über „Erste Hilfe“ im Menü.",
     "badgePopular": "KLASSIKER",
     "cta": "Jetzt anmelden",
     "bTitle": "Klasse B",
@@ -81,7 +96,13 @@
     "bDetail": "Schaltung oder Automatik. Anmeldung 349 € inkl. MwSt., Lern-App 50 € inkl. MwSt., Fahrstunden 65 € inkl. MwSt.",
     "bf17Title": "BF17",
     "bf17Subtitle": "Begleitetes Fahren ab 17",
-    "bf17Detail": "Gleiche Ausbildung wie Klasse B mit begleitetem Fahren bis zur Volljährigkeit — dieselben Preise für Anmeldung, App und Fahrstunden."
+    "bf17Detail": "Gleiche Ausbildung wie Klasse B mit begleitetem Fahren bis zur Volljährigkeit — dieselben Preise für Anmeldung, App und Fahrstunden.",
+    "b197Title": "B197",
+    "b197Subtitle": "Automatik prüfen, Schaltwagen fahren",
+    "b197Detail": "Praktische Prüfung auf Automatik — mit nachgewiesener Schaltkompetenz darfst du später auch Schaltwagen fahren. Gleiche Anmeldung, App und Fahrstundenpreise wie bei B.",
+    "beTitle": "BE",
+    "beSubtitle": "Anhängerführerschein",
+    "beDetail": "Für größere Anhänger mit dem Auto: Rangieren, Kuppeln und sicheres Fahren. Preise und Dauer je nach Stand — wir beraten dich gern."
   },
   "instructors": {
     "heading": "DEIN LEHRER. DEINE WAHL.",
@@ -102,7 +123,7 @@
     "google": "Sterne Google",
     "reviews": "Bewertungen",
     "languages": "Sprachen",
-    "classes": "B & BF17"
+    "classes": "B · BF17 · B197 · BE"
   },
   "booking": {
     "cta": "Termin anfragen"
@@ -136,7 +157,7 @@
     "q2a": "Ruhig & geduldig — ich brauche Zeit und klare Schritte",
     "q2b": "Strukturiert & zügig — sag mir bitte direkt, was ich besser machen kann",
     "q2c": "Locker & ehrlich — mit Humor lernt sich’s leichter",
-    "q3": "Worauf hast du bei der Fahrt am meisten Lust? (rein zur Einordnung — wir bieten nur PKW B / BF17)",
+    "q3": "Worauf hast du bei der Fahrt am meisten Lust? (rein zur Einordnung — wir bieten PKW B, BF17, B197, BE)",
     "q3a": "Schaltwagen — klassisch",
     "q3b": "Automatik — entspannt",
     "q3c": "Weiß ich noch nicht / ist mir egal",
@@ -204,7 +225,11 @@
   },
   "priceCalculator": {
     "heading": "WAS KOSTET DEINE FAHRERAUSBILDUNG?",
-    "sub": "Nur PKW — Klasse B oder BF17. Alle Beträge inkl. MwSt.",
+    "sub": "PKW — Klasse B, BF17, B197 oder BE. Alle Beträge inkl. MwSt.",
+    "ersteHilfeTeaser": "Erste Hilfe (extra, nicht im Führerschein-Paket): {price} €.",
+    "ersteHilfeCta": "Zur Erste-Hilfe-Seite →",
+    "classB197Label": "B197",
+    "classBELabel": "BE (Anhänger)",
     "budgetHint": "Richtwert Gesamtbudget inkl. typischer Nebenkosten: ca. 2.000 € wenn du sehr schnell lernst (~18 Fahrstunden), ca. 2.400 € im Durchschnitt (~24 Std.), ca. 2.800 € mit mehr Übung (~30 Std., z. B. bei Unsicherheit).",
     "step1": "Klasse wählen",
     "step2Hours": "Fahrstunden (geschätzt)",
@@ -230,12 +255,18 @@
   "pricing": {
     "heading": "FAIRE PREISE. KEINE ÜBERRASCHUNGEN.",
     "badgePopular": "BELIEBT",
+    "classNames": {
+      "b": "Klasse B",
+      "bf17": "BF17",
+      "b197": "B197",
+      "be": "BE (Anhänger)"
+    },
+    "exclFirstAid": "Erste Hilfe (separat, Menü „Erste Hilfe“)",
     "from": "ab",
     "addOnNote": "zusätzlich zu Klasse B",
     "inclRegistration": "Anmeldegebühr",
     "inclMaterial": "Lernmaterial",
     "inclTheory": "Theoriestunden (unbegrenzt)",
-    "inclFirstAid": "Erste-Hilfe-Kurs (Info)",
     "exclDriving": "Fahrstunden (nach Bedarf)",
     "exclExam": "Prüfungsgebühren TÜV",
     "cta": "Jetzt anmelden",
@@ -244,7 +275,11 @@
   "reviews": {
     "headingFallback": "Bewertungen",
     "subtextGeneric": "Google-Bewertungen",
-    "subtextCount": "{count} Google-Bewertungen"
+    "subtextCount": "{count} Google-Bewertungen",
+    "quotesHeading": "Das sagen Fahrschüler:innen",
+    "sourceGoogle": "Google",
+    "anonymousReviewer": "Fahrschüler/in (Google)",
+    "quotesHint": "Auszüge aus echten Google-Bewertungen. Texte im Backoffice unter „Google-Rezensionen“ eintragen."
   },
   "faq": {
     "heading": "HÄUFIGE FRAGEN",
@@ -267,6 +302,69 @@
     "q9Q": "Kann ich mich für BF17 / Begleitetes Fahren anmelden?",
     "q9A": "Ja, ab 17 Jahren mit geeigneter Begleitperson."
   },
+  "faqPage": {
+    "metaTitle": "FAQ Führerschein Mönchengladbach | Maryo's Fahrschule",
+    "metaDescription": "Antworten zu Preisen, Klassen B/BF17/B197/BE, Jobcenter, Erste Hilfe und Ablauf — Fahrschule Maryo's in Mönchengladbach.",
+    "kicker": "Alles, was du wissen willst",
+    "heroTitle": "Fragen & Antworten",
+    "heroLead": "Hier sammeln wir, was Fahrschüler:innen in Mönchengladbach und aus der Nachbarschaft uns am häufigsten fragen: von Kosten über Förderung bis BF17 und B197. Unten filterst du nach Thema oder suchst direkt.",
+    "searchLabel": "FAQ durchsuchen",
+    "searchPlaceholder": "z. B. Jobcenter, Preis, BF17 …",
+    "filterAria": "Themenfilter",
+    "filterAll": "Alle",
+    "categories": {
+      "allgemein": "Allgemein",
+      "preise": "Preise",
+      "klassen": "Klassen",
+      "foerderung": "Förderung",
+      "anmeldung": "Anmeldung"
+    },
+    "ctaPreise": "Zu den Preisen",
+    "ctaAnmelden": "Jetzt anmelden",
+    "empty": "Keine Treffer — anderen Filter wählen oder Suchbegriff ändern.",
+    "footerHint": "Änderungen an Einzelantworten kannst du im Backoffice vornehmen; diese Seite zieht live aus der Datenbank."
+  },
+  "preisePage": {
+    "metaTitle": "Führerschein Preise Mönchengladbach | Rechner B BF17 B197 BE",
+    "metaDescription": "Transparente Kosten: Anmeldung, App, Fahrstunden 65 €, TÜV & Erste Hilfe erklärt. Fahrschule Maryo's Mönchengladbach — mit interaktivem Preisrechner.",
+    "kicker": "Kosten auf einen Blick",
+    "heading": "Führerschein-Preise in Mönchengladbach",
+    "intro1": "Ob du in Rheydt, Wickrath oder einem anderen Stadtteil wohnst — bei uns in der Innenstadt an der Bahnhofstraße planst du deinen Führerschein mit denselben klaren Preisen wie alle unsere PKW-Fahrschüler:innen.",
+    "intro2": "Die Anmeldung und die Lern-App sind der Einstieg; Fahrstunden zahlst du nach Bedarf. TÜV-Gebühren und der Erste-Hilfe-Kurs sind separate Posten — so bleibt nichts versteckt. Fragen zu Jobcenter oder Förderung beantworten wir in der FAQ.",
+    "intro3": "Nutze den Rechner unten für Klasse B, BF17, B197 oder BE und spiele verschiedene Stundenzahlen durch — passend zu deinem Tempo."
+  },
+  "fuehrerscheinPage": {
+    "ctaPreise": "Preise & Rechner",
+    "ctaAnmelden": "Online anmelden",
+    "ctaErsteHilfe": "Erste Hilfe",
+    "ctaFaq": "FAQ: Jobcenter & mehr",
+    "bMetaTitle": "Führerschein Klasse B Mönchengladbach | Maryo's Fahrschule",
+    "bMetaDescription": "Pkw Klasse B in Mönchengladbach: Ausbildung, Preise, Erste Hilfe, B197 & BE im Überblick — Maryo's Fahrschule Bahnhofstraße.",
+    "bKicker": "Klasse B",
+    "bH1": "Pkw-Führerschein Klasse B",
+    "bLead": "Der klassische Weg zum Auto-Führerschein ab 18 — mit moderner Anmeldung, fairen Preisen und Unterricht auf Deutsch, Türkisch oder Arabisch. Unsere Basis in Mönchengladbach erreichst du gut mit ÖPNV und Auto.",
+    "bH2Ausbildung": "Theorie, Praxis, Prüfung",
+    "bBodyAusbildung": "Du durchläufst die theoretische Ausbildung (Lern-App inklusive), sammelst Sonderfahrten und Übungsfahrten auf der Straße und legst Theorie- sowie Praxisprüfung beim TÜV ab. Wie viele Fahrstunden du brauchst, ist individuell — nach den ersten Fahrten bekommst du von uns ehrliches Feedback, damit du realistisch planen kannst.",
+    "bH2MG": "Fahrschule in Mönchengladbach",
+    "bBodyMG": "Wir sind direkt in Mönchengladbach für dich da — viele Schüler:innen pendeln von umliegenden Stadtteilen oder Nachbarorten zu uns. Kurze Wege zur Theorie, klare Absprachen per WhatsApp oder Telefon und ein Team, das den Stadtverkehr und typische Prüfungsrouten kennt.",
+    "bH2Weitere": "B197, BE und Erste Hilfe",
+    "bBodyWeitere": "Neben Klasse B bieten wir BF17 (begleitetes Fahren ab 17), B197 (Automatik-Prüfung mit Schaltkompetenz) und BE (Anhänger). Der Erste-Hilfe-Kurs ist Pflicht für die Anmeldung und bei uns separat buchbar — siehe Menüpunkt „Erste Hilfe“.",
+    "bH2Preise": "Was kostet es?",
+    "bBodyPreise": "Anmeldung 349 € und Lern-App 50 € (jeweils inkl. MwSt.), jede Fahrstunde 65 € inkl. MwSt. TÜV und Erste Hilfe kommen oben drauf — den Gesamtüberblick bekommst du im Preisrechner und in unserer FAQ.",
+    "bf17MetaTitle": "BF17 begleitetes Fahren Mönchengladbach | Maryo's Fahrschule",
+    "bf17MetaDescription": "BF17 ab 17 in Mönchengladbach: begleitetes Fahren, gleiche PKW-Ausbildung wie Klasse B — Anmeldung, Preise und Ablauf bei Maryo's Fahrschule.",
+    "bf17Kicker": "BF17",
+    "bf17H1": "Begleitetes Fahren ab 17 (BF17)",
+    "bf17Lead": "Mit BF17 startest du früher ins Üben — die Ausbildung entspricht im Kern der Klasse B, bis du 18 wirst begleitet von einer geeigneten Person auf der Straße. Wir begleiten dich durch die Formalitäten und die Fahrstunden — hier in Mönchengladbach.",
+    "bf17H2Ausbildung": "Besonderheiten von BF17",
+    "bf17BodyAusbildung": "Du erfüllst die vorgeschriebenen Sonder- und Überlandfahrten wie bei Klasse B und übst anschließend im begleiteten Modus. Die Begleitperson muss die gesetzlichen Voraussetzungen erfüllen — welche das sind, erklären wir dir gern persönlich, damit nichts schiefgeht.",
+    "bf17H2MG": "Praxisnah in Mönchengladbach",
+    "bf17BodyMG": "Stadtverkehr, Kreisel und typische Situationen in Mönchengladbach übst du mit uns strukturiert. So bist du vorbereitet — egal ob du später zur Schule, zur Arbeit oder in den Nachbarort fährst.",
+    "bf17H2Weitere": "Danach: voller Klasse-B-Schein",
+    "bf17BodyWeitere": "Nach der Volljährigkeit und erfolgreicher Prüfung hast du den regulären Pkw-Führerschein. Parallel kannst du dich bei uns auch über B197 oder BE informieren, wenn du später Automatik mit Schaltoption oder Anhänger dazu möchtest.",
+    "bf17H2Preise": "Preise wie bei Klasse B",
+    "bf17BodyPreise": "Für Anmeldung, App und Fahrstunden gelten dieselben transparenten Sätze wie für Klasse B — rechne dein Szenario im Preisrechner durch. Förderung über Jobcenter oder Agentur für Arbeit ist grundsätzlich möglich, wenn deine Behörde bewilligt; Details dazu findest du in der FAQ."
+  },
   "contact": {
     "heading": "KOMM VORBEI",
     "hours": "Mo–Fr: 12:00–18:00 Uhr",
@@ -283,13 +381,17 @@
     "prices": "Preise",
     "register": "Anmelden",
     "licenseClasses": "Aktuelles Angebot",
-    "classOffer": "B · BF17 (nur PKW)",
+    "classOffer": "B · BF17 · B197 · BE · Erste Hilfe",
     "contact": "Kontakt",
     "hours": "Mo–Fr 12:00–18:00",
     "owner": "Inhaber",
     "imprint": "Impressum",
     "privacy": "Datenschutz",
-    "terms": "AGB"
+    "terms": "AGB",
+    "paymentSecure": "Sichere Zahlung",
+    "paymentHint": "Abwicklung über Stripe (verschlüsselt). Je nach Gerät u. a. Apple Pay, Google Pay, PayPal, Kreditkarte, Klarna und weitere Methoden.",
+    "paymentAria": "Akzeptierte Zahlungsmethoden",
+    "paymentDebit": "EC / Debit"
   },
   "whatsapp": {
     "tooltip": "Schreib uns!",
@@ -326,6 +428,7 @@
     "idDocErrorEmpty": "Bitte beide Seiten auswählen.",
     "idDocErrorSize": "Datei zu groß (max. 2 MB).",
     "idDocErrorMime": "Nur JPEG, PNG oder WebP.",
+    "paymentSessionStale": "Die Zahlungssitzung ist ungültig. Bitte „Zahlung starten“ erneut wählen.",
     "paymentExplainer": "Ablauf: (1) Daten prüfen und AGB akzeptieren. (2) Mit „Anmelden & zahlen“ öffnet sich das sichere Stripe-Fenster. (3) Dort wählst du deine Zahlungsart — z. B. Karte, Apple/Google Pay, Klarna (Ratenzahlung / Sofort, je nach Verfügbarkeit in deinem Stripe-Konto). (4) Die 399 € decken Anmeldung + Lern-App; Fahrstunden und TÜV-Gebühren zahlst du separat laut AGB/Preisliste. Klarna & Co. aktivierst du im Stripe-Dashboard unter Zahlungsmethoden.",
     "referrerCode": "Empfehlungscode (optional)",
     "referrerCodePlaceholder": "z. B. MARYO-ABC123",
@@ -335,6 +438,8 @@
     "licenceClass": "Ausbildungswahl",
     "licenceOptionB": "Klasse B (ab 18)",
     "licenceOptionBF17": "BF17 (begleitet ab 17)",
+    "licenceOptionB197": "B197 (Automatik + Schaltkompetenz)",
+    "licenceOptionBE": "BE (Anhängerführerschein)",
     "transmissionManual": "Schaltung",
     "transmissionAuto": "Automatik",
     "instructor": "Wunschlehrer",

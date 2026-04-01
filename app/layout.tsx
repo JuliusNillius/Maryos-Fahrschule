@@ -36,7 +36,7 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryos-fahrschule.de'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryosfahrschule.de'),
   title: { default: "Maryo's Fahrschule | Mönchengladbach", template: "%s | Maryo's Fahrschule" },
   description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. 5.0 ★ Google.",
   robots: { index: true, follow: true },

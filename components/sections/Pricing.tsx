@@ -10,15 +10,20 @@ import type { PricingItem } from '@/lib/site-data';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const CLASS_ORDER = ['b', 'bf17', 'b197', 'be'] as const;
+
+/** Erste Hilfe: eigene Seite + Nav, keine Führerschein-Preiskarte */
 const PRICING_FALLBACK = [
   { id: 'b', price: '1.800', popular: true },
   { id: 'bf17', price: '1.800', popular: false },
+  { id: 'b197', price: '2.000', popular: false },
+  { id: 'be', price: '900', popular: false },
 ] as const;
 
 type PricingProps = { pricing?: PricingItem[] | null; embedded?: boolean };
 
 export default function Pricing({ pricing, embedded }: PricingProps) {
-  const items = pricing?.length
+  const raw = pricing?.length
     ? pricing.map((p) => ({
         id: p.class_id,
         price: p.price,
@@ -26,7 +31,31 @@ export default function Pricing({ pricing, embedded }: PricingProps) {
         note: p.note ?? undefined,
       }))
     : [...PRICING_FALLBACK];
+  const items = [...raw]
+    .filter((x) => x.id !== 'erste_hilfe')
+    .sort((a, b) => {
+      const ia = CLASS_ORDER.indexOf(a.id as (typeof CLASS_ORDER)[number]);
+      const ib = CLASS_ORDER.indexOf(b.id as (typeof CLASS_ORDER)[number]);
+      if (ia === -1 && ib === -1) return 0;
+      if (ia === -1) return 1;
+      if (ib === -1) return -1;
+      return ia - ib;
+    });
   const t = useTranslations('pricing');
+  const classTitle = (id: string) => {
+    switch (id) {
+      case 'b':
+        return t('classNames.b');
+      case 'bf17':
+        return t('classNames.bf17');
+      case 'b197':
+        return t('classNames.b197');
+      case 'be':
+        return t('classNames.be');
+      default:
+        return id.toUpperCase();
+    }
+  };
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
@@ -93,7 +122,7 @@ export default function Pricing({ pricing, embedded }: PricingProps) {
               <div className="relative">
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="font-heading text-xl font-bold italic uppercase text-white">
-                    {item.id.toUpperCase()}
+                    {classTitle(item.id)}
                   </span>
                   {'popular' in item && item.popular && (
                     <span className="rounded-full border border-green-primary/50 bg-green-primary/15 px-3 py-1 font-body text-xs uppercase tracking-wide text-green-primary">
@@ -117,8 +146,8 @@ export default function Pricing({ pricing, embedded }: PricingProps) {
                   <li className="flex items-center gap-2">
                     <span className="text-green-primary">✓</span> {t('inclTheory')}
                   </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-green-primary">✓</span> {t('inclFirstAid')}
+                  <li className="flex items-center gap-2 text-text-muted/80">
+                    <span className="text-red-500/80">✗</span> {t('exclFirstAid')}
                   </li>
                   <li className="flex items-center gap-2 text-text-muted/80">
                     <span className="text-red-500/80">✗</span> {t('exclDriving')}
@@ -129,7 +158,15 @@ export default function Pricing({ pricing, embedded }: PricingProps) {
                 </ul>
                 <Link
                   href="/anmelden"
-                  onClick={() => setRegistrationClass(item.id.toUpperCase())}
+                  onClick={() => {
+                    const map: Record<string, string> = {
+                      b: 'B',
+                      bf17: 'BF17',
+                      b197: 'B197',
+                      be: 'BE',
+                    };
+                    setRegistrationClass(map[item.id] ?? item.id.toUpperCase());
+                  }}
                   className="btn-primary mt-6 w-full justify-center"
                   data-cta
                   data-testid={`pricing-cta-${item.id}`}

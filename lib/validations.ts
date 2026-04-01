@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-/** Nur PKW: Klasse B oder BF17 (Begleitetes Fahren) */
-const LICENCE_CLASSES = ['B', 'BF17'] as const;
+/** PKW: B, BF17, B197, BE */
+const LICENCE_CLASSES = ['B', 'BF17', 'B197', 'BE'] as const;
 /** Unterrichts- / Kommunikationssprachen (Website & Anmeldung: DE, TR, AR) */
 const LANGUAGES = ['de', 'ar', 'tr'] as const;
 const TIME_SLOTS = ['morning', 'noon', 'afternoon', 'evening'] as const;

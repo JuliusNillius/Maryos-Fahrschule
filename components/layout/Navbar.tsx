@@ -15,6 +15,7 @@ const mainNavItems = [
   { href: '/lehrer', key: 'teachers' as const },
   { href: '/team', key: 'more' as const },
   { href: '/faq', key: 'faqContact' as const },
+  { href: '/erste-hilfe', key: 'firstAid' as const },
 ];
 
 const languages = [

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Logo from '@/components/layout/Logo';
+import PaymentMethodsBar from '@/components/layout/PaymentMethodsBar';
 
 type FooterProps = {
   contact?: { phone?: string; street?: string; zip?: string; city?: string } | null;
@@ -122,6 +123,7 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
           </div>
         </div>
       </div>
+      <PaymentMethodsBar />
     </footer>
   );
 }
