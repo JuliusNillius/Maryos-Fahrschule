@@ -46,6 +46,14 @@ function quotesToSchemaReviews(quotes: GoogleReviewQuote[] | undefined) {
 /** DrivingSchool JSON-LD inkl. Review-Liste (CMS-Zitate oder Fallback). */
 export function buildDrivingSchoolSchema(quotes?: GoogleReviewQuote[]) {
   const base = SITE_URL.replace(/\/$/, '');
+  const googleBusinessUrl = process.env.NEXT_PUBLIC_GOOGLE_BUSINESS_PROFILE_URL?.trim();
+  const sameAs = [
+    ...(googleBusinessUrl ? [googleBusinessUrl] : []),
+    'https://www.instagram.com/',
+    'https://www.tiktok.com/',
+    'https://www.facebook.com/',
+    'https://www.youtube.com/',
+  ];
   return {
     '@context': 'https://schema.org',
     '@type': 'DrivingSchool',
@@ -80,6 +88,7 @@ export function buildDrivingSchoolSchema(quotes?: GoogleReviewQuote[]) {
       { '@type': 'PostalCode', postalCode: '41236', addressCountry: 'DE' },
     ],
     geo: { '@type': 'GeoCoordinates', latitude: 51.1952, longitude: 6.4417 },
+    ...(googleBusinessUrl ? { hasMap: googleBusinessUrl } : {}),
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -163,12 +172,7 @@ export function buildDrivingSchoolSchema(quotes?: GoogleReviewQuote[]) {
         },
       ],
     },
-    sameAs: [
-      'https://www.instagram.com/',
-      'https://www.tiktok.com/',
-      'https://www.facebook.com/',
-      'https://www.youtube.com/',
-    ],
+    sameAs,
     potentialAction: {
       '@type': 'CommunicateAction',
       target: {

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 import { routing } from '@/i18n/routing';
+import { getPosts } from '@/lib/sanity-blog';
 
 const LOCALES = routing.locales as readonly string[];
 const SUBPAGES = [
@@ -17,6 +18,10 @@ const SUBPAGES = [
   'impressum',
   'datenschutz',
   'agb',
+  'intensivkurs',
+  'automatik-fuehrerschein',
+  'fahrschule-rheydt',
+  'bf17-begleitetes-fahren',
 ] as const;
 
 const FUEHRERSCHEIN_KLASSEN = ['b', 'bf17'] as const;
@@ -27,9 +32,10 @@ function pathForLocale(locale: string, subpage: string): string {
   return `${base}/${locale}${suffix}`;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
+  const posts = await getPosts();
 
   for (const locale of LOCALES) {
     for (const subpage of SUBPAGES) {
@@ -37,7 +43,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: pathForLocale(locale, subpage),
         lastModified: now,
         changeFrequency: subpage === '' ? ('weekly' as const) : ('monthly' as const),
-        priority: subpage === '' ? 1 : 0.7,
+        priority:
+          subpage === ''
+            ? 1
+            : ['intensivkurs', 'automatik-fuehrerschein', 'fahrschule-rheydt', 'bf17-begleitetes-fahren'].includes(
+                  subpage,
+                )
+              ? 0.85
+              : 0.7,
       });
     }
 
@@ -47,6 +60,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: 0.8,
+      });
+    }
+
+    for (const post of posts) {
+      const slug = typeof post.slug === 'string' ? post.slug.trim() : '';
+      if (!slug) continue;
+      const lastMod =
+        post.publishedAt && !Number.isNaN(Date.parse(post.publishedAt))
+          ? new Date(post.publishedAt)
+          : now;
+      entries.push({
+        url: pathForLocale(locale, `blog/${slug}`),
+        lastModified: lastMod,
+        changeFrequency: 'monthly' as const,
+        priority: 0.65,
       });
     }
   }

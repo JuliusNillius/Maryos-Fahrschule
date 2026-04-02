@@ -278,6 +278,8 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
                 width={160}
                 height={160}
                 loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 className="relative z-10 block h-full w-full max-h-[160px] max-w-[160px] object-contain"
                 style={cloverImgStyle}
                 draggable={false}

@@ -6,7 +6,6 @@ import {
   Orbitron,
 } from 'next/font/google';
 import './globals.css';
-import JsonLd from '@/components/layout/JsonLd';
 import LenisProvider from '@/components/providers/LenisProvider';
 
 // §03 Heading: Barlow Condensed 700 Italic — ALL CAPS
@@ -40,7 +39,12 @@ export const metadata: Metadata = {
   description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. 5.0 ★ Google.",
   robots: { index: true, follow: true },
   icons: {
-    apple: [{ url: '/logo.svg', type: 'image/svg+xml' }],
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+    shortcut: '/favicon.ico',
   },
 };
 
@@ -75,10 +79,7 @@ export default async function RootLayout({
             strategy="afterInteractive"
           />
         )}
-        <LenisProvider>
-          <JsonLd />
-          {children}
-        </LenisProvider>
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );

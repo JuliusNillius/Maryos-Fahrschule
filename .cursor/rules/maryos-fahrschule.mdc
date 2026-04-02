@@ -1,0 +1,60 @@
+---
+description: Maryo's Fahrschule – Stack, Zusammenarbeit, Prioritäten, Tabus
+alwaysApply: true
+---
+
+# Maryo's Fahrschule (Next.js)
+
+## Infrastruktur (vom Maintainer bestätigt)
+- **Code:** GitHub
+- **Hosting / Build:** Vercel
+- **Datenbank / Auth / Storage:** Supabase (Cursor: Supabase-MCP kann genutzt werden)
+- **Domain:** Strato (typisch: DNS auf Vercel zeigen lassen)
+- **Zahlungen:** Stripe ist im Einsatz
+- **Blog / CMS:** Sanity nur falls aktiv genutzt; ohne Freigabe nicht an Sanity-Anbindung rütteln
+
+## Zusammenarbeit mit dem Maintainer
+- Der Maintainer ist beim Formulieren technischer Aufgaben **nicht** auf Senior-Niveau – das ist normal. Der Assistent **übernimmt die fachliche Präzision** (Plan, Optionen, Umsetzung).
+- Bei **vagen Ideen** oder **mehrdeutigen Sätzen:** **zuerst kurz nachfragen** (1–3 gezielte Rückfragen oder 2–3 Optionen zur Auswahl), **bevor** größere oder sichtbare Änderungen gemacht werden.
+- **Vorschläge** (Performance, UX, Code-Qualität) sind erwünscht – aber **keine breiten Umbauten** ohne explizites Okay, besonders bei Texten, Locales und Marken-Look.
+- Wenn der Maintainer sagt „mach X“, bei Unklarheit: **kurz bestätigen**, was genau gemeint ist (Scope, Seite, Sprache).
+
+## Prioritäten (abgeleitet, Reihenfolge)
+1. **Stabilität & Qualität:** Bestehendes zuverlässig laufen lassen, Regressionen vermeiden, was „steht“ nicht ohne Grund anfassen.
+2. **Performance & Barrierefreiheit:** Wo messbar (Lighthouse, Web Vitals) – gezielt verbessern, nicht blind refactoren.
+3. **Backoffice & neue Features:** Wichtig, aber **nach** Klärung und mit fokussierten Diffs.
+4. **Inhalt / Übersetzungen:** Nur auf **expliziten Auftrag** oder nach Abgleich aller betroffenen `messages/*.json` – siehe Tabus.
+
+## Tabus & Vorsicht
+- **Übersetzungen / Locales:** Nichts „neu erfinden“ oder sprachlich umbiegen. Alle Sprachen (`de`, `en`, `tr`, `ru`, `ar`) **inhaltlich konsistent** halten; Änderungen **über alle betroffenen Keys** gleichziehen, es sei denn, der Maintainer will nur eine Sprache – dann **nachfragen**.
+- **Hero-Video, Marken-Assets, Preise, rechtliche Texte:** Nicht ohne **explizite Freigabe** ändern.
+- **Kein „mal eben“:** Layout, Copy und Struktur haben ihren Platz; Änderungen immer **zweckgebunden** und **nachvollziehbar** erklären.
+
+## Stack (technisch)
+- Next.js 14 App Router, React 18, TypeScript
+- `next-intl` (`app/[locale]/`, `messages/*.json`)
+- Tailwind, GSAP + ScrollTrigger, Lenis (Desktop; `prefers-reduced-motion` beachten)
+- Optional: Plausible (Env), Resend, Sanity-Blog
+
+## Antworten & UI
+- Assistent antwortet auf **Deutsch**.
+- Kein „§“ in nutzersichtbaren Strings; Kontraste (WCAG) bei neuen Textfarben beachten.
+
+## Code-Stil
+- **Fokussierte Diffs** – nur nötige Dateien; kein Refactor nebenbei.
+- Bestehende Patterns beibehalten.
+- Keine neuen Markdown-Docs ohne Auftrag.
+
+## Performance (wenn relevant)
+- LCP: `next/image`, `fetchPriority` wo sinnvoll.
+- Große Binärdateien: siehe Team-Entscheidung (LFS / extern / nicht im Git) in dieser Rule oder README-intern.
+- Nach größeren Änderungen: `npm run build` erwähnen.
+
+## Sicherheit
+- Keine Secrets in Git; `.env.local` nur lokal.
+- CSP in Production (`next.config.js`); bei Bedarf `CSP_DISABLE=1` (`.env.example`).
+
+## Große Dateien (Hero-Videos)
+- **Code:** `Hero` nutzt standardmäßig `/videos/hero.mp4` + `hero-mobile.mp4` aus `public/`. Optional überschreiben mit **`NEXT_PUBLIC_HERO_VIDEO_DESKTOP_URL`** und **`NEXT_PUBLIC_HERO_VIDEO_MOBILE_URL`** (volle HTTPS-URL, z. B. Supabase Storage public).
+- **CSP (Production):** `media-src` erlaubt `https:` für externe Video-URLs.
+- Strategie (LFS vs. extern vs. nur `public/`) vom Maintainer wählen; siehe Nutzer-Doku.

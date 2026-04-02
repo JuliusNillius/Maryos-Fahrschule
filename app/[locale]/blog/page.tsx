@@ -1,10 +1,20 @@
+import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPosts, getPostImageUrl } from '@/lib/sanity-blog';
 import { Link as NavLink } from '@/i18n/navigation';
+import { buildPageMetadata, type Locale } from '@/lib/seo';
+import { staticPageMeta } from '@/lib/seo-static-pages';
 
 type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const l = (locale as Locale) || 'de';
+  const m = staticPageMeta('blog', l);
+  return buildPageMetadata({ locale: l, path: '/blog', title: m.title, description: m.description });
+}
 
 export default async function BlogPage({ params }: Props) {
   const { locale } = await params;

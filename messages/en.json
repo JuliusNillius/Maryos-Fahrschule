@@ -416,6 +416,8 @@
     "hours": "Mon–Fri: 12:00 p.m.–6:00 p.m",
     "closed": "Sat + Sun: Closed",
     "mapTitle": "Location of Maryo's driving school",
+    "mapEmbedNotice": "The embedded map loads when you scroll here — faster initial page load.",
+    "mapOpenExternal": "Open location in Google Maps",
     "floatActionsHint": "WhatsApp and appointment request: green quick buttons at the bottom right (chat and calendar symbol). For calling see telephone above."
   },
   "footer": {

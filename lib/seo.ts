@@ -8,7 +8,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.maryosf
 
 export const DEFAULT_TITLE = "Maryo's Fahrschule Mönchengladbach | PKW B · BF17 · B197 · BE";
 export const DEFAULT_DESCRIPTION =
-  "Fahrschule Mönchengladbach (Bahnhofstraße): Führerschein PKW B, BF17, B197, BE. Online anmelden, Lehrer wählen, klare Preise. Tel. 0178 4557528";
+  "Fahrschule Mönchengladbach Rheydt, Bahnhofstr. 25: Führerschein B, BF17, B197, BE, Intensivkurs. Fahr in dein Glück. Online anmelden, 65 €/Fahrstunde, mehrsprachig. Tel. 0178 4557528";
 
 export type Locale = 'de' | 'en' | 'tr' | 'ar';
 
@@ -17,9 +17,9 @@ export const METADATA: Record<
   { title: string; description: string; openGraphTitle?: string; openGraphDescription?: string }
 > = {
   de: {
-    title: "Maryo's Fahrschule Mönchengladbach | PKW B · BF17 · B197 · BE",
+    title: "Maryo's Fahrschule Mönchengladbach Rheydt | Führerschein B · BF17 · B197 · BE",
     description:
-      "Fahrschule Mönchengladbach: PKW-Führerschein B, BF17, B197, BE. Transparente Preise, Erste Hilfe, Förderung & FAQ auf der Website. 0178 4557528",
+      "Fahrschule am Bahnhof Rheydt: PKW-Führerschein B, BF17, B197 (Automatik-Prüfung), BE, Intensivkurs. Motto Fahr in dein Glück. 65 €/Fahrstunde, DE/EN/TR/AR, online anmelden. 0178 4557528",
   },
   en: {
     title: "Maryo's Driving School Mönchengladbach | Car B · BF17 · B197 · BE",
@@ -80,6 +80,8 @@ export function buildPageMetadata(opts: {
   description: string;
   openGraphTitle?: string;
   openGraphDescription?: string;
+  keywords?: string[];
+  robots?: Metadata['robots'];
 }): Metadata {
   const pathNorm = opts.path === '' ? '/' : opts.path.startsWith('/') ? opts.path : `/${opts.path}`;
   const canonical = getCanonicalUrl(pathNorm, opts.locale);
@@ -91,6 +93,8 @@ export function buildPageMetadata(opts: {
   return {
     title: opts.title,
     description: opts.description,
+    ...(opts.keywords?.length ? { keywords: opts.keywords } : {}),
+    ...(opts.robots !== undefined ? { robots: opts.robots } : {}),
     alternates: {
       canonical,
       languages: alternateLanguageUrls(subpath),

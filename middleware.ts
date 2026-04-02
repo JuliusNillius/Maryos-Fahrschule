@@ -5,6 +5,14 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
+/** Suchmaschinen-Crawler: keine sprachbasierte Umleitung übernehmen – Root immer deutsch. */
+function isSearchBot(userAgent: string | null): boolean {
+  if (!userAgent) return false;
+  return /Googlebot|Google-InspectionTool|AdsBot-Google|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|facebookexternalhit|Twitterbot|LinkedInBot|Pinterestbot/i.test(
+    userAgent,
+  );
+}
+
 export async function middleware(request: NextRequest) {
   const host = request.headers.get('host')?.split(':')[0]?.toLowerCase();
   if (host === 'maryosfahrschule.de') {
@@ -15,6 +23,13 @@ export async function middleware(request: NextRequest) {
   }
 
   const path = request.nextUrl.pathname;
+  const ua = request.headers.get('user-agent');
+  if (isSearchBot(ua) && (path === '/' || path === '')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/de';
+    return NextResponse.redirect(url, 308);
+  }
+
   // Backoffice: nicht durch next-intl (Auth-Prüfung erfolgt im Backoffice-Layout)
   if (path.startsWith('/backoffice')) {
     return NextResponse.next();

@@ -50,12 +50,12 @@
     "linkLabel": "Zu den Preisen"
   },
   "hero": {
-    "badge": "Mönchengladbach's #1 Fahrschule",
-    "headline": "FAHR IN DEIN GLÜCK",
-    "headlineHighlight": "GLÜCK",
-    "seoH1": "Fahrschule Mönchengladbach – Führerschein Klasse B, BF17, B197 & BE",
-    "subheadlineRich": "Wir begleiten dich zum Auto-Führerschein: Klassen B, BF17, B197 und BE. <prices>Fahrstunde 65 €, Anmeldung und Pakete</prices>. <teachers>Fahrlehrer:innen</teachers> auf Deutsch, Englisch, Türkisch und Arabisch. <firstaid>Erste Hilfe</firstaid> buchst du separat.",
-    "subheadline": "Wir begleiten dich zum Auto-Führerschein: Klassen B, BF17, B197 und BE. Fahrstunde 65 €, Anmeldung und Pakete. Fahrlehrer:innen mehrsprachig. Erste Hilfe separat.",
+    "badge": "Nr. 1 Fahrschule in Rheydt am Bahnhof",
+    "headline": "Führerschein in Mönchengladbach — Klasse B, BF17, B197 & BE. Fahr in dein Glück",
+    "headlineHighlight": "Fahr in dein Glück",
+    "seoH1": "Führerschein in Mönchengladbach — Klasse B, BF17, B197 & BE. Fahr in dein Glück",
+    "subheadlineRich": "„Fahr in dein Glück“ ist bei uns kein Poster — es ist der Moment, in dem du ohne Zittern selbst losfährst. Wir holen dich ran: PKW B, BF17, B197 und BE, direkt am Bahnhof Rheydt. <prices>65 € Fahrstunde, Anmeldung & Pakete</prices> online, ohne Kleingedrucktes-Chaos. <teachers>Fahrlehrer:innen</teachers> auf Deutsch, Englisch, Türkisch und Arabisch. <firstaid>Erste Hilfe</firstaid> fürs Amt buchst du separat.",
+    "subheadline": "Fahr in dein Glück heißt: selbstbewusst losfahren. PKW-Führerschein B, BF17, B197 & BE am Bahnhof Rheydt, Mönchengladbach. 65 €/Fahrstunde, Anmeldung & Pakete online. Fahrlehrer:innen DE/EN/TR/AR. Erste Hilfe separat.",
     "ctaPrimary": "JETZT ANMELDEN",
     "ctaSecondary": "UNSERE LEHRER →",
     "statGoogle": "★ Google",
@@ -416,6 +416,8 @@
     "hours": "Mo–Fr: 12:00–18:00 Uhr",
     "closed": "Sa + So: Geschlossen",
     "mapTitle": "Standort Maryo's Fahrschule",
+    "mapEmbedNotice": "Die eingebettete Karte wird geladen, sobald du hierher scrollst — so startet die Seite schneller.",
+    "mapOpenExternal": "Standort in Google Maps öffnen",
     "floatActionsHint": "WhatsApp und Terminanfrage: grüne Schnellbuttons unten rechts (Chat- und Kalender-Symbol). Für Anruf siehe Telefon oben."
   },
   "footer": {

@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
  * §11 TRUST BAR
  * CSS infinite marquee, 40s linear, pauses on hover.
  * Duplicate content for seamless loop.
- * Style: text #666, ◆ = #5DC422, Inter 13px uppercase tracking-wide
+ * Style: abgedunkeltes Grau mit AA-Kontrast auf surface, ◆ = #5DC422
  */
 const ITEM_KEYS = [
   'item1',  // ⭐ 5.0 Google
@@ -35,10 +35,7 @@ export default function TrustBar() {
     <span className="flex shrink-0 items-center">
       {items.map((item, i) => (
         <span key={i} className="flex items-center">
-          <span
-            className="whitespace-nowrap px-1 font-body text-[13px] uppercase tracking-wide"
-            style={{ color: '#666' }}
-          >
+          <span className="whitespace-nowrap px-1 font-body text-[13px] uppercase tracking-wide text-[#B8B8B8]">
             {item}
           </span>
           {i < items.length - 1 && <Separator />}

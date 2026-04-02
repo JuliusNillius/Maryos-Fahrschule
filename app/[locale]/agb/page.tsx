@@ -1,7 +1,17 @@
+import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { buildPageMetadata, type Locale } from '@/lib/seo';
+import { staticPageMeta } from '@/lib/seo-static-pages';
 
 type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const l = (locale as Locale) || 'de';
+  const m = staticPageMeta('agb', l);
+  return buildPageMetadata({ locale: l, path: '/agb', title: m.title, description: m.description });
+}
 
 const sectionClass = 'mt-8';
 const headingClass =

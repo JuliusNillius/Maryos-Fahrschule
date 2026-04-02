@@ -1,8 +1,18 @@
+import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getSiteData } from '@/lib/site-data';
+import { buildPageMetadata, type Locale } from '@/lib/seo';
+import { staticPageMeta } from '@/lib/seo-static-pages';
 
 type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const l = (locale as Locale) || 'de';
+  const m = staticPageMeta('datenschutz', l);
+  return buildPageMetadata({ locale: l, path: '/datenschutz', title: m.title, description: m.description });
+}
 
 const FALLBACK = {
   company: "Maryo's Fahrschule GmbH",

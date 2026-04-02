@@ -39,7 +39,7 @@ export default function PaymentMethodsBar() {
             <span className="inline-flex h-9 items-center rounded-md border border-white/10 bg-white px-3">
               <span className="font-sans text-[14px] font-bold italic tracking-tight" aria-hidden>
                 <span className="text-[#003087]">Pay</span>
-                <span className="text-[#009CDE]">Pal</span>
+                <span className="text-[#005A9C]">Pal</span>
               </span>
             </span>
           </li>

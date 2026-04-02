@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
@@ -14,10 +14,11 @@ gsap.registerPlugin(ScrollTrigger);
 // Pin-Distanz: zu hoch = viel Scroll ohne sichtbare Bewegung (Lenis + Pin). ~18–22% wirkt flüssiger.
 const PIN_SCROLL = 20; // % viewport-Höhe als Scroll-Strecke während Pin
 
-// Desktop: `public/videos/hero.mp4` (16:9, max. 1920×1080 empfohlen).
-// Mobil: `public/videos/hero-mobile.mp4` (9:16, z. B. 1080×1920, Mittelstreifen aus derselben Quelle).
-const HERO_VIDEO_DESKTOP = '/videos/hero.mp4';
-const HERO_VIDEO_MOBILE = '/videos/hero-mobile.mp4';
+// Standard: `public/videos/*.mp4`. Optional: volle HTTPS-URLs (z. B. Supabase Storage) → schlankes Git, CDN-Caching.
+const HERO_VIDEO_DESKTOP =
+  process.env.NEXT_PUBLIC_HERO_VIDEO_DESKTOP_URL?.trim() || '/videos/hero.mp4';
+const HERO_VIDEO_MOBILE =
+  process.env.NEXT_PUBLIC_HERO_VIDEO_MOBILE_URL?.trim() || '/videos/hero-mobile.mp4';
 
 const DEFAULT_STATS = [5, 18, 4, 4] as const; // Google, Reviews, Sprachen, PKW-Angebote (B, BF17, B197, BE)
 
@@ -43,23 +44,57 @@ export default function Hero({ stats }: HeroProps) {
   const part1 = (parts[0] ?? '').trim();
   const part2 = highlightWord;
 
-  // Sichtbares Hero-Video abspielen (zwei Clips: mobil vs. desktop)
+  // Sichtbares Hero-Video abspielen (zwei Clips: mobil vs. desktop); Retries über canplay / Tab-Sichtbarkeit / erste Geste
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
+
+    const isVisible = (vid: HTMLVideoElement) => {
+      const cs = getComputedStyle(vid);
+      return cs.display !== 'none' && cs.visibility !== 'hidden';
+    };
+
+    const tryPlayVideo = (vid: HTMLVideoElement) => {
+      vid.muted = true;
+      vid.playsInline = true;
+      if (isVisible(vid)) void vid.play().catch(() => {});
+      else vid.pause();
+    };
+
     const playVisible = () => {
-      section.querySelectorAll<HTMLVideoElement>('.hero-video-wrap video').forEach((vid) => {
-        vid.muted = true;
-        vid.playsInline = true;
-        const cs = getComputedStyle(vid);
-        const visible = cs.display !== 'none' && cs.visibility !== 'hidden';
-        if (visible) vid.play().catch(() => {});
-        else vid.pause();
+      section.querySelectorAll<HTMLVideoElement>('.hero-video-wrap video').forEach((vid) => tryPlayVideo(vid));
+    };
+
+    const onMediaReady = (e: Event) => {
+      const vid = e.currentTarget as HTMLVideoElement;
+      if (isVisible(vid) && vid.paused) tryPlayVideo(vid);
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') playVisible();
+    };
+
+    const videos = section.querySelectorAll<HTMLVideoElement>('.hero-video-wrap video');
+    videos.forEach((vid) => {
+      vid.addEventListener('canplay', onMediaReady);
+      vid.addEventListener('canplaythrough', onMediaReady);
+    });
+
+    window.addEventListener('resize', playVisible);
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pointerdown', playVisible, { once: true, capture: true });
+
+    playVisible();
+
+    return () => {
+      window.removeEventListener('resize', playVisible);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pointerdown', playVisible, { capture: true });
+      videos.forEach((vid) => {
+        vid.removeEventListener('canplay', onMediaReady);
+        vid.removeEventListener('canplaythrough', onMediaReady);
       });
     };
-    playVisible();
-    window.addEventListener('resize', playVisible);
-    return () => window.removeEventListener('resize', playVisible);
   }, []);
 
   useEffect(() => {
@@ -222,15 +257,14 @@ export default function Hero({ stats }: HeroProps) {
           height={1080}
           src={HERO_VIDEO_DESKTOP}
           muted
+          ref={(el) => {
+            if (el) el.defaultMuted = true;
+          }}
           loop
           playsInline
           autoPlay
           preload="auto"
           aria-hidden
-          onLoadedData={(e) => {
-            const v = e.currentTarget;
-            if (getComputedStyle(v).display !== 'none') v.play().catch(() => {});
-          }}
         />
         <video
           className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center lg:hidden [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
@@ -239,15 +273,14 @@ export default function Hero({ stats }: HeroProps) {
           height={1920}
           src={HERO_VIDEO_MOBILE}
           muted
+          ref={(el) => {
+            if (el) el.defaultMuted = true;
+          }}
           loop
           playsInline
           autoPlay
           preload="auto"
           aria-hidden
-          onLoadedData={(e) => {
-            const v = e.currentTarget;
-            if (getComputedStyle(v).display !== 'none') v.play().catch(() => {});
-          }}
         />
       </div>
 
@@ -292,18 +325,14 @@ export default function Hero({ stats }: HeroProps) {
       {/* Content: Mobil unten bündig zur Stats-Zeile (kein „schwarzes Loch“ durch justify-center); Desktop zentriert wie zuvor */}
       <div className="relative z-10 flex min-h-0 w-full flex-col max-lg:min-h-[100dvh] lg:h-full">
         <div className="flex min-h-0 flex-1 flex-col px-4 pb-4 pt-[calc(env(safe-area-inset-top)+5.75rem)] text-center max-lg:justify-end max-lg:overflow-y-auto lg:absolute lg:inset-0 lg:flex lg:flex-col lg:items-center lg:justify-center lg:pb-28 lg:pt-40">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center max-lg:max-w-[min(42rem,calc(100vw-2.5rem))]">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center max-lg:max-w-[min(36rem,calc(100vw-2rem))] lg:max-w-4xl">
           <p
             ref={eyebrowRef}
-            className="mb-5 max-w-full rounded-full border border-green-400/50 bg-black/55 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:mb-6 sm:text-[11px] sm:tracking-[0.2em]"
+            className="mb-4 max-w-full rounded-full border border-green-400/50 bg-black/55 px-3.5 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:mb-5 sm:px-4 sm:text-[11px] sm:tracking-[0.2em]"
           >
             🍀 {t('badge')}
           </p>
-          <h1 className="sr-only">{t('seoH1')}</h1>
-          <div
-            className="max-w-full font-heading text-[clamp(2.85rem,11vw,8rem)] font-bold italic leading-[0.95] tracking-tight max-lg:max-w-[min(100%,22ch)] lg:max-w-5xl lg:text-[clamp(3.5rem,10vw,8rem)]"
-            aria-hidden
-          >
+          <h1 className="max-w-full font-heading text-[clamp(1.5rem,4.2vw+0.35rem,2.35rem)] font-bold italic leading-[1.12] tracking-tight sm:text-[clamp(1.6rem,3.8vw+0.4rem,2.5rem)] lg:max-w-4xl lg:text-[clamp(1.85rem,2.4vw+0.75rem,3rem)] lg:leading-[1.1]">
             <span
               ref={h1Part1Ref}
               className="block text-white [text-shadow:0_0_30px_rgba(0,0,0,0.95),0_0_60px_rgba(0,0,0,0.7),0_2px_8px_rgba(0,0,0,1)]"
@@ -317,10 +346,10 @@ export default function Hero({ stats }: HeroProps) {
             >
               {part2}
             </span>
-          </div>
+          </h1>
           <p
             ref={subtextRef}
-            className="mt-5 max-w-xl font-body text-base leading-relaxed text-white/95 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)] lg:mt-6 lg:text-lg"
+            className="mt-4 max-w-xl font-body text-sm leading-relaxed text-white/90 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)] sm:mt-5 sm:text-base lg:mt-5 lg:max-w-2xl lg:text-base"
           >
             {t.rich('subheadlineRich', {
               prices: (chunks) => (
@@ -349,23 +378,23 @@ export default function Hero({ stats }: HeroProps) {
               ),
             })}
           </p>
-          <div ref={ctaRef} className="mt-8 flex w-full max-w-sm flex-col items-stretch justify-center gap-3 max-lg:max-w-none sm:mt-10 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center lg:gap-4">
+          <div ref={ctaRef} className="mt-6 flex w-full max-w-sm flex-col items-stretch justify-center gap-2.5 max-lg:max-w-none sm:mt-8 sm:gap-3 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center lg:gap-3">
             <Link
               href="/anmelden"
-              className="btn-primary inline-flex h-[52px] gap-2 px-8 text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]"
+              className="btn-primary inline-flex h-[48px] gap-2 px-6 text-sm sm:h-[50px] sm:px-8 sm:text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]"
               data-cta
               data-magnetic
               data-testid="hero-cta-primary"
             >
               🏁 {t('ctaPrimary')}
             </Link>
-            <Link href="/lehrer" className="btn-ghost h-[52px] px-8 text-base text-white [text-shadow:0_0_16px_rgba(0,0,0,0.8),0_2px_4px_rgba(0,0,0,0.9)]" data-testid="hero-cta-secondary">
+            <Link href="/lehrer" className="btn-ghost h-[48px] px-6 text-sm text-white sm:h-[50px] sm:px-8 sm:text-base [text-shadow:0_0_16px_rgba(0,0,0,0.8),0_2px_4px_rgba(0,0,0,0.9)]" data-testid="hero-cta-secondary">
               {t('ctaSecondary')}
             </Link>
           </div>
-          <div className="mt-8 flex flex-col items-center gap-2 max-lg:mt-6 max-lg:mb-1 lg:mt-16">
-            <span className="text-sm uppercase tracking-[0.3em] text-white/80 [text-shadow:0_0_12px_rgba(0,0,0,0.8)]">Scroll</span>
-            <div className="h-10 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse max-lg:h-8" aria-hidden />
+          <div className="mt-6 flex flex-col items-center gap-1.5 max-lg:mt-5 max-lg:mb-1 lg:mt-10">
+            <span className="text-xs uppercase tracking-[0.28em] text-white/75 [text-shadow:0_0_12px_rgba(0,0,0,0.8)] sm:text-sm">Scroll</span>
+            <div className="h-8 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse sm:h-9 lg:h-10" aria-hidden />
           </div>
         </div>
         </div>
@@ -373,7 +402,7 @@ export default function Hero({ stats }: HeroProps) {
       {/* Stats: Mobil im Fluss unter dem Hero-Inhalt (bündig); Desktop absolut am unteren Rand */}
       <div className="relative z-10 shrink-0 border-t border-[rgba(93,196,34,0.25)] bg-surface py-2.5 backdrop-blur-md max-lg:border-b-0 max-lg:backdrop-blur-none lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:bg-surface/95 lg:py-4 lg:pb-[max(1rem,env(safe-area-inset-bottom))]">
         {/* Mobil: feste max-Breite → gleiche Zeilenumbrüche auf iPhone 17 & Pro Max; Desktop: eine Zeile wie zuvor */}
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-y-2 px-4 text-center font-body text-sm text-text-muted lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-6 lg:gap-y-2">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-y-2 px-4 text-center font-body text-sm text-[#C4C4C4] lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-6 lg:gap-y-2">
           <div className="flex w-full max-w-[19rem] flex-wrap items-center justify-center gap-x-2 gap-y-1 lg:contents lg:max-w-none">
             <span className="flex items-center gap-1.5">
               <span ref={(el) => { statsRef.current[0] = el; }} className="font-display font-bold text-white">0</span>
@@ -395,7 +424,7 @@ export default function Hero({ stats }: HeroProps) {
               {' '}{t('statClasses')}
             </span>
             <span className="text-green-500" aria-hidden>◆</span>
-            <span className="w-full basis-full font-body text-sm font-medium tracking-wide text-white/90 lg:w-auto lg:basis-auto">
+            <span className="w-full basis-full font-body text-sm font-medium tracking-wide text-[#E8E8E8] lg:w-auto lg:basis-auto">
               {t('statDigital')}
             </span>
           </div>

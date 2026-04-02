@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -6,7 +5,7 @@ import { routing } from '@/i18n/routing';
 import AppShell from '@/components/layout/AppShell';
 import LocaleHtmlAttrs from '@/components/layout/LocaleHtmlAttrs';
 import PageTransition from '@/components/layout/PageTransition';
-import { METADATA, buildPageMetadata, type Locale } from '@/lib/seo';
+import LocalBusinessSchema from '@/components/seo/LocalBusinessSchema';
 
 type Props = {
   children: React.ReactNode;
@@ -20,22 +19,6 @@ export function generateStaticParams() {
 /** Nur gültige Locales erlauben – verhindert, dass /backoffice von [locale] abgefangen wird (404). */
 export const dynamicParams = false;
 
-const LOCALES = routing.locales as readonly string[];
-
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  const { locale } = await params;
-  if (!LOCALES.includes(locale)) return {};
-  const meta = METADATA[locale as Locale];
-  return buildPageMetadata({
-    locale: locale as Locale,
-    path: '/',
-    title: meta.title,
-    description: meta.description,
-    openGraphTitle: meta.openGraphTitle,
-    openGraphDescription: meta.openGraphDescription,
-  });
-}
-
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   if (!(routing.locales as readonly string[]).includes(locale)) {
@@ -47,6 +30,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <LocalBusinessSchema />
       <LocaleHtmlAttrs locale={locale} />
       <div dir={isRtl ? 'rtl' : 'ltr'} className={isRtl ? 'rtl' : ''}>
         <AppShell>

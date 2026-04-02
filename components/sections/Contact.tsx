@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { socialHref, type SocialLinks } from '@/lib/social-links';
@@ -30,6 +30,7 @@ export default function Contact({ contact, social }: ContactProps) {
   const mapsQuery = contact?.street && contact?.city
     ? encodeURIComponent(`${contact.street}, ${contact.zip} ${contact.city}`)
     : 'Bahnhofstraße+25,+41236+Mönchengladbach';
+  const mapsOpenHref = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
   const telHref = `tel:${phone.replace(/\s/g, '').replace(/^0/, '+49')}`;
 
   const t = useTranslations('contact');
@@ -37,6 +38,8 @@ export default function Contact({ contact, social }: ContactProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapSlotRef = useRef<HTMLDivElement>(null);
+  const [mapEmbedSrc, setMapEmbedSrc] = useState<string | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -65,6 +68,22 @@ export default function Contact({ contact, social }: ContactProps) {
     }, section);
     return () => ctx.revert();
   }, []);
+
+  useEffect(() => {
+    const slot = mapSlotRef.current;
+    if (!slot) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setMapEmbedSrc(mapUrl);
+          io.disconnect();
+        }
+      },
+      { root: null, rootMargin: '160px 0px', threshold: 0.02 },
+    );
+    io.observe(slot);
+    return () => io.disconnect();
+  }, [mapUrl]);
 
   return (
     <section
@@ -155,17 +174,33 @@ export default function Contact({ contact, social }: ContactProps) {
           </div>
 
           <div ref={mapRef} className="overflow-hidden rounded-xl border border-[rgba(93,196,34,0.2)]">
-            <iframe
-              src={mapUrl}
-              width="100%"
-              height="320"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={t('mapTitle')}
-              className="min-h-[280px] md:min-h-[320px]"
-            />
+            <div ref={mapSlotRef} className="relative min-h-[280px] md:min-h-[320px]">
+              {mapEmbedSrc ? (
+                <iframe
+                  src={mapEmbedSrc}
+                  width="100%"
+                  height="320"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title={t('mapTitle')}
+                  className="block min-h-[280px] w-full md:min-h-[320px]"
+                />
+              ) : (
+                <div className="flex min-h-[280px] flex-col items-center justify-center gap-4 bg-surface2 px-4 py-8 text-center md:min-h-[320px]">
+                  <p className="max-w-sm font-body text-sm text-text-muted">{t('mapEmbedNotice')}</p>
+                  <a
+                    href={mapsOpenHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-body text-sm font-medium text-green-primary underline decoration-green-primary/50 underline-offset-2 transition-colors hover:text-green-400"
+                  >
+                    {t('mapOpenExternal')}
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,9 @@
 Hero-Videos (im Repo):
 
+  Production-Empfehlung (Supabase): docs/hero-videos-supabase.md — Bucket hero-videos, Env-URLs in Vercel.
+
+  Platzhalter neu erzeugen: npm run assets:hero-videos (ffmpeg-static)
+
   hero.mp4         – Desktop (md+), 16:9, 1920×1080, H.264, ohne Ton
   hero-mobile.mp4  – Mobil, 9:16, 1080×1920 (Mittelstreifen aus derselben Quelle)
 

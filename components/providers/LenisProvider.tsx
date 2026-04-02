@@ -71,8 +71,10 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     gsap.ticker.add(gsapRaf);
     gsap.ticker.lagSmoothing(0);
 
-    // Recalculate ScrollTrigger after proxy is active (next frame so layout is ready)
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    // Layout erst stabil, dann einmal refreshen (doppelter rAF reduziert Forced-Reflow-Kollisionen mit erstem Paint)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
 
     return () => {
       gsap.ticker.remove(gsapRaf);

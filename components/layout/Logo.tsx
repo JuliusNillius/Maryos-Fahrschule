@@ -5,9 +5,10 @@ import { useState } from 'react';
 
 /** Navbar: Kleeblatt; Footer: fertiges Wortmarken-PNG (weißes MARYO'S, grüne Linie, Slogan). */
 const NAVBAR_SRC = '/kleeblatt-logo.png';
-const NAVBAR_INTRINSIC = { width: 1024, height: 872 } as const;
+/** Physische Assets nach Retina-Max (s. public/) — klein halten für schnelles LCP */
+const NAVBAR_INTRINSIC = { width: 560, height: 477 } as const;
 const FOOTER_SRC = '/maryos-logo-footer.png';
-const FOOTER_INTRINSIC = { width: 1024, height: 574 } as const;
+const FOOTER_INTRINSIC = { width: 800, height: 448 } as const;
 
 type LogoVariant = 'navbar' | 'footer';
 
@@ -39,8 +40,10 @@ export default function Logo({ variant = 'navbar' }: { variant?: LogoVariant }) 
       alt="Maryo's Fahrschule — Logo"
       width={intrinsic.width}
       height={intrinsic.height}
+      sizes={isFooter ? '(max-width: 640px) 90vw, 416px' : '(max-width: 1024px) 120px, 48px'}
       className={className}
       priority={variant === 'navbar'}
+      fetchPriority={variant === 'navbar' ? 'high' : 'auto'}
       onError={() => setUseText(true)}
     />
   );

@@ -25,7 +25,8 @@ const config: Config = {
         border: 'rgba(93,196,34,0.18)',
         text: {
           DEFAULT: '#F0F0F0',
-          muted: '#777777',
+          // ~4.6:1 auf #080808 (WCAG AA normaler Text)
+          muted: '#A3A3A3',
         },
         red: '#E53E3E',
       },
@@ -57,9 +58,10 @@ const config: Config = {
           '35%': { opacity: '0.92' },
           '100%': { opacity: '0' },
         },
+        // Nur opacity: vermeidet Konflikt mit hover:scale-105 am gleichen Button
         'fine-pulse': {
-          '0%, 100%': { filter: 'drop-shadow(0 0 4px rgba(255,60,60,0.45))' },
-          '50%': { filter: 'drop-shadow(0 0 12px rgba(255,80,80,0.95))' },
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.78' },
         },
       },
       animation: {

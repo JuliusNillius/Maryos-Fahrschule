@@ -416,6 +416,8 @@
     "hours": "Pzt–Cuma: 12:00–18:00",
     "closed": "Cmt + Paz: Kapalı",
     "mapTitle": "Konum",
+    "mapEmbedNotice": "Harita buraya kaydırınca yüklenir — sayfa daha hızlı açılır.",
+    "mapOpenExternal": "Konumu Google Haritalar'da aç",
     "floatActionsHint": "WhatsApp ve randevu: sağ alttaki yeşil hızlı düğmeler (sohbet ve takvim). Arama için yukarıdaki telefon."
   },
   "footer": {

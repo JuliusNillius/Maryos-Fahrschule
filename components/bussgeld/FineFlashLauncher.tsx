@@ -103,7 +103,7 @@ export default function FineFlashLauncher() {
           ref={openBtnRef}
           type="button"
           onClick={handleOpen}
-          className="motion-safe:animate-fine-pulse flex h-14 w-14 items-center justify-center rounded-full border-2 border-red-500/90 bg-zinc-950 text-white shadow-lg transition-transform hover:scale-105 md:h-16 md:w-16"
+          className="motion-safe:animate-fine-pulse flex h-14 w-14 items-center justify-center rounded-full border-2 border-red-500/90 bg-zinc-950 text-white shadow-lg transition-transform will-change-transform hover:scale-105 md:h-16 md:w-16"
           aria-label={t("ariaLabel")}
           aria-haspopup="dialog"
           aria-expanded={open}
