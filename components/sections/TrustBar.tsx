@@ -50,7 +50,7 @@ export default function TrustBar() {
 
   return (
     <section
-      className="overflow-hidden border-b border-[rgba(93,196,34,0.18)] bg-surface/80 py-3 backdrop-blur-sm"
+      className="overflow-hidden border-b border-[rgba(93,196,34,0.18)] border-t-0 bg-surface/80 py-2.5 backdrop-blur-sm max-lg:-mt-px max-lg:bg-surface max-lg:py-1.5 max-lg:backdrop-blur-none lg:py-3"
       aria-label="Vertrauen"
     >
       <div className="flex w-max animate-trust-marquee hover:[animation-play-state:paused]">

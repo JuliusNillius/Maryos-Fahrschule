@@ -54,14 +54,15 @@
     "headline": "MUTLULUĞA SÜR",
     "headlineHighlight": "MUTLULUK",
     "seoH1": "Mönchengladbach sürücü kursu – B, BF17, B197 ve BE ehliyeti",
-    "subheadlineRich": "Ehliyetini şimdi al — yanındayız. Araba: B, BF17, B197 ve BE (römork). <prices>Direksiyon dersi 65 €</prices> — <teachers>çok dilli eğitmenlerimiz</teachers>. <firstaid>İlk yardım kursu</firstaid> ayrıca.",
-    "subheadline": "Ehliyetini şimdi al — yanındayız. Araba: B, BF17, B197 ve BE (römork). İlk yardım ayrı.",
+    "subheadlineRich": "Araba ehliyeti için yanındayız: B, BF17, B197 ve BE. <prices>Direksiyon dersi 65 €, kayıt ve paketler</prices>. <teachers>Eğitmenler</teachers> Almanca, İngilizce, Türkçe ve Arapça. <firstaid>İlk yardım</firstaid> ayrı.",
+    "subheadline": "Araba ehliyeti için yanındayız: B, BF17, B197 ve BE. Ders 65 €, kayıt ve paketler. Eğitmenler DE/EN/TR/AR. İlk yardım ayrı.",
     "ctaPrimary": "HEMEN KAYIT OL",
     "ctaSecondary": "ÖĞRETMENLERİMİZ →",
-    "statGoogle": "5.0 ★ Google",
-    "statReviews": "18 Yorum",
-    "statLanguages": "4 Dil",
-    "statClasses": "B · BF17 · B197 · BE"
+    "statGoogle": "★ Google",
+    "statReviews": "Yorum",
+    "statLanguages": "dil",
+    "statClasses": "B · BF17 · B197 · BE",
+    "statDigital": "100% dijital"
   },
   "trustBar": {
     "item1": "⭐ 5.0 Google",

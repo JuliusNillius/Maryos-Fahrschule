@@ -50,7 +50,7 @@ export default async function FuehrerscheinKlassePage({ params }: Props) {
   const siteData = await getSiteData();
 
   return (
-    <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
+    <main className="min-h-screen bg-bg pb-0 text-text">
       <article className="mx-auto max-w-3xl px-4 pt-24 pb-12 sm:px-6 lg:px-8">
         <p className="text-xs font-medium uppercase tracking-[0.2em] text-green-primary">{t(`${p}Kicker`)}</p>
         <h1 className="mt-3 font-heading text-4xl font-bold uppercase italic text-white md:text-5xl">{t(`${p}H1`)}</h1>

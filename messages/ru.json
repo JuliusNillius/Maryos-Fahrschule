@@ -35,10 +35,11 @@
     "subheadline": "Выбери инструктора. Запишись онлайн. Поехали.",
     "ctaPrimary": "ЗАПИСАТЬСЯ",
     "ctaSecondary": "НАШИ ИНСТРУКТОРЫ →",
-    "statGoogle": "5.0 ★ Google",
-    "statReviews": "18 отзывов",
-    "statLanguages": "10 языков",
-    "statClasses": "6 категорий"
+    "statGoogle": "★ Google",
+    "statReviews": "отзывов",
+    "statLanguages": "языков",
+    "statClasses": "B · BF17 · B197 · BE",
+    "statDigital": "100% онлайн"
   },
   "trustBar": {
     "item1": "⭐ 5.0 Google",

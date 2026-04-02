@@ -23,7 +23,7 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
   const owner = impressum?.owner ?? 'Yaako Maryo Asoo';
 
   return (
-    <footer className="border-t border-[rgba(93,196,34,0.15)] bg-[#050505]">
+    <footer className="border-t border-[rgba(93,196,34,0.15)] bg-[#050505] max-lg:pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-4">

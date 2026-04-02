@@ -70,7 +70,7 @@ export default function Contact({ contact, social }: ContactProps) {
     <section
       id="kontakt"
       ref={sectionRef}
-      className="section-divider scroll-mt-20 bg-bg py-20 md:py-28"
+      className="section-divider scroll-mt-20 bg-bg py-12 max-md:pt-8 md:py-28"
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

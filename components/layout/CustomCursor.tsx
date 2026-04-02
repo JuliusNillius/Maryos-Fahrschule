@@ -252,7 +252,7 @@ export default function CustomCursor() {
     <>
       <div
         ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden rounded-full md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden rounded-full lg:block"
         style={{
           transform: 'translate(-50%, -50%)',
           opacity: visible && !hideOverHero ? 1 : 0,
@@ -263,7 +263,7 @@ export default function CustomCursor() {
       />
       <div
         ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden flex items-center justify-center rounded-full border bg-transparent md:flex"
+        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden flex items-center justify-center rounded-full border bg-transparent lg:flex"
         style={{
           transform: 'translate(-50%, -50%)',
           opacity: visible && !hideOverHero ? 1 : 0,

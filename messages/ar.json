@@ -54,14 +54,15 @@
     "headline": "قد نحو حظك",
     "headlineHighlight": "حظك",
     "seoH1": "مدرسة قيادة مونشنغلادباخ – رخصة B وBF17 وB197 وBE",
-    "subheadlineRich": "احصل على رخصتك الآن — نرافقك. سيارة: B و BF17 و B197 و BE (مقطورة). <prices>حصة قيادة بـ 65 €</prices> — <teachers>مدربونا متعددو اللغات</teachers>. احجز <firstaid>دورة إسعافات أولية</firstaid> منفصلة.",
-    "subheadline": "احصل على رخصتك الآن — نرافقك. سيارة: B و BF17 و B197 و BE (مقطورة). الإسعافات الأولية منفصلة.",
+    "subheadlineRich": "نرافقك لرخصة القيادة للسيارة: B و BF17 و B197 و BE. <prices>حصة قيادة 65 يورو، التسجيل والباقات</prices>. <teachers>المدربون</teachers> بالألمانية والإنجليزية والتركية والعربية. <firstaid>الإسعافات الأولية</firstaid> تحجزها منفصلة.",
+    "subheadline": "نرافقك لرخصة القيادة للسيارة: B و BF17 و B197 و BE. حصة 65 يورو والتسجيل والباقات. مدربون متعددو اللغات. الإسعافات الأولية منفصلة.",
     "ctaPrimary": "سجّل الآن",
     "ctaSecondary": "معلمونا ←",
-    "statGoogle": "5.0 ★ غوغل",
-    "statReviews": "18 تقييم",
-    "statLanguages": "4 لغات",
-    "statClasses": "B · BF17 · B197 · BE"
+    "statGoogle": "★ Google",
+    "statReviews": "تقييم",
+    "statLanguages": "لغات",
+    "statClasses": "B · BF17 · B197 · BE",
+    "statDigital": "100٪ رقمي"
   },
   "trustBar": {
     "item1": "⭐ 5.0 غوغل",

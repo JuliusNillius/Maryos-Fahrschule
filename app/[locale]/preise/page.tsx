@@ -28,7 +28,7 @@ export default async function PreisePage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'preisePage' });
 
   return (
-    <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
+    <main className="min-h-screen bg-bg pb-0 text-text">
       <div className="pt-20">
         <PriceCalculator />
         <section className="border-t border-[rgba(93,196,34,0.12)] bg-bg px-4 py-10 sm:px-6 lg:px-8">

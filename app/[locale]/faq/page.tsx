@@ -33,7 +33,7 @@ export default async function FAQPage({ params }: Props) {
   const siteData = await getSiteData();
 
   return (
-    <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
+    <main className="min-h-screen bg-bg pb-0 text-text">
       <FaqJsonLd faq={siteData.faq} locale={locale} />
       <div className="pt-20">
         <Reviews stats={siteData.settings.stats} quotes={siteData.settings.google_review_quotes} />

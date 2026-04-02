@@ -16,7 +16,7 @@ export default async function FlottePage({ params }: Props) {
   const siteData = await getSiteData();
 
   return (
-    <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
+    <main className="min-h-screen bg-bg pb-0 text-text">
       <div className="pt-20">
         <Fleet vehicles={siteData.fleet} sectionId="flotte" />
       </div>

@@ -28,7 +28,7 @@ export default async function ErsteHilfePage({ params }: Props) {
   const siteData = await getSiteData();
 
   return (
-    <main className="min-h-screen bg-bg pb-20 text-text md:pb-0">
+    <main className="min-h-screen bg-bg pb-0 text-text">
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6 lg:px-8">
         <p className="text-xs uppercase tracking-widest text-text-muted">{t('kicker')}</p>
         <h1 className="mt-2 font-heading text-4xl font-bold uppercase italic text-white md:text-5xl">

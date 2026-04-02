@@ -178,6 +178,7 @@ export default function Hero({ stats }: HeroProps) {
       trigger: sectionRef.current,
       start: 'top 80%',
       end: 'top 20%',
+      once: true,
       onEnter: () => {
         targets.forEach((el, i) => {
           if (!el) return;
@@ -199,7 +200,7 @@ export default function Hero({ stats }: HeroProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen min-h-[100dvh] w-full overflow-hidden"
+      className="relative w-full max-lg:h-auto max-lg:min-h-0 max-lg:overflow-visible lg:h-screen lg:min-h-[100dvh] lg:overflow-hidden"
       data-hide-custom-cursor
     >
       {/* Hero-Video: public/videos/hero.mp4 (Desktop) + hero-mobile.mp4 (Mobil) */}
@@ -215,7 +216,7 @@ export default function Hero({ stats }: HeroProps) {
         style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
       >
         <video
-          className="absolute inset-0 hidden h-full min-h-full w-full min-w-full object-cover object-center md:block [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
+          className="absolute inset-0 hidden h-full min-h-full w-full min-w-full object-cover object-center lg:block [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
           style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
           width={1920}
           height={1080}
@@ -232,7 +233,7 @@ export default function Hero({ stats }: HeroProps) {
           }}
         />
         <video
-          className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center md:hidden [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
+          className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center lg:hidden [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
           style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
           width={1080}
           height={1920}
@@ -253,7 +254,7 @@ export default function Hero({ stats }: HeroProps) {
       {/* Overlays §10 */}
       {/* Filmkorn: auf schmalen Viewports aus — wirkt oft wie weiche Unschärfe über dem Video (WebKit). */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04] max-md:hidden"
+        className="pointer-events-none absolute inset-0 opacity-[0.04] max-lg:hidden"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
@@ -275,7 +276,7 @@ export default function Hero({ stats }: HeroProps) {
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.025] max-md:hidden"
+        className="pointer-events-none absolute inset-0 opacity-[0.025] max-lg:hidden"
         style={{
           backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.03) 1px, rgba(255,255,255,0.03) 2px)',
         }}
@@ -288,18 +289,19 @@ export default function Hero({ stats }: HeroProps) {
         aria-hidden
       />
 
-      {/* Content – mobil symmetrisch zentriert; max-width lässt rechts Platz für FABs (ohne einseitiges pr-20) */}
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center md:pt-36 lg:pt-40">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center max-md:max-w-[min(42rem,calc(100vw-6rem))]">
+      {/* Content: Mobil unten bündig zur Stats-Zeile (kein „schwarzes Loch“ durch justify-center); Desktop zentriert wie zuvor */}
+      <div className="relative z-10 flex min-h-0 w-full flex-col max-lg:min-h-[100dvh] lg:h-full">
+        <div className="flex min-h-0 flex-1 flex-col px-4 pb-4 pt-[calc(env(safe-area-inset-top)+5.75rem)] text-center max-lg:justify-end max-lg:overflow-y-auto lg:absolute lg:inset-0 lg:flex lg:flex-col lg:items-center lg:justify-center lg:pb-28 lg:pt-40">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center max-lg:max-w-[min(42rem,calc(100vw-2.5rem))]">
           <p
             ref={eyebrowRef}
-            className="mb-6 max-w-full rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:text-[11px] sm:tracking-[0.2em]"
+            className="mb-5 max-w-full rounded-full border border-green-400/50 bg-black/55 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:mb-6 sm:text-[11px] sm:tracking-[0.2em]"
           >
             🍀 {t('badge')}
           </p>
           <h1 className="sr-only">{t('seoH1')}</h1>
           <div
-            className="max-w-full font-heading text-[clamp(3.5rem,10vw,8rem)] font-bold italic leading-[0.95] tracking-tight md:max-w-5xl"
+            className="max-w-full font-heading text-[clamp(2.85rem,11vw,8rem)] font-bold italic leading-[0.95] tracking-tight max-lg:max-w-[min(100%,22ch)] lg:max-w-5xl lg:text-[clamp(3.5rem,10vw,8rem)]"
             aria-hidden
           >
             <span
@@ -318,7 +320,7 @@ export default function Hero({ stats }: HeroProps) {
           </div>
           <p
             ref={subtextRef}
-            className="mt-6 max-w-xl font-body text-lg text-white/95 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)]"
+            className="mt-5 max-w-xl font-body text-base leading-relaxed text-white/95 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)] lg:mt-6 lg:text-lg"
           >
             {t.rich('subheadlineRich', {
               prices: (chunks) => (
@@ -347,46 +349,58 @@ export default function Hero({ stats }: HeroProps) {
               ),
             })}
           </p>
-          <div ref={ctaRef} className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/anmelden" className="btn-primary h-[52px] gap-2 px-8 text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]" data-cta data-magnetic data-testid="hero-cta-primary">
+          <div ref={ctaRef} className="mt-8 flex w-full max-w-sm flex-col items-stretch justify-center gap-3 max-lg:max-w-none sm:mt-10 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center lg:gap-4">
+            <Link
+              href="/anmelden"
+              className="btn-primary inline-flex h-[52px] gap-2 px-8 text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]"
+              data-cta
+              data-magnetic
+              data-testid="hero-cta-primary"
+            >
               🏁 {t('ctaPrimary')}
             </Link>
             <Link href="/lehrer" className="btn-ghost h-[52px] px-8 text-base text-white [text-shadow:0_0_16px_rgba(0,0,0,0.8),0_2px_4px_rgba(0,0,0,0.9)]" data-testid="hero-cta-secondary">
               {t('ctaSecondary')}
             </Link>
           </div>
-          <div className="mt-16 flex flex-col items-center gap-2">
+          <div className="mt-8 flex flex-col items-center gap-2 max-lg:mt-6 max-lg:mb-1 lg:mt-16">
             <span className="text-sm uppercase tracking-[0.3em] text-white/80 [text-shadow:0_0_12px_rgba(0,0,0,0.8)]">Scroll</span>
-            <div className="h-10 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse" aria-hidden />
+            <div className="h-10 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse max-lg:h-8" aria-hidden />
+          </div>
+        </div>
+        </div>
+
+      {/* Stats: Mobil im Fluss unter dem Hero-Inhalt (bündig); Desktop absolut am unteren Rand */}
+      <div className="relative z-10 shrink-0 border-t border-[rgba(93,196,34,0.25)] bg-surface py-2.5 backdrop-blur-md max-lg:border-b-0 max-lg:backdrop-blur-none lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:bg-surface/95 lg:py-4 lg:pb-[max(1rem,env(safe-area-inset-bottom))]">
+        {/* Mobil: feste max-Breite → gleiche Zeilenumbrüche auf iPhone 17 & Pro Max; Desktop: eine Zeile wie zuvor */}
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-y-2 px-4 text-center font-body text-sm text-text-muted lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-6 lg:gap-y-2">
+          <div className="flex w-full max-w-[19rem] flex-wrap items-center justify-center gap-x-2 gap-y-1 lg:contents lg:max-w-none">
+            <span className="flex items-center gap-1.5">
+              <span ref={(el) => { statsRef.current[0] = el; }} className="font-display font-bold text-white">0</span>
+              {t('statGoogle')}
+            </span>
+            <span className="text-green-500" aria-hidden>◆</span>
+            <span className="flex items-center gap-1.5">
+              <span ref={(el) => { statsRef.current[1] = el; }} className="font-display font-bold text-white">0</span>
+              {' '}{t('statReviews')}
+            </span>
+            <span className="text-green-500" aria-hidden>◆</span>
+            <span className="flex items-center gap-1.5">
+              <span ref={(el) => { statsRef.current[2] = el; }} className="font-display font-bold text-white">0</span>
+              {' '}{t('statLanguages')}
+            </span>
+            <span className="text-green-500" aria-hidden>◆</span>
+            <span className="flex items-center gap-1.5">
+              <span ref={(el) => { statsRef.current[3] = el; }} className="font-display font-bold text-white">0</span>
+              {' '}{t('statClasses')}
+            </span>
+            <span className="text-green-500" aria-hidden>◆</span>
+            <span className="w-full basis-full font-body text-sm font-medium tracking-wide text-white/90 lg:w-auto lg:basis-auto">
+              {t('statDigital')}
+            </span>
           </div>
         </div>
       </div>
-
-      {/* Stats bar §10 — safe-area für Notch/Home-Indikator auf Mobil */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-[rgba(93,196,34,0.25)] bg-surface/95 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-md">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 text-center font-body text-sm text-text-muted">
-          <span className="flex items-center gap-1.5">
-            <span ref={(el) => { statsRef.current[0] = el; }} className="font-display font-bold text-white">0</span>
-            {t('statGoogle')}
-          </span>
-          <span className="text-green-500" aria-hidden>◆</span>
-          <span className="flex items-center gap-1.5">
-            <span ref={(el) => { statsRef.current[1] = el; }} className="font-display font-bold text-white">0</span>
-            {' '}{t('statReviews')}
-          </span>
-          <span className="text-green-500" aria-hidden>◆</span>
-          <span className="flex items-center gap-1.5">
-            <span ref={(el) => { statsRef.current[2] = el; }} className="font-display font-bold text-white">0</span>
-            {' '}{t('statLanguages')}
-          </span>
-          <span className="text-green-500" aria-hidden>◆</span>
-          <span className="flex items-center gap-1.5">
-            <span ref={(el) => { statsRef.current[3] = el; }} className="font-display font-bold text-white">0</span>
-            {' '}{t('statClasses')}
-          </span>
-          <span className="text-green-500" aria-hidden>◆</span>
-          <span className="font-display text-white">100% Digital</span>
-        </div>
       </div>
     </section>
   );

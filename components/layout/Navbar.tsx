@@ -78,7 +78,7 @@ export default function Navbar() {
             <Logo variant="navbar" />
           </Link>
 
-          <nav className="hidden items-center gap-6 md:flex" aria-label="Hauptmenü">
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Hauptmenü">
             {mainNavItems.map(({ href, key }) => (
               <Link
                 key={href}
@@ -95,7 +95,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-4 md:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             <div className="relative" ref={langRef}>
               <button
                 type="button"
@@ -142,7 +142,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
             aria-label={t('menuOpen')}
             aria-expanded={mobileOpen}
             data-testid="navbar-mobile-open"
@@ -155,7 +155,7 @@ export default function Navbar() {
       </header>
 
       <div
-        className={`fixed inset-0 z-[60] bg-bg transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-[60] bg-bg transition-opacity duration-300 lg:hidden ${
           mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
         aria-hidden={!mobileOpen}

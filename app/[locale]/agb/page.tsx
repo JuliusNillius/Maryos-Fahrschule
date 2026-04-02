@@ -13,7 +13,7 @@ export default async function AGBPage({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <main className="min-h-screen bg-bg px-4 py-20 text-text">
+    <main className="min-h-screen bg-bg px-4 pt-20 pb-20 text-text max-md:pb-[calc(5.5rem+env(safe-area-inset-bottom)+5rem)]">
       <div className="mx-auto max-w-2xl">
         <h1 className="font-heading text-3xl font-bold italic uppercase text-green-primary">
           Allgemeine Geschäftsbedingungen (AGB)

@@ -40,7 +40,7 @@ export default async function TerminePage({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <main className="min-h-screen bg-bg pb-24 text-text md:pb-8">
+    <main className="min-h-screen bg-bg pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-text md:pb-8">
       <BookingCalendar />
     </main>
   );
