@@ -39,6 +39,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Native <select>: dunkles Dropdown + lesbare Optionen (sonst je nach OS hell/grau) */
+select {
+  color-scheme: dark;
+}
+select option,
+select optgroup {
+  background-color: var(--card);
+  color: var(--text);
+}
+
 /* Page transitions: weicher Fade-In beim Seitenwechsel */
 @keyframes page-in {
   from {
@@ -151,28 +161,3 @@ body {
   pointer-events: none;
 }
 
-/* Hero-Video mobil: volle Fläche, kein Streifen/Kleinanzeige (v.a. iOS/Safari) */
-@media (max-width: 767px) {
-  .hero-video-wrap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: 100%;
-    min-width: 100%;
-  }
-  .hero-video-wrap video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    /* Etwas weniger aggressiver Crop als „volle Cover-Fläche“ (wirkt weniger gezoomt) */
-    transform: translate(-50%, -50%) scale(0.9);
-    object-fit: cover;
-    object-position: center 42%;
-  }
-}

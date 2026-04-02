@@ -1,9 +1,9 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, type Stripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { registrationStep1Schema, registrationStep2Schema, registrationStep3Schema } from '@/lib/validations';
 import type { RegistrationStep1, RegistrationStep2, RegistrationStep3 } from '@/lib/validations';
@@ -19,10 +19,6 @@ import {
   type OfferType,
 } from '@/lib/pricing';
 import { validateIdFile } from '@/lib/id-documents';
-
-const stripePromise = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null;
 
 function Step3PayButton({
   formData,
@@ -150,11 +146,7 @@ function IdUploadSlot({
 }
 
 const LICENCE_CLASSES = ['B', 'BF17', 'B197', 'BE'] as const;
-const LANGUAGES = [
-  { value: 'de', label: 'Deutsch' },
-  { value: 'ar', label: 'Arabisch' },
-  { value: 'tr', label: 'Türkisch' },
-];
+const REGISTRATION_LANG_CODES = ['de', 'ar', 'tr', 'en'] as const;
 const TIME_PILLS = [
   { value: 'morning', labelKey: 'timeMorning' as const },
   { value: 'noon', labelKey: 'timeNoon' as const },
@@ -182,8 +174,18 @@ type RegistrationFormProps = { instructors?: Instructor[]; initialRefCode?: stri
 export default function RegistrationForm({ instructors = [], initialRefCode = '' }: RegistrationFormProps) {
   const list = instructors?.length ? instructors : [];
   const t = useTranslations('registration');
+  const tQuiz = useTranslations('instructorQuiz');
+  const languageOptions = useMemo(
+    () =>
+      REGISTRATION_LANG_CODES.map((code) => ({
+        value: code,
+        label: tQuiz(`lang_${code}` as 'lang_de'),
+      })),
+    [tQuiz],
+  );
   const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
+  const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentRegistrationId, setPaymentRegistrationId] = useState<string | null>(null);
   const [stripeError, setStripeError] = useState<string | null>(null);
@@ -223,6 +225,13 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
   const motherTongue = watch('motherTongue');
   const offerType = (watch('offerType') ?? 'standard') as OfferType;
   const checkout = getOfferCheckout(offerType);
+
+  useEffect(() => {
+    if (!clientSecret || typeof window === 'undefined') return;
+    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    if (!key) return;
+    setStripePromise((prev) => prev ?? loadStripe(key));
+  }, [clientSecret]);
 
   useEffect(() => {
     setValue('lessonLanguage', motherTongue as FormData['lessonLanguage']);
@@ -461,6 +470,14 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
 
   const onStep1Next = () => {
     const data = watch();
+    const result = registrationStep2Schema.safeParse(data);
+    if (!result.success) return;
+    saveDraft(data);
+    setStep(2);
+  };
+
+  const onStep2Next = () => {
+    const data = watch();
     const result = registrationStep1Schema.safeParse(data);
     if (!result.success) return;
     if (!idFrontFile || !idBackFile) {
@@ -475,14 +492,6 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
       }
     }
     setIdDocErr(null);
-    saveDraft(data);
-    setStep(2);
-  };
-
-  const onStep2Next = () => {
-    const data = watch();
-    const result = registrationStep2Schema.safeParse(data);
-    if (!result.success) return;
     saveDraft(data);
     setStep(3);
   };
@@ -504,7 +513,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
   }
 
   const inputClass =
-    'w-full rounded-lg border border-white/10 bg-surface2 px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-primary focus:outline-none focus:ring-2 focus:ring-green-primary/30';
+    'w-full rounded-lg border border-white/10 bg-surface2 px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-primary focus:outline-none focus:ring-2 focus:ring-green-primary/30 [color-scheme:dark]';
 
   if (success) {
     return (
@@ -560,6 +569,141 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
               <div className="space-y-6">
                 <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
                   {t('step1Title')}
+                </h3>
+                <div>
+                  <label className="mb-2 block font-body text-sm text-text-muted">{t('licenceClass')} *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {LICENCE_CLASSES.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => {
+                          setValue('licenceClass', c);
+                          setValue('bf17', c === 'BF17');
+                        }}
+                        className={`rounded-lg border px-4 py-2 font-heading text-sm font-bold uppercase transition-colors ${
+                          licenceClass === c
+                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
+                            : 'border-white/20 bg-surface2 text-white hover:border-green-primary/50'
+                        }`}
+                      >
+                        {c === 'B'
+                          ? t('licenceOptionB')
+                          : c === 'BF17'
+                            ? t('licenceOptionBF17')
+                            : c === 'B197'
+                              ? t('licenceOptionB197')
+                              : t('licenceOptionBE')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {(licenceClass === 'B' ||
+                  licenceClass === 'BF17' ||
+                  licenceClass === 'B197' ||
+                  licenceClass === 'BE') && (
+                  <div className="flex gap-4">
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <input type="radio" value="manual" {...register('transmission')} className="text-green-primary" />
+                      <span className="font-body text-sm text-white">{t('transmissionManual')}</span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <input type="radio" value="automatic" {...register('transmission')} className="text-green-primary" />
+                      <span className="font-body text-sm text-white">{t('transmissionAuto')}</span>
+                    </label>
+                  </div>
+                )}
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('instructor')}</label>
+                  <select {...register('instructorId')} className={inputClass}>
+                    <option value="">{t('instructorAny')}</option>
+                    {list.filter((i) => i.available).map((i) => (
+                      <option key={i.id} value={i.id}>
+                        {i.name} — {i.classes.join(', ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('lessonLanguage')} *</label>
+                  <select {...register('lessonLanguage')} className={inputClass}>
+                    {languageOptions.map(({ value, label }) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input type="checkbox" {...register('hasLicence')} className="rounded text-green-primary" />
+                    <span className="font-body text-sm text-white">{t('hasLicence')}</span>
+                  </label>
+                </div>
+                <div>
+                  <label className="mb-2 block font-body text-sm text-text-muted">{t('timeSlots')}</label>
+                  <div className="flex flex-wrap gap-2">
+                    {TIME_PILLS.map(({ value, labelKey }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => {
+                          const current = watch('timeSlots') ?? [];
+                          const next = (current as TimeSlot[]).includes(value as TimeSlot)
+                            ? (current as TimeSlot[]).filter((x) => x !== value)
+                            : [...(current as TimeSlot[]), value as TimeSlot];
+                          setValue('timeSlots', next);
+                        }}
+                        className={`rounded-full border px-4 py-2 font-body text-sm transition-colors ${
+                          (watch('timeSlots') ?? []).includes(value as TimeSlot)
+                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
+                            : 'border-white/20 bg-surface2 text-white'
+                        }`}
+                      >
+                        {t(labelKey)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1 block font-body text-sm text-text-muted">{t('source')}</label>
+                  <select {...register('source')} className={inputClass}>
+                    {SOURCES.map(({ value, labelKey }) => (
+                      <option key={value} value={value}>
+                        {t(labelKey)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-surface/40 p-4">
+                  <p className="mb-3 font-heading text-sm font-bold uppercase text-green-primary">{t('offerLabel')}</p>
+                  <div className="space-y-3">
+                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
+                      <input type="radio" value="standard" {...register('offerType')} className="mt-1 text-green-primary" />
+                      <span>
+                        <span className="font-body font-medium text-white">{t('offerStandardTitle')}</span>
+                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerStandardDesc')}</span>
+                      </span>
+                    </label>
+                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
+                      <input type="radio" value="bundle_10_promo" {...register('offerType')} className="mt-1 text-green-primary" />
+                      <span>
+                        <span className="font-body font-medium text-white">{t('offerBundleTitle')}</span>
+                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerBundleDesc', { price: PRICING_LESSON_HOUR_EUR })}</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <button type="button" onClick={onStep1Next} className="btn-primary w-full sm:w-auto" data-cta data-testid="registration-step1-next">
+                  {t('next')} →
+                </button>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-6">
+                <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
+                  {t('step2Title')}
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -617,7 +761,7 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                 <div>
                   <label className="mb-1 block font-body text-sm text-text-muted">{t('motherTongue')} *</label>
                   <select {...register('motherTongue')} className={inputClass}>
-                    {LANGUAGES.map(({ value, label }) => (
+                    {languageOptions.map(({ value, label }) => (
                       <option key={value} value={value}>
                         {label}
                       </option>
@@ -655,141 +799,6 @@ export default function RegistrationForm({ instructors = [], initialRefCode = ''
                     autoComplete="off"
                   />
                   <p className="mt-1 text-xs text-text-muted">{t('referrerCodeHint')}</p>
-                </div>
-                <button type="button" onClick={onStep1Next} className="btn-primary w-full sm:w-auto" data-cta data-testid="registration-step1-next">
-                  {t('next')} →
-                </button>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-6">
-                <h3 className="font-heading text-lg font-bold italic uppercase text-green-primary">
-                  {t('step2Title')}
-                </h3>
-                <div>
-                  <label className="mb-2 block font-body text-sm text-text-muted">{t('licenceClass')} *</label>
-                  <div className="flex flex-wrap gap-2">
-                    {LICENCE_CLASSES.map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => {
-                          setValue('licenceClass', c);
-                          setValue('bf17', c === 'BF17');
-                        }}
-                        className={`rounded-lg border px-4 py-2 font-heading text-sm font-bold uppercase transition-colors ${
-                          licenceClass === c
-                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
-                            : 'border-white/20 bg-surface2 text-white hover:border-green-primary/50'
-                        }`}
-                      >
-                        {c === 'B'
-                          ? t('licenceOptionB')
-                          : c === 'BF17'
-                            ? t('licenceOptionBF17')
-                            : c === 'B197'
-                              ? t('licenceOptionB197')
-                              : t('licenceOptionBE')}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                {(licenceClass === 'B' ||
-                  licenceClass === 'BF17' ||
-                  licenceClass === 'B197' ||
-                  licenceClass === 'BE') && (
-                  <div className="flex gap-4">
-                    <label className="flex cursor-pointer items-center gap-2">
-                      <input type="radio" value="manual" {...register('transmission')} className="text-green-primary" />
-                      <span className="font-body text-sm">{t('transmissionManual')}</span>
-                    </label>
-                    <label className="flex cursor-pointer items-center gap-2">
-                      <input type="radio" value="automatic" {...register('transmission')} className="text-green-primary" />
-                      <span className="font-body text-sm">{t('transmissionAuto')}</span>
-                    </label>
-                  </div>
-                )}
-                <div>
-                  <label className="mb-1 block font-body text-sm text-text-muted">{t('instructor')}</label>
-                  <select {...register('instructorId')} className={inputClass}>
-                    <option value="">{t('instructorAny')}</option>
-                    {list.filter((i) => i.available).map((i) => (
-                      <option key={i.id} value={i.id}>
-                        {i.name} — {i.classes.join(', ')}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="mb-1 block font-body text-sm text-text-muted">{t('lessonLanguage')} *</label>
-                  <select {...register('lessonLanguage')} className={inputClass}>
-                    {LANGUAGES.map(({ value, label }) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-wrap gap-4">
-                  <label className="flex cursor-pointer items-center gap-2">
-                    <input type="checkbox" {...register('hasLicence')} className="rounded text-green-primary" />
-                    <span className="font-body text-sm">{t('hasLicence')}</span>
-                  </label>
-                </div>
-                <div>
-                  <label className="mb-2 block font-body text-sm text-text-muted">{t('timeSlots')}</label>
-                  <div className="flex flex-wrap gap-2">
-                    {TIME_PILLS.map(({ value, labelKey }) => (
-                      <button
-                        key={value}
-                        type="button"
-                        onClick={() => {
-                          const current = watch('timeSlots') ?? [];
-                          const next = (current as TimeSlot[]).includes(value as TimeSlot)
-                            ? (current as TimeSlot[]).filter((x) => x !== value)
-                            : [...(current as TimeSlot[]), value as TimeSlot];
-                          setValue('timeSlots', next);
-                        }}
-                        className={`rounded-full border px-4 py-2 font-body text-sm transition-colors ${
-                          (watch('timeSlots') ?? []).includes(value as TimeSlot)
-                            ? 'border-green-primary bg-green-primary/20 text-green-primary'
-                            : 'border-white/20 bg-surface2 text-white'
-                        }`}
-                      >
-                        {t(labelKey)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-1 block font-body text-sm text-text-muted">{t('source')}</label>
-                  <select {...register('source')} className={inputClass}>
-                    {SOURCES.map(({ value, labelKey }) => (
-                      <option key={value} value={value}>
-                        {t(labelKey)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-surface/40 p-4">
-                  <p className="mb-3 font-heading text-sm font-bold uppercase text-green-primary">{t('offerLabel')}</p>
-                  <div className="space-y-3">
-                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
-                      <input type="radio" value="standard" {...register('offerType')} className="mt-1 text-green-primary" />
-                      <span>
-                        <span className="font-body font-medium text-white">{t('offerStandardTitle')}</span>
-                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerStandardDesc')}</span>
-                      </span>
-                    </label>
-                    <label className="flex cursor-pointer gap-3 rounded-lg border border-white/10 bg-surface2/80 p-3 has-[:checked]:border-green-primary/60 has-[:checked]:bg-green-primary/5">
-                      <input type="radio" value="bundle_10_promo" {...register('offerType')} className="mt-1 text-green-primary" />
-                      <span>
-                        <span className="font-body font-medium text-white">{t('offerBundleTitle')}</span>
-                        <span className="mt-1 block font-body text-xs text-text-muted">{t('offerBundleDesc', { price: PRICING_LESSON_HOUR_EUR })}</span>
-                      </span>
-                    </label>
-                  </div>
                 </div>
                 <div className="flex gap-4">
                   <button type="button" onClick={() => setStep(1)} className="btn-ghost" data-testid="registration-step2-back">

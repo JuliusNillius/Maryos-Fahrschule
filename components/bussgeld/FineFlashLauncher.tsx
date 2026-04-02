@@ -140,6 +140,7 @@ export default function FineFlashLauncher() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="fine-flash-title"
+            onClick={(e) => e.stopPropagation()}
             className="relative z-10 flex max-h-[min(92vh,900px)] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-[rgba(93,196,34,0.25)] bg-bg shadow-2xl sm:rounded-2xl"
           >
             <div className="flex items-center justify-between border-b border-[rgba(93,196,34,0.15)] px-4 py-3">
@@ -376,6 +377,16 @@ export default function FineFlashLauncher() {
               <p className="mt-6 font-body text-[11px] leading-relaxed text-text-muted">
                 {t("disclaimer")}
               </p>
+
+              <div className="mt-6 flex justify-end border-t border-[rgba(93,196,34,0.12)] pt-4">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg border border-[rgba(93,196,34,0.35)] bg-surface2 px-4 py-2 font-heading text-xs font-bold uppercase tracking-wide text-text transition-colors hover:border-green-primary/50 hover:text-green-primary"
+                >
+                  {t("close")}
+                </button>
+              </div>
             </div>
           </div>
         </div>

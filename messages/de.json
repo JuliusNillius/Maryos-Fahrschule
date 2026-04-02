@@ -43,16 +43,24 @@
     "reviewsFaq": "Bewertungen & FAQ",
     "contact": "Kontakt"
   },
+  "homeSwitcher": {
+    "ariaLabel": "Angebot für Fahrschulwechsler",
+    "badge": "ANGEBOT",
+    "line": "Fahrschulwechsler: Anmeldung (Ummeldung) nur 1 € — mit gültigem Ausbildungsnachweis deiner bisherigen Fahrschule.",
+    "linkLabel": "Zu den Preisen"
+  },
   "hero": {
     "badge": "Mönchengladbach's #1 Fahrschule",
     "headline": "FAHR IN DEIN GLÜCK",
     "headlineHighlight": "GLÜCK",
+    "seoH1": "Fahrschule Mönchengladbach – Führerschein Klasse B, BF17, B197 & BE",
+    "subheadlineRich": "Jetzt deinen Führerschein machen — wir begleiten dich. PKW: Klasse B, BF17, B197 und BE (Anhänger). <prices>Fahrstunde für 65 €</prices> — <teachers>unsere mehrsprachigen Fahrlehrer</teachers>. <firstaid>Erste-Hilfe-Kurs</firstaid> separat buchbar.",
     "subheadline": "Jetzt deinen Führerschein machen — wir begleiten dich. PKW: Klasse B, BF17, B197 und BE (Anhänger). Erste Hilfe separat.",
     "ctaPrimary": "JETZT ANMELDEN",
     "ctaSecondary": "UNSERE LEHRER →",
     "statGoogle": "5.0 ★ Google",
     "statReviews": "18 Rezensionen",
-    "statLanguages": "3 Sprachen",
+    "statLanguages": "4 Sprachen",
     "statClasses": "B · BF17 · B197 · BE"
   },
   "trustBar": {
@@ -61,7 +69,7 @@
     "item3": "Apple Pay",
     "item4": "Sofort & Klarna",
     "item5": "PKW: B · BF17 · B197 · BE",
-    "item6": "3 Sprachen (DE · TR · AR)",
+    "item6": "4 Sprachen (DE · EN · TR · AR)",
     "item7": "Mönchengladbach",
     "item8": "WhatsApp Support",
     "item9": "Gegründet 2025",
@@ -77,8 +85,8 @@
     "card1Desc": "Wähle nach Sprache, Sympathie und Verfügbarkeit.",
     "card2Title": "Fokus Auto",
     "card2Desc": "PKW: B, BF17, B197 und BE — damit du deinen Führerschein klar und passend machst.",
-    "card3Title": "3 Sprachen",
-    "card3Desc": "Deutsch, Arabisch und Türkisch — wie auf der Website und beim Lehrer-Quiz.",
+    "card3Title": "4 Sprachen",
+    "card3Desc": "Deutsch, Englisch, Arabisch und Türkisch — wie auf der Website und beim Lehrer-Quiz.",
     "card4Title": "5.0 Sterne",
     "card4Desc": "18 Google-Bewertungen — 100% zufriedene Schüler.",
     "card5Title": "100% Digital",
@@ -116,7 +124,10 @@
     "available": "Verfügbar",
     "unavailable": "Ausgebucht",
     "cta": "Mit {name} anmelden",
-    "noResults": "Keine Lehrkräfte entsprechen den Filtern."
+    "noResults": "Keine Lehrkräfte entsprechen den Filtern.",
+    "carouselPrev": "Vorheriger Lehrer",
+    "carouselNext": "Nächster Lehrer",
+    "carouselSwipeHint": "Nach links oder rechts wischen"
   },
   "stats": {
     "ariaLabel": "Zahlen und Fakten",
@@ -131,7 +142,10 @@
   "bookingCalendar": {
     "heading": "TERMIN WÄHLEN",
     "subheading": "Erste Fahrstunde oder Theorie — wir melden uns zur Bestätigung.",
-    "contactOptional": "Deine Daten (optional — für Rückruf)",
+    "contactOptional": "Deine Daten — bitte mindestens Name, E-Mail oder Telefon angeben (für Rückfragen)",
+    "contactRequired": "Bitte gib mindestens Name, E-Mail oder Telefon an.",
+    "invalidEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "submitError": "Die Anfrage konnte nicht gesendet werden. Bitte versuche es erneut.",
     "namePlaceholder": "Name",
     "emailPlaceholder": "E-Mail",
     "phonePlaceholder": "Telefon",
@@ -190,7 +204,7 @@
     "cta": "ABLAUF ANSEHEN →"
   },
   "team": {
-    "heading": "DAS TEAM",
+    "pageH1": "Das Team – Maryo's Fahrschule Mönchengladbach",
     "maryoRole": "Geschäftsführer",
     "maryoAlt": "Maryo Asoo",
     "maryoText": "Ich liebe es, Menschen auf dem Weg zum Führerschein zu begleiten. Als erfahrener Unternehmer ist es mir wichtig, nicht nur Fahrstunden zu geben, sondern ein familiäres Umfeld zu schaffen, in dem sich jeder willkommen fühlt. Bei Maryo's geht es um dich – wir wollen, dass du sicher und mit Freude fährst.",
@@ -221,10 +235,26 @@
     "heading": "UNSERE FLOTTE",
     "manual": "Schaltung",
     "automatic": "Automatik",
-    "class": "Klasse"
+    "class": "Klasse",
+    "dossier": "Fahrzeugakte",
+    "dossierSub": "Ausbildungsfahrzeug · Maryos Fahrschule",
+    "psStatLabel": "PS",
+    "tapHint": "Tippen für Steckbrief",
+    "openSteckbrief": "Steckbrief öffnen",
+    "steckbriefBadge": "Steckbrief",
+    "close": "Schließen",
+    "powerLabel": "Leistung",
+    "powerUnit": "PS",
+    "notSpecified": "k. A.",
+    "assistanceLabel": "Assistenzsysteme",
+    "carplayLabel": "Apple CarPlay",
+    "notesLabel": "Mehr Infos",
+    "yes": "Ja",
+    "no": "Nein",
+    "transmissionLabel": "Getriebe"
   },
   "priceCalculator": {
-    "heading": "WAS KOSTET DEINE FAHRERAUSBILDUNG?",
+    "heading": "WAS KOSTET DEINE FAHRSCHULAUSBILDUNG?",
     "sub": "PKW — Klasse B, BF17, B197 oder BE. Alle Beträge inkl. MwSt.",
     "ersteHilfeTeaser": "Erste Hilfe (extra, nicht im Führerschein-Paket): {price} €.",
     "ersteHilfeCta": "Zur Erste-Hilfe-Seite →",
@@ -293,23 +323,25 @@
     "q4A": "Apple Pay, Google Pay, Sofort (Klarna), Klarna Ratenkauf und Kredit-/Debitkarte.",
     "q5Q": "Gibt es eine Ratenzahlung?",
     "q5A": "Ja! Über Klarna kannst du in 3 Raten zahlen — ohne Zinsen.",
-    "q6Q": "Kann ich auf Deutsch, Arabisch oder Türkisch unterrichtet werden?",
-    "q6A": "Ja. Diese drei Sprachen bieten wir für den Unterricht an — passend zur Website und zu unserem Lehrer-Quiz.",
+    "q6Q": "Kann ich auf Deutsch, Englisch, Arabisch oder Türkisch unterrichtet werden?",
+    "q6A": "Ja. Diese vier Sprachen bieten wir für den Unterricht an — passend zur Website und zu unserem Lehrer-Quiz.",
     "q7Q": "Was passiert nach der Online-Anmeldung?",
     "q7A": "Wir melden uns in der Regel innerhalb von 24 Stunden — das ist unser Mindeststandard für die Bearbeitung. Rufnummer: 0178 4557528. Oft geht’s schneller, garantieren können wir aber immer mindestens diese Frist.",
     "q8Q": "Wann seid ihr erreichbar?",
     "q8A": "Mo–Fr von 12:00–18:00 Uhr. Bahnhofstraße 25, 41236 Mönchengladbach. Kurznachrichten & Termin: grüne Buttons unten rechts auf der Website; telefonisch: 0178 4557528",
     "q9Q": "Kann ich mich für BF17 / Begleitetes Fahren anmelden?",
-    "q9A": "Ja, ab 17 Jahren mit geeigneter Begleitperson."
+    "q9A": "Ja, ab 17 Jahren mit geeigneter Begleitperson.",
+    "q10Q": "Gibt es ein Angebot für Fahrschulwechsler:innen?",
+    "q10A": "Ja. Wenn du von einer anderen Fahrschule zu uns wechselst und einen gültigen Ausbildungsnachweis der bisherigen (alten) Fahrschule vorweisen kannst, zahlst du bei uns für die Anmeldung (Ummeldung) nur 1 €. Details und Voraussetzungen klären wir bei der Anmeldung. Lern-App, Fahrstunden und Prüfgebühren gelten weiterhin zu unseren regulären Preisen — siehe Preisrechner und Seite „Preise“."
   },
   "faqPage": {
     "metaTitle": "FAQ Führerschein Mönchengladbach | Maryo's Fahrschule",
-    "metaDescription": "Antworten zu Preisen, Klassen B/BF17/B197/BE, Jobcenter, Erste Hilfe und Ablauf — Fahrschule Maryo's in Mönchengladbach.",
+    "metaDescription": "Antworten zu Preisen, Klassen B/BF17/B197/BE, Jobcenter, Erste Hilfe und Ablauf — inkl. Fahrschulwechsel & Ummeldung (1 € Anmeldung mit gültigem Ausbildungsnachweis der alten Fahrschule). Maryo's in Mönchengladbach.",
     "kicker": "Alles, was du wissen willst",
     "heroTitle": "Fragen & Antworten",
-    "heroLead": "Hier sammeln wir, was Fahrschüler:innen in Mönchengladbach und aus der Nachbarschaft uns am häufigsten fragen: von Kosten über Förderung bis BF17 und B197. Unten filterst du nach Thema oder suchst direkt.",
+    "heroLead": "Hier sammeln wir, was Fahrschüler:innen in Mönchengladbach und aus der Nachbarschaft uns am häufigsten fragen: von Kosten über Förderung bis BF17 und B197 — auch zum Wechsel von einer anderen Fahrschule (Ummeldung). Unten filterst du nach Thema oder suchst direkt.",
     "searchLabel": "FAQ durchsuchen",
-    "searchPlaceholder": "z. B. Jobcenter, Preis, BF17 …",
+    "searchPlaceholder": "z. B. Wechsler, Ummeldung, Ausbildungsnachweis, Jobcenter, Preis …",
     "filterAria": "Themenfilter",
     "filterAll": "Alle",
     "categories": {
@@ -321,8 +353,16 @@
     },
     "ctaPreise": "Zu den Preisen",
     "ctaAnmelden": "Jetzt anmelden",
-    "empty": "Keine Treffer — anderen Filter wählen oder Suchbegriff ändern.",
-    "footerHint": "Änderungen an Einzelantworten kannst du im Backoffice vornehmen; diese Seite zieht live aus der Datenbank."
+    "empty": "Keine Treffer — anderen Filter wählen oder Suchbegriff ändern."
+  },
+  "lehrerPage": {
+    "metaTitle": "Fahrlehrer in Mönchengladbach | Maryo's Fahrschule",
+    "metaDescription": "Lerne deine Fahrlehrer kennen — Unterricht auf Deutsch, Türkisch und Arabisch. Maryo's Fahrschule Mönchengladbach, Bahnhofstraße 25. Jetzt Lehrer auswählen & anmelden.",
+    "h1": "Unsere Fahrlehrer in Mönchengladbach"
+  },
+  "teamPage": {
+    "metaTitle": "Unser Team | Maryo's Fahrschule Mönchengladbach",
+    "metaDescription": "Das Team hinter Maryo's Fahrschule in Mönchengladbach. Fahrlehrer für Klasse B, BF17, B197 und BE — mehrsprachig auf Deutsch, Türkisch und Arabisch."
   },
   "preisePage": {
     "metaTitle": "Führerschein Preise Mönchengladbach | Rechner B BF17 B197 BE",
@@ -331,7 +371,12 @@
     "heading": "Führerschein-Preise in Mönchengladbach",
     "intro1": "Ob du in Rheydt, Wickrath oder einem anderen Stadtteil wohnst — bei uns in der Innenstadt an der Bahnhofstraße planst du deinen Führerschein mit denselben klaren Preisen wie alle unsere PKW-Fahrschüler:innen.",
     "intro2": "Die Anmeldung und die Lern-App sind der Einstieg; Fahrstunden zahlst du nach Bedarf. TÜV-Gebühren und der Erste-Hilfe-Kurs sind separate Posten — so bleibt nichts versteckt. Fragen zu Jobcenter oder Förderung beantworten wir in der FAQ.",
-    "intro3": "Nutze den Rechner unten für Klasse B, BF17, B197 oder BE und spiele verschiedene Stundenzahlen durch — passend zu deinem Tempo."
+    "intro3": "Nutze den Rechner oben für Klasse B, BF17, B197 oder BE und spiele verschiedene Stundenzahlen durch — passend zu deinem Tempo.",
+    "switcherOfferBadge": "ANGEBOT",
+    "switcherOfferTitle": "Fahrschulwechsler",
+    "switcherOfferBody": "Wechselst du von einer anderen Fahrschule zu uns? Dann zahlst du für die Anmeldung (Ummeldung) bei uns nur 1 €, wenn du einen gültigen Ausbildungsnachweis der bisherigen Fahrschule vorlegen kannst. Lern-App, Fahrstunden und weitere Leistungen berechnen wir zu unseren üblichen Sätzen — der Rechner oben hilft dir bei der Kostenschätzung.",
+    "switcherOfferFaqHint": "Das Thema findest du auch in den FAQ (Filter „Preise“).",
+    "switcherOfferFaqLink": "Zur FAQ"
   },
   "fuehrerscheinPage": {
     "ctaPreise": "Preise & Rechner",
@@ -404,8 +449,8 @@
   },
   "registration": {
     "heading": "ANMELDUNG",
-    "step1Title": "Persönliche Daten",
-    "step2Title": "Kurs & Lehrer",
+    "step1Title": "Kurs & Lehrer",
+    "step2Title": "Persönliche Daten",
     "step3Title": "Zahlung & AGB",
     "firstName": "Vorname",
     "lastName": "Nachname",
@@ -494,6 +539,8 @@
     "referralLookupEmail": "E-Mail (mit der du dich angemeldet hast)",
     "referralLookupCta": "Code anzeigen",
     "referralLookupNotFound": "Zu dieser E-Mail ist kein Empfehlungscode hinterlegt.",
+    "referralLookupEmailRequired": "Bitte gib deine E-Mail-Adresse ein.",
+    "referralLookupEmailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "referralLookupFound": "Dein Empfehlungscode",
     "loadingPayment": "Zahlung wird vorbereitet"
   },

@@ -30,7 +30,7 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const LANG_OPTIONS: InstructorLang[] = ['de', 'ar', 'tr'];
+  const LANG_OPTIONS: InstructorLang[] = ['de', 'ar', 'tr', 'en'];
 
   const goResult = (l: InstructorLang | null) => {
     if (l) setResult(matchInstructor(list, l));
@@ -161,7 +161,7 @@ export default function InstructorQuiz({ instructors }: InstructorQuizProps) {
                     <h3 className="mt-1 font-heading text-2xl font-bold italic text-white">
                       {result.name}
                     </h3>
-                    <p className="font-body text-sm text-text-muted">{result.title}</p>
+                    <p className="font-body text-sm text-white/80">{result.title}</p>
                     <p className="mt-2 font-body text-white/90">&ldquo;{result.quote}&rdquo;</p>
                     <Link
                       href="/anmelden"

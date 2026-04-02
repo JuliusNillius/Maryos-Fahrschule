@@ -12,15 +12,21 @@ type FleetItem = {
   transmission: string;
   classes: string[];
   image: string;
+  power_ps?: number | null;
+  has_driver_assistance?: boolean;
+  has_apple_carplay?: boolean;
+  steckbrief_notes?: string | null;
   sort_order: number;
   internal_note: string | null;
 };
+
+type FleetForm = Omit<Partial<FleetItem>, 'power_ps'> & { power_ps?: number | '' | null };
 
 export default function BackofficeFlottePage() {
   const [list, setList] = useState<FleetItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<FleetItem | null>(null);
-  const [form, setForm] = useState<Partial<FleetItem>>({});
+  const [form, setForm] = useState<FleetForm>({});
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
@@ -57,6 +63,10 @@ export default function BackofficeFlottePage() {
       transmission: item.transmission,
       classes: [...(item.classes || [])],
       image: item.image,
+      power_ps: item.power_ps ?? '',
+      has_driver_assistance: !!item.has_driver_assistance,
+      has_apple_carplay: !!item.has_apple_carplay,
+      steckbrief_notes: item.steckbrief_notes ?? '',
       sort_order: item.sort_order,
       internal_note: item.internal_note ?? '',
     });
@@ -69,6 +79,10 @@ export default function BackofficeFlottePage() {
       transmission: 'manual',
       classes: [],
       image: '',
+      power_ps: null,
+      has_driver_assistance: false,
+      has_apple_carplay: false,
+      steckbrief_notes: null,
       sort_order: list.length,
       internal_note: null,
     });
@@ -77,6 +91,10 @@ export default function BackofficeFlottePage() {
       transmission: 'manual',
       classes: [],
       image: '',
+      power_ps: '',
+      has_driver_assistance: false,
+      has_apple_carplay: false,
+      steckbrief_notes: '',
       sort_order: list.length,
       internal_note: '',
     });
@@ -91,6 +109,10 @@ export default function BackofficeFlottePage() {
       ...form,
       classes: form.classes ?? [],
       transmission: form.transmission === 'automatic' ? 'automatic' : 'manual',
+      power_ps:
+        form.power_ps === '' || form.power_ps === undefined || form.power_ps === null
+          ? null
+          : Number(form.power_ps),
     };
     try {
       if (editing.id) {
@@ -199,6 +221,7 @@ export default function BackofficeFlottePage() {
               <p className="font-semibold text-white">{item.model}</p>
               <p className="text-sm text-text-muted">
                 {item.transmission === 'automatic' ? 'Automatik' : 'Schaltung'} · {item.classes?.join(', ') || '–'}
+                {item.power_ps != null && Number.isFinite(Number(item.power_ps)) ? ` · ${item.power_ps} PS` : ''}
               </p>
             </div>
             <div className="flex gap-2">
@@ -300,6 +323,55 @@ export default function BackofficeFlottePage() {
                     <Image src={form.image} alt="" fill className="object-cover" sizes="300px" />
                   </div>
                 )}
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">Leistung (PS, optional)</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={form.power_ps === '' || form.power_ps === undefined || form.power_ps === null ? '' : String(form.power_ps)}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === '') setForm((f) => ({ ...f, power_ps: '' }));
+                    else {
+                      const n = parseInt(v, 10);
+                      setForm((f) => ({ ...f, power_ps: Number.isNaN(n) ? '' : n }));
+                    }
+                  }}
+                  className="w-full rounded-lg border border-white/10 bg-surface2 px-3 py-2 text-white"
+                  placeholder="z. B. 150"
+                />
+              </div>
+              <div className="space-y-2 rounded-lg border border-white/10 bg-white/[0.03] p-3">
+                <p className="text-sm font-medium text-white">Steckbrief (Website)</p>
+                <label className="flex cursor-pointer items-center gap-2 text-sm text-text-muted">
+                  <input
+                    type="checkbox"
+                    checked={!!form.has_driver_assistance}
+                    onChange={(e) => setForm((f) => ({ ...f, has_driver_assistance: e.target.checked }))}
+                    className="rounded border-white/30 bg-surface2"
+                  />
+                  Fahrer-Assistenzsysteme
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 text-sm text-text-muted">
+                  <input
+                    type="checkbox"
+                    checked={!!form.has_apple_carplay}
+                    onChange={(e) => setForm((f) => ({ ...f, has_apple_carplay: e.target.checked }))}
+                    className="rounded border-white/30 bg-surface2"
+                  />
+                  Apple CarPlay
+                </label>
+              </div>
+              <div>
+                <label className="block text-sm text-text-muted mb-1">Zusatztext Steckbrief (optional)</label>
+                <textarea
+                  value={form.steckbrief_notes ?? ''}
+                  onChange={(e) => setForm((f) => ({ ...f, steckbrief_notes: e.target.value }))}
+                  rows={3}
+                  className="w-full rounded-lg border border-white/10 bg-surface2 px-3 py-2 text-white placeholder:text-text-muted"
+                  placeholder="z. B. Rückfahrkamera, Sitzheizung …"
+                />
               </div>
               <div>
                 <label className="block text-sm text-text-muted mb-1">Reihenfolge</label>

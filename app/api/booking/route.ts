@@ -14,22 +14,26 @@ export async function POST(request: Request) {
     const body = await request.json();
     const parsed = bookingRequestSchema.safeParse(body);
     if (!parsed.success) {
+      const issue = parsed.error.issues[0];
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten() },
+        { error: issue?.message ?? 'validation' },
         { status: 400 }
       );
     }
 
     const { date, time, name, email, phone } = parsed.data;
+    const nameTrim = name.trim();
+    const emailTrim = email.trim();
+    const phoneTrim = phone.trim();
 
     const admin = getSupabaseAdmin();
     if (admin) {
       const { error } = await admin.from('bookings').insert({
         date,
         time,
-        name: name ?? null,
-        email: email ?? null,
-        phone: phone ?? null,
+        name: nameTrim || null,
+        email: emailTrim || null,
+        phone: phoneTrim || null,
       });
       if (error) {
         console.error('[booking] Supabase insert error:', error);
@@ -43,11 +47,16 @@ export async function POST(request: Request) {
     const resend = getResend();
     const contactTo = process.env.CONTACT_EMAIL;
     if (resend && contactTo) {
-      const lines = [`Termin: ${date} um ${time}`, name && `Name: ${name}`, email && `E-Mail: ${email}`, phone && `Tel: ${phone}`].filter(Boolean);
+      const lines = [
+        `Termin: ${date} um ${time}`,
+        nameTrim && `Name: ${nameTrim}`,
+        emailTrim && `E-Mail: ${emailTrim}`,
+        phoneTrim && `Tel: ${phoneTrim}`,
+      ].filter(Boolean);
       await resend.emails.send({
         from: process.env.RESEND_FROM ?? "Maryo's Fahrschule <onboarding@resend.dev>",
         to: contactTo,
-        reply_to: email ?? undefined,
+        reply_to: emailTrim || undefined,
         subject: `Terminanfrage: ${date} ${time}`,
         text: lines.join('\n'),
       }).catch((err) => console.error('[booking] Resend error:', err));

@@ -35,3 +35,7 @@ playwright-report/
 
 # Supabase CLI cache
 supabase/.temp/
+
+# Lokale Artefakte
+ffmpeg-static-*.tgz
+.cursor/debug*.log

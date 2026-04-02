@@ -1,11 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Link } from '@/i18n/navigation';
-
 gsap.registerPlugin(ScrollTrigger);
 
 /**
@@ -15,11 +14,12 @@ gsap.registerPlugin(ScrollTrigger);
 // Pin-Distanz: zu hoch = viel Scroll ohne sichtbare Bewegung (Lenis + Pin). ~18–22% wirkt flüssiger.
 const PIN_SCROLL = 20; // % viewport-Höhe als Scroll-Strecke während Pin
 
-// Ein Video: Auto Nacht / Autobahn. Eigenes File: public/videos/hero.mp4 (z. B. von Pexels/Coverr „car driving night highway“)
-const HERO_VIDEO = '/videos/hero.mp4';
-const FALLBACK_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
+// Desktop: `public/videos/hero.mp4` (16:9, max. 1920×1080 empfohlen).
+// Mobil: `public/videos/hero-mobile.mp4` (9:16, z. B. 1080×1920, Mittelstreifen aus derselben Quelle).
+const HERO_VIDEO_DESKTOP = '/videos/hero.mp4';
+const HERO_VIDEO_MOBILE = '/videos/hero-mobile.mp4';
 
-const DEFAULT_STATS = [5, 18, 3, 4] as const; // Google, Reviews, Sprachen, PKW-Angebote (B, BF17, B197, BE)
+const DEFAULT_STATS = [5, 18, 4, 4] as const; // Google, Reviews, Sprachen, PKW-Angebote (B, BF17, B197, BE)
 
 type HeroProps = {
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number } | null;
@@ -28,7 +28,6 @@ type HeroProps = {
 export default function Hero({ stats }: HeroProps) {
   const t = useTranslations('hero');
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const h1Part1Ref = useRef<HTMLSpanElement>(null);
   const h1Part2Ref = useRef<HTMLSpanElement>(null);
@@ -44,16 +43,23 @@ export default function Hero({ stats }: HeroProps) {
   const part1 = (parts[0] ?? '').trim();
   const part2 = highlightWord;
 
-  // Video starten (muted für Autoplay)
+  // Sichtbares Hero-Video abspielen (zwei Clips: mobil vs. desktop)
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-    const vid = section.querySelector<HTMLVideoElement>('video');
-    if (vid) {
-      vid.muted = true;
-      vid.playsInline = true;
-      vid.play().catch(() => {});
-    }
+    const playVisible = () => {
+      section.querySelectorAll<HTMLVideoElement>('.hero-video-wrap video').forEach((vid) => {
+        vid.muted = true;
+        vid.playsInline = true;
+        const cs = getComputedStyle(vid);
+        const visible = cs.display !== 'none' && cs.visibility !== 'hidden';
+        if (visible) vid.play().catch(() => {});
+        else vid.pause();
+      });
+    };
+    playVisible();
+    window.addEventListener('resize', playVisible);
+    return () => window.removeEventListener('resize', playVisible);
   }, []);
 
   useEffect(() => {
@@ -196,7 +202,7 @@ export default function Hero({ stats }: HeroProps) {
       className="relative h-screen min-h-[100dvh] w-full overflow-hidden"
       data-hide-custom-cursor
     >
-      {/* §10 Video: ein Clip – Auto nachts auf der Autobahn (Rennfahrer-Feeling). Eigene Datei: public/videos/hero.mp4 */}
+      {/* Hero-Video: public/videos/hero.mp4 (Desktop) + hero-mobile.mp4 (Mobil) */}
       <div
         className="absolute inset-0 bg-[#0a0a0a]"
         style={{
@@ -204,34 +210,50 @@ export default function Hero({ stats }: HeroProps) {
         }}
         aria-hidden
       />
-      <div className="hero-video-wrap absolute inset-0 min-h-full min-w-full">
+      <div
+        className="hero-video-wrap absolute inset-0 isolate min-h-full min-w-full overflow-hidden [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
+        style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+      >
         <video
-          ref={videoRef}
-          className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center"
-          src={HERO_VIDEO}
+          className="absolute inset-0 hidden h-full min-h-full w-full min-w-full object-cover object-center md:block [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
+          style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+          width={1920}
+          height={1080}
+          src={HERO_VIDEO_DESKTOP}
           muted
           loop
           playsInline
           autoPlay
           preload="auto"
           aria-hidden
-          onError={(e) => {
-            const v = e.currentTarget;
-            if (!v.src.includes('gtv-videos-bucket')) {
-              v.src = FALLBACK_VIDEO;
-              v.load();
-              v.play().catch(() => {});
-            }
-          }}
           onLoadedData={(e) => {
-            e.currentTarget.play().catch(() => {});
+            const v = e.currentTarget;
+            if (getComputedStyle(v).display !== 'none') v.play().catch(() => {});
+          }}
+        />
+        <video
+          className="absolute inset-0 h-full min-h-full w-full min-w-full object-cover object-center md:hidden [transform:translate3d(0,0,0)] [-webkit-transform:translate3d(0,0,0)]"
+          style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+          width={1080}
+          height={1920}
+          src={HERO_VIDEO_MOBILE}
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload="auto"
+          aria-hidden
+          onLoadedData={(e) => {
+            const v = e.currentTarget;
+            if (getComputedStyle(v).display !== 'none') v.play().catch(() => {});
           }}
         />
       </div>
 
       {/* Overlays §10 */}
+      {/* Filmkorn: auf schmalen Viewports aus — wirkt oft wie weiche Unschärfe über dem Video (WebKit). */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04] max-md:hidden"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
@@ -253,7 +275,7 @@ export default function Hero({ stats }: HeroProps) {
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        className="pointer-events-none absolute inset-0 opacity-[0.025] max-md:hidden"
         style={{
           backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.03) 1px, rgba(255,255,255,0.03) 2px)',
         }}
@@ -266,46 +288,77 @@ export default function Hero({ stats }: HeroProps) {
         aria-hidden
       />
 
-      {/* Content – kräftige weiße Schrift + Schatten für bessere Lesbarkeit auf dem Video */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center max-md:pr-20 md:pt-36 lg:pt-40">
-        <p
-          ref={eyebrowRef}
-          className="mb-6 max-w-[calc(100vw-2.5rem)] rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:text-[11px] sm:tracking-[0.2em]"
-        >
-          🍀 {t('badge')}
-        </p>
-        <h1 className="max-w-5xl font-heading text-[clamp(3.5rem,10vw,8rem)] font-bold italic leading-[0.95] tracking-tight">
-          <span
-            ref={h1Part1Ref}
-            className="block text-white [text-shadow:0_0_30px_rgba(0,0,0,0.95),0_0_60px_rgba(0,0,0,0.7),0_2px_8px_rgba(0,0,0,1)]"
+      {/* Content – mobil symmetrisch zentriert; max-width lässt rechts Platz für FABs (ohne einseitiges pr-20) */}
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 pb-28 pt-28 text-center md:pt-36 lg:pt-40">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center max-md:max-w-[min(42rem,calc(100vw-6rem))]">
+          <p
+            ref={eyebrowRef}
+            className="mb-6 max-w-full rounded-full border border-green-400/50 bg-black/40 px-4 py-1.5 text-center font-display text-[10px] uppercase leading-snug tracking-[0.18em] text-green-400 backdrop-blur-sm [text-shadow:0_0_12px_rgba(0,0,0,0.9)] sm:text-[11px] sm:tracking-[0.2em]"
           >
-            {part1}
-          </span>
-          <span
-            ref={h1Part2Ref}
-            className="block text-green-400 [text-shadow:0_0_25px_rgba(0,0,0,0.9),0_0_50px_rgba(0,0,0,0.6),0_2px_6px_rgba(0,0,0,1)]"
-            style={{ transformOrigin: 'center center' }}
+            🍀 {t('badge')}
+          </p>
+          <h1 className="sr-only">{t('seoH1')}</h1>
+          <div
+            className="max-w-full font-heading text-[clamp(3.5rem,10vw,8rem)] font-bold italic leading-[0.95] tracking-tight md:max-w-5xl"
+            aria-hidden
           >
-            {part2}
-          </span>
-        </h1>
-        <p
-          ref={subtextRef}
-          className="mt-6 max-w-xl font-body text-lg text-white/95 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)]"
-        >
-          {t('subheadline')}
-        </p>
-        <div ref={ctaRef} className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/anmelden" className="btn-primary h-[52px] gap-2 px-8 text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]" data-cta data-magnetic data-testid="hero-cta-primary">
-            🏁 {t('ctaPrimary')}
-          </Link>
-          <Link href="/lehrer" className="btn-ghost h-[52px] px-8 text-base text-white [text-shadow:0_0_16px_rgba(0,0,0,0.8),0_2px_4px_rgba(0,0,0,0.9)]" data-testid="hero-cta-secondary">
-            {t('ctaSecondary')}
-          </Link>
-        </div>
-        <div className="mt-16 flex flex-col items-center gap-2">
-          <span className="text-sm uppercase tracking-[0.3em] text-white/80 [text-shadow:0_0_12px_rgba(0,0,0,0.8)]">Scroll</span>
-          <div className="h-10 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse" aria-hidden />
+            <span
+              ref={h1Part1Ref}
+              className="block text-white [text-shadow:0_0_30px_rgba(0,0,0,0.95),0_0_60px_rgba(0,0,0,0.7),0_2px_8px_rgba(0,0,0,1)]"
+            >
+              {part1}
+            </span>
+            <span
+              ref={h1Part2Ref}
+              className="block text-green-400 [text-shadow:0_0_25px_rgba(0,0,0,0.9),0_0_50px_rgba(0,0,0,0.6),0_2px_6px_rgba(0,0,0,1)]"
+              style={{ transformOrigin: 'center center' }}
+            >
+              {part2}
+            </span>
+          </div>
+          <p
+            ref={subtextRef}
+            className="mt-6 max-w-xl font-body text-lg text-white/95 [text-shadow:0_0_20px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,1)]"
+          >
+            {t.rich('subheadlineRich', {
+              prices: (chunks) => (
+                <Link
+                  href="/preise"
+                  className="font-medium text-green-400 underline decoration-green-400/50 underline-offset-2 transition-colors hover:text-green-300"
+                >
+                  {chunks}
+                </Link>
+              ),
+              teachers: (chunks) => (
+                <Link
+                  href="/lehrer"
+                  className="font-medium text-green-400 underline decoration-green-400/50 underline-offset-2 transition-colors hover:text-green-300"
+                >
+                  {chunks}
+                </Link>
+              ),
+              firstaid: (chunks) => (
+                <Link
+                  href="/erste-hilfe"
+                  className="font-medium text-green-400 underline decoration-green-400/50 underline-offset-2 transition-colors hover:text-green-300"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </p>
+          <div ref={ctaRef} className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Link href="/anmelden" className="btn-primary h-[52px] gap-2 px-8 text-base [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]" data-cta data-magnetic data-testid="hero-cta-primary">
+              🏁 {t('ctaPrimary')}
+            </Link>
+            <Link href="/lehrer" className="btn-ghost h-[52px] px-8 text-base text-white [text-shadow:0_0_16px_rgba(0,0,0,0.8),0_2px_4px_rgba(0,0,0,0.9)]" data-testid="hero-cta-secondary">
+              {t('ctaSecondary')}
+            </Link>
+          </div>
+          <div className="mt-16 flex flex-col items-center gap-2">
+            <span className="text-sm uppercase tracking-[0.3em] text-white/80 [text-shadow:0_0_12px_rgba(0,0,0,0.8)]">Scroll</span>
+            <div className="h-10 w-px bg-gradient-to-b from-green-500/80 to-transparent animate-pulse" aria-hidden />
+          </div>
         </div>
       </div>
 

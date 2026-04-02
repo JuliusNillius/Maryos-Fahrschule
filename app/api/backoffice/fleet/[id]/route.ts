@@ -30,6 +30,20 @@ export async function PATCH(
   if (body.transmission === 'automatic' || body.transmission === 'manual') updates.transmission = body.transmission;
   if (Array.isArray(body.classes)) updates.classes = body.classes;
   if (typeof body.image === 'string') updates.image = body.image;
+  if (body.power_ps !== undefined) {
+    const powerRaw = body.power_ps;
+    const n =
+      powerRaw === '' || powerRaw === undefined || powerRaw === null ? null : Number(powerRaw);
+    updates.power_ps = n != null && Number.isFinite(n) ? n : null;
+  }
+  if (body.has_driver_assistance !== undefined) updates.has_driver_assistance = !!body.has_driver_assistance;
+  if (body.has_apple_carplay !== undefined) updates.has_apple_carplay = !!body.has_apple_carplay;
+  if (body.steckbrief_notes !== undefined) {
+    updates.steckbrief_notes =
+      typeof body.steckbrief_notes === 'string' && body.steckbrief_notes.trim()
+        ? body.steckbrief_notes.trim()
+        : null;
+  }
   if (typeof body.sort_order === 'number') updates.sort_order = body.sort_order;
   if (body.internal_note !== undefined) updates.internal_note = body.internal_note;
   const { data, error } = await supabase.from('fleet').update(updates).eq('id', id).select().single();

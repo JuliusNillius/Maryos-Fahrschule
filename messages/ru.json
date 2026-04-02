@@ -107,7 +107,10 @@
     "available": "Свободен",
     "unavailable": "Занят",
     "cta": "Записаться к {name}",
-    "noResults": "Нет инструкторов по выбранным фильтрам."
+    "noResults": "Нет инструкторов по выбранным фильтрам.",
+    "carouselPrev": "Предыдущий инструктор",
+    "carouselNext": "Следующий инструктор",
+    "carouselSwipeHint": "Свайп влево или вправо"
   },
   "stats": {
     "ariaLabel": "Цифры и факты",
@@ -122,7 +125,10 @@
   "bookingCalendar": {
     "heading": "ВЫБРАТЬ ДАТУ",
     "subheading": "Первое занятие или теория — перезвоним для подтверждения.",
-    "contactOptional": "Ваши данные (необязательно)",
+    "contactOptional": "Контакты — укажите имя, email или телефон (хотя бы одно)",
+    "contactRequired": "Укажите имя, email или телефон (хотя бы одно поле).",
+    "invalidEmail": "Введите корректный email.",
+    "submitError": "Не удалось отправить. Попробуйте снова.",
     "namePlaceholder": "Имя",
     "emailPlaceholder": "Email",
     "phonePlaceholder": "Телефон",
@@ -201,7 +207,23 @@
     "heading": "НАШИ АВТОМОБИЛИ",
     "manual": "Механика",
     "automatic": "Автомат",
-    "class": "Категория"
+    "class": "Категория",
+    "dossier": "Дело автомобиля",
+    "dossierSub": "Учебный автомобиль · автошкола Maryos",
+    "psStatLabel": "Мощность",
+    "tapHint": "Нажмите для карточки",
+    "openSteckbrief": "Открыть карточку авто",
+    "steckbriefBadge": "Карточка авто",
+    "close": "Закрыть",
+    "powerLabel": "Мощность",
+    "powerUnit": "л.с.",
+    "notSpecified": "н/д",
+    "assistanceLabel": "Системы помощи",
+    "carplayLabel": "Apple CarPlay",
+    "notesLabel": "Дополнительно",
+    "yes": "Да",
+    "no": "Нет",
+    "transmissionLabel": "Коробка передач"
   },
   "priceCalculator": {
     "heading": "СКОЛЬКО СТОИТ ПРАВА?",
@@ -244,8 +266,8 @@
   "mobileBar": { "call": "Позвонить", "whatsapp": "WhatsApp", "register": "Записаться" },
   "registration": {
     "heading": "ЗАПИСЬ",
-    "step1Title": "Личные данные",
-    "step2Title": "Курс и инструктор",
+    "step1Title": "Курс и инструктор",
+    "step2Title": "Личные данные",
     "step3Title": "Оплата и условия",
     "firstName": "Имя",
     "lastName": "Фамилия",
@@ -304,7 +326,14 @@
     "successTitle": "ДОБРО ПОЖАЛОВАТЬ В MARYO'S!",
     "successMessage": "Скоро свяжемся. Вопросы: 0178 4557528.",
     "successCta": "На главную",
-    "loadingPayment": "Подготовка оплаты"
+    "loadingPayment": "Подготовка оплаты",
+    "referralLookupTitle": "Получить код",
+    "referralLookupEmail": "Email, с которым вы регистрировались",
+    "referralLookupCta": "Показать код",
+    "referralLookupNotFound": "Для этого email код не найден.",
+    "referralLookupEmailRequired": "Введите email.",
+    "referralLookupEmailInvalid": "Введите корректный email.",
+    "referralLookupFound": "Ваш реферальный код"
   },
   "common": {
     "loading": "Загрузка…"

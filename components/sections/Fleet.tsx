@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FLEET, type FleetVehicle } from '@/lib/fleet';
+import FleetSteckbriefCard from '@/components/fleet/FleetSteckbriefCard';
+import FleetSteckbriefModal from '@/components/fleet/FleetSteckbriefModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,8 @@ type FleetProps = { vehicles?: FleetVehicle[]; sectionId?: string };
 export default function Fleet({ vehicles, sectionId = 'fahrzeuge' }: FleetProps) {
   const list = vehicles?.length ? vehicles : FLEET;
   const t = useTranslations('fleet');
+  const [steckbriefId, setSteckbriefId] = useState<string | null>(null);
+  const steckbriefVehicle = steckbriefId ? list.find((v) => v.id === steckbriefId) : undefined;
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -34,36 +37,24 @@ export default function Fleet({ vehicles, sectionId = 'fahrzeuge' }: FleetProps)
         tl.fromTo(heading, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' });
       }
       cards.forEach((card, i) => {
-        const img = card?.querySelector('[data-parallax]');
-        if (card && img) {
-          gsap.fromTo(
-            card,
-            { opacity: 0, x: 60 },
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.85,
-              ease: 'power3.out',
-              scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none none' },
-              delay: i * 0.06,
-            }
-          );
-          gsap.to(img, {
-            yPercent: 15,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
-          });
-        }
+        if (!card) return;
+        gsap.fromTo(
+          card,
+          { opacity: 0, x: 60 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none none' },
+            delay: i * 0.06,
+          }
+        );
       });
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [list.length]);
 
   return (
     <section
@@ -86,54 +77,23 @@ export default function Fleet({ vehicles, sectionId = 'fahrzeuge' }: FleetProps)
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden pb-6 pt-4 md:gap-8 md:pb-8"
       >
         <div className="w-4 shrink-0 md:w-8" aria-hidden />
-        {list.map((vehicle, i) => (
+        {list.map((vehicle, index) => (
           <div
             key={vehicle.id}
             ref={(el) => {
-              if (el) cardRefs.current[i] = el;
+              cardRefs.current[index] = el;
             }}
-            className="card-style relative w-[75vw] shrink-0 snap-center overflow-hidden md:w-[380px]"
+            className="shrink-0 snap-center"
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface2">
-              <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent opacity-80" />
-              <div
-                className="absolute inset-0 h-[120%] w-full"
-                data-parallax
-              >
-                <Image
-                  src={vehicle.image}
-                  alt={vehicle.model}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 75vw, 380px"
-                />
-              </div>
-              <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-                <span className="rounded-full border border-green-primary/50 bg-bg/80 px-3 py-1 font-body text-xs uppercase tracking-wide text-green-primary backdrop-blur-sm">
-                  {vehicle.transmission === 'manual' ? t('manual') : t('automatic')}
-                </span>
-                {vehicle.classes.map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full bg-green-primary/20 px-3 py-1 font-display text-xs font-bold text-green-primary"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="p-4">
-              <h3 className="font-heading text-lg font-bold italic uppercase tracking-tight text-white">
-                {vehicle.model}
-              </h3>
-              <p className="mt-1 font-body text-sm text-text-muted">
-                {t('class')}: {vehicle.classes.join(', ')}
-              </p>
-            </div>
+            <FleetSteckbriefCard vehicle={vehicle} onOpenSteckbrief={() => setSteckbriefId(vehicle.id)} />
           </div>
         ))}
         <div className="w-4 shrink-0 md:w-8" aria-hidden />
       </div>
+
+      {steckbriefVehicle ? (
+        <FleetSteckbriefModal vehicle={steckbriefVehicle} onClose={() => setSteckbriefId(null)} />
+      ) : null}
     </section>
   );
 }

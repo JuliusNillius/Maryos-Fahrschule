@@ -27,6 +27,7 @@ function Stars({ rating }: { rating: number }) {
 }
 
 function quoteBody(q: GoogleReviewQuote, locale: string): string {
+  if (locale === 'en' && q.text_en?.trim()) return q.text_en.trim();
   if (locale === 'tr' && q.text_tr?.trim()) return q.text_tr.trim();
   if (locale === 'ar' && q.text_ar?.trim()) return q.text_ar.trim();
   return (q.text_de ?? '').trim();

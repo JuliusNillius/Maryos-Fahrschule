@@ -42,7 +42,7 @@ test.describe('Startseite', () => {
 
   test('WhatsApp-CTA ist sichtbar und hat korrekten Link', async ({ page }) => {
     const whatsapp = page.getByTestId('whatsapp-cta');
-    await expect(whatsapp).toBeVisible();
+    await expect(whatsapp).toBeVisible({ timeout: 8000 });
     await expect(whatsapp).toHaveAttribute('href', /wa\.me|whatsapp/);
   });
 

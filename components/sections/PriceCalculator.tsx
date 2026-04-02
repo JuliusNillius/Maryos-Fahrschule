@@ -42,21 +42,19 @@ function useCountUp(value: number, duration = 0.6) {
 
 export default function PriceCalculator() {
   const t = useTranslations('priceCalculator');
-  const [selectedClass, setSelectedClass] = useState<ClassId | null>(null);
+  const [selectedClass, setSelectedClass] = useState<ClassId>('B');
   const [hours, setHours] = useState(24);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
 
-  const hoursCost = selectedClass ? hours * PRICING_LESSON_HOUR_EUR : 0;
+  const hoursCost = hours * PRICING_LESSON_HOUR_EUR;
 
   const total =
-    selectedClass == null
-      ? 0
-      : PRICING_REGISTRATION_EUR +
-        PRICING_APP_EUR +
-        hoursCost +
-        THEORY +
-        PRICING_TUV_EUR +
-        PRICING_OTHER_EUR;
+    PRICING_REGISTRATION_EUR +
+    PRICING_APP_EUR +
+    hoursCost +
+    THEORY +
+    PRICING_TUV_EUR +
+    PRICING_OTHER_EUR;
 
   const displayTotal = useCountUp(total);
 

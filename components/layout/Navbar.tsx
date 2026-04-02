@@ -20,6 +20,7 @@ const mainNavItems = [
 
 const languages = [
   { code: 'de' as const, flag: '🇩🇪', label: 'DE' },
+  { code: 'en' as const, flag: '🇬🇧', label: 'EN' },
   { code: 'tr' as const, flag: '🇹🇷', label: 'TR' },
   { code: 'ar' as const, flag: '🇸🇦', label: 'AR' },
 ];
@@ -71,9 +72,9 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-transparent bg-transparent">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-black">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="relative flex shrink-0 items-center" aria-label="Maryo's Fahrschule Startseite">
+          <Link prefetch href="/" className="relative flex shrink-0 items-center" aria-label="Maryo's Fahrschule Startseite">
             <Logo variant="navbar" />
           </Link>
 
@@ -81,6 +82,7 @@ export default function Navbar() {
             {mainNavItems.map(({ href, key }) => (
               <Link
                 key={href}
+                prefetch
                 href={href}
                 className={linkClass(href)}
                 >
@@ -112,6 +114,7 @@ export default function Navbar() {
                   {languages.map(({ code, flag, label }) => (
                     <Link
                       key={code}
+                      prefetch
                       href={pathname || '/'}
                       locale={code}
                       onClick={() => setLangOpen(false)}
@@ -159,7 +162,7 @@ export default function Navbar() {
       >
         <div className="flex h-full flex-col bg-[#080808]">
           <div className="flex h-16 items-center justify-between px-4">
-            <Link href="/" onClick={() => setMobileOpen(false)} className="flex shrink-0 items-center">
+            <Link prefetch href="/" onClick={() => setMobileOpen(false)} className="flex shrink-0 items-center">
               <Logo variant="navbar" />
             </Link>
             <button
@@ -186,6 +189,7 @@ export default function Navbar() {
             {mainNavItems.map(({ href, key }, i) => (
               <Link
                 key={href}
+                prefetch
                 href={href}
                 onClick={() => setMobileOpen(false)}
                 className={`relative py-4 font-heading text-3xl font-bold italic uppercase tracking-wide text-white ${

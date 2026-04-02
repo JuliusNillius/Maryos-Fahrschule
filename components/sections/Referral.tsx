@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { z } from 'zod';
 import { Link } from '@/i18n/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +20,7 @@ export default function Referral() {
   const [lookupCode, setLookupCode] = useState<string | null>(null);
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupDone, setLookupDone] = useState(false);
+  const [lookupErr, setLookupErr] = useState<string | null>(null);
   const [copyFeedback, setCopyFeedback] = useState(false);
 
   useEffect(() => {
@@ -46,7 +48,19 @@ export default function Referral() {
   async function handleLookup(e: React.FormEvent) {
     e.preventDefault();
     const email = lookupEmail.trim();
-    if (!email) return;
+    if (!email) {
+      setLookupErr(tReg('referralLookupEmailRequired'));
+      setLookupCode(null);
+      setLookupDone(false);
+      return;
+    }
+    if (!z.string().email().safeParse(email).success) {
+      setLookupErr(tReg('referralLookupEmailInvalid'));
+      setLookupCode(null);
+      setLookupDone(false);
+      return;
+    }
+    setLookupErr(null);
     setLookupLoading(true);
     setLookupCode(null);
     setLookupDone(false);
@@ -112,10 +126,18 @@ export default function Referral() {
               <input
                 type="email"
                 value={lookupEmail}
-                onChange={(e) => setLookupEmail(e.target.value)}
+                onChange={(e) => {
+                  setLookupEmail(e.target.value);
+                  setLookupErr(null);
+                }}
                 placeholder={tReg('referralLookupEmail')}
                 className="w-full rounded-lg border border-white/10 bg-surface2 px-3 py-2 font-body text-sm text-white placeholder:text-text-muted"
               />
+              {lookupErr && (
+                <p className="font-body text-sm text-red-500" role="alert">
+                  {lookupErr}
+                </p>
+              )}
               <button
                 type="submit"
                 disabled={lookupLoading}

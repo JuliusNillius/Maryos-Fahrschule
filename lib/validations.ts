@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 /** PKW: B, BF17, B197, BE */
 const LICENCE_CLASSES = ['B', 'BF17', 'B197', 'BE'] as const;
-/** Unterrichts- / Kommunikationssprachen (Website & Anmeldung: DE, TR, AR) */
-const LANGUAGES = ['de', 'ar', 'tr'] as const;
+/** Unterrichts- / Kommunikationssprachen (Website & Anmeldung: DE, EN, TR, AR) */
+const LANGUAGES = ['de', 'ar', 'tr', 'en'] as const;
 const TIME_SLOTS = ['morning', 'noon', 'afternoon', 'evening'] as const;
 const SOURCES = ['google', 'instagram', 'tiktok', 'recommendation', 'walkby', 'other'] as const;
 const OFFER_TYPES = ['standard', 'bundle_10_promo'] as const;
@@ -46,12 +46,33 @@ export type RegistrationStep3 = z.infer<typeof registrationStep3Schema>;
 
 export type RegistrationFormData = RegistrationStep1 & RegistrationStep2 & RegistrationStep3;
 
-/** Booking-Calendar: Terminanfrage */
-export const bookingRequestSchema = z.object({
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Datum YYYY-MM-DD'),
-  time: z.string().min(1, 'Uhrzeit erforderlich'),
-  name: z.string().max(200).optional(),
-  email: z.string().email().max(320).optional(),
-  phone: z.string().max(50).optional(),
-});
+/** Booking-Calendar: Terminanfrage — mindestens Name, E-Mail oder Telefon */
+export const bookingRequestSchema = z
+  .object({
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Datum YYYY-MM-DD'),
+    time: z.string().min(1, 'Uhrzeit erforderlich'),
+    name: z.string().max(200).default(''),
+    email: z.string().max(320).default(''),
+    phone: z.string().max(50).default(''),
+  })
+  .superRefine((data, ctx) => {
+    const name = data.name.trim();
+    const email = data.email.trim();
+    const phone = data.phone.trim();
+    if (!name && !email && !phone) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'contactRequired',
+        path: ['name'],
+      });
+      return;
+    }
+    if (email && !z.string().email().safeParse(email).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'invalidEmail',
+        path: ['email'],
+      });
+    }
+  });
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { bookingRequestSchema } from '@/lib/validations';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,6 +32,7 @@ export default function BookingCalendar() {
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const days = getNextDays(14);
 
@@ -40,10 +42,9 @@ export default function BookingCalendar() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         section.querySelector('.booking-heading'),
-        { y: 24, opacity: 0 },
+        { y: 20 },
         {
           y: 0,
-          opacity: 1,
           duration: 0.6,
           ease: 'power3.out',
           scrollTrigger: { trigger: section, start: 'top 85%', once: true },
@@ -55,21 +56,34 @@ export default function BookingCalendar() {
 
   const handleSubmit = async () => {
     if (!selectedDate || !selectedTime) return;
+    setSubmitError(null);
+    const payload = {
+      date: selectedDate.toISOString().slice(0, 10),
+      time: selectedTime,
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+    };
+    const parsed = bookingRequestSchema.safeParse(payload);
+    if (!parsed.success) {
+      const code = parsed.error.issues[0]?.message;
+      if (code === 'contactRequired') setSubmitError(t('contactRequired'));
+      else if (code === 'invalidEmail') setSubmitError(t('invalidEmail'));
+      else setSubmitError(t('submitError'));
+      return;
+    }
     setLoading(true);
     try {
-      const payload: { date: string; time: string; name?: string; email?: string; phone?: string } = {
-        date: selectedDate.toISOString().slice(0, 10),
-        time: selectedTime,
-      };
-      if (name.trim()) payload.name = name.trim();
-      if (email.trim()) payload.email = email.trim();
-      if (phone.trim()) payload.phone = phone.trim();
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (res.ok) setSent(true);
+      else if (json.error === 'contactRequired') setSubmitError(t('contactRequired'));
+      else if (json.error === 'invalidEmail') setSubmitError(t('invalidEmail'));
+      else setSubmitError(t('submitError'));
     } finally {
       setLoading(false);
     }
@@ -105,7 +119,10 @@ export default function BookingCalendar() {
                 type="text"
                 placeholder={t('namePlaceholder')}
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setSubmitError(null);
+                }}
                 className="rounded-lg border border-white/20 bg-card px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                 maxLength={200}
               />
@@ -113,7 +130,10 @@ export default function BookingCalendar() {
                 type="email"
                 placeholder={t('emailPlaceholder')}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setSubmitError(null);
+                }}
                 className="rounded-lg border border-white/20 bg-card px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                 maxLength={320}
               />
@@ -121,7 +141,10 @@ export default function BookingCalendar() {
                 type="tel"
                 placeholder={t('phonePlaceholder')}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  setSubmitError(null);
+                }}
                 className="rounded-lg border border-white/20 bg-card px-4 py-3 font-body text-white placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                 maxLength={50}
               />
@@ -169,6 +192,12 @@ export default function BookingCalendar() {
                   ))}
                 </div>
               </>
+            )}
+
+            {submitError && (
+              <p className="mt-4 font-body text-sm text-red-500" role="alert">
+                {submitError}
+              </p>
             )}
 
             <button

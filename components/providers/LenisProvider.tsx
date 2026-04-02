@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -25,13 +25,13 @@ const LENIS_OPTIONS = {
 };
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
-
   useEffect(() => {
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      return;
+    }
 
     // Mobile/Touch: native scroll ist zuverlässiger & fühlt sich korrekt an.
     // Lenis (v.a. touchMultiplier/syncTouch) kann Scrollen „zu schnell“ wirken lassen.
@@ -40,10 +40,11 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       (window.matchMedia?.('(pointer: coarse)').matches ||
         window.matchMedia?.('(hover: none)').matches ||
         (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0));
-    if (isTouchLike) return;
+    if (isTouchLike) {
+      return;
+    }
 
     const lenis = new Lenis(LENIS_OPTIONS);
-    lenisRef.current = lenis;
 
     // §07: ScrollTrigger reads/writes scroll via Lenis
     ScrollTrigger.scrollerProxy(document.body, {
@@ -76,7 +77,6 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     return () => {
       gsap.ticker.remove(gsapRaf);
       lenis.destroy();
-      lenisRef.current = null;
       ScrollTrigger.clearScrollMemory();
     };
   }, []);

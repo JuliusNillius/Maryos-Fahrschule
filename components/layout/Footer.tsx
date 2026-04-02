@@ -4,11 +4,12 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Logo from '@/components/layout/Logo';
 import PaymentMethodsBar from '@/components/layout/PaymentMethodsBar';
+import { socialHref, type SocialLinks } from '@/lib/social-links';
 
 type FooterProps = {
   contact?: { phone?: string; street?: string; zip?: string; city?: string } | null;
   impressum?: { company?: string; street?: string; zip?: string; city?: string; register?: string; owner?: string } | null;
-  social?: { instagram?: string; tiktok?: string; facebook?: string } | null;
+  social?: SocialLinks | null;
 };
 
 export default function Footer({ contact, impressum, social }: FooterProps) {
@@ -26,15 +27,15 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
-            <Link href="/" className="inline-flex items-center">
+            <Link prefetch href="/" className="inline-flex items-center">
               <Logo variant="footer" />
             </Link>
             <p className="font-heading text-sm font-bold italic uppercase tracking-wide text-text-muted">
               {t('tagline')}
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <a
-                href={social?.instagram?.trim() || 'https://instagram.com'}
+                href={socialHref('instagram', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-muted transition-colors hover:text-green-primary"
@@ -43,7 +44,7 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
                 Instagram
               </a>
               <a
-                href={social?.tiktok?.trim() || 'https://tiktok.com'}
+                href={socialHref('tiktok', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-muted transition-colors hover:text-green-primary"
@@ -52,13 +53,22 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
                 TikTok
               </a>
               <a
-                href={social?.facebook?.trim() || 'https://facebook.com'}
+                href={socialHref('facebook', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-muted transition-colors hover:text-green-primary"
                 aria-label="Facebook"
               >
                 Facebook
+              </a>
+              <a
+                href={socialHref('youtube', social)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-text-muted transition-colors hover:text-green-primary"
+                aria-label="YouTube"
+              >
+                YouTube
               </a>
             </div>
           </div>
@@ -68,11 +78,11 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
               {t('quickLinks')}
             </h3>
             <ul className="space-y-2 font-body text-sm text-text-muted">
-              <li><Link href="/" className="transition-colors hover:text-green-primary">{t('home')}</Link></li>
-              <li><Link href="/preise" className="transition-colors hover:text-green-primary">{t('prices')}</Link></li>
-              <li><Link href="/lehrer" className="transition-colors hover:text-green-primary">{t('teachers')}</Link></li>
-              <li><Link href="/team" className="transition-colors hover:text-green-primary">{t('aboutUs')}</Link></li>
-              <li><Link href="/anmelden" className="transition-colors hover:text-green-primary">{t('register')}</Link></li>
+              <li><Link prefetch href="/" className="transition-colors hover:text-green-primary">{t('home')}</Link></li>
+              <li><Link prefetch href="/preise" className="transition-colors hover:text-green-primary">{t('prices')}</Link></li>
+              <li><Link prefetch href="/lehrer" className="transition-colors hover:text-green-primary">{t('teachers')}</Link></li>
+              <li><Link prefetch href="/team" className="transition-colors hover:text-green-primary">{t('aboutUs')}</Link></li>
+              <li><Link prefetch href="/anmelden" className="transition-colors hover:text-green-primary">{t('register')}</Link></li>
             </ul>
           </div>
 
@@ -111,13 +121,13 @@ export default function Footer({ contact, impressum, social }: FooterProps) {
             {register} | {t('owner')}: {owner}
           </p>
           <div className="flex gap-6 font-body text-xs">
-            <Link href="/impressum" className="text-text-muted transition-colors hover:text-green-primary">
+            <Link prefetch href="/impressum" className="text-text-muted transition-colors hover:text-green-primary">
               {t('imprint')}
             </Link>
-            <Link href="/datenschutz" className="text-text-muted transition-colors hover:text-green-primary">
+            <Link prefetch href="/datenschutz" className="text-text-muted transition-colors hover:text-green-primary">
               {t('privacy')}
             </Link>
-            <Link href="/agb" className="text-text-muted transition-colors hover:text-green-primary">
+            <Link prefetch href="/agb" className="text-text-muted transition-colors hover:text-green-primary">
               {t('terms')}
             </Link>
           </div>

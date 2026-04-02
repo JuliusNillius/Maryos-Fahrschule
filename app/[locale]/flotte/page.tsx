@@ -20,7 +20,7 @@ export default async function FlottePage({ params }: Props) {
       <div className="pt-20">
         <Fleet vehicles={siteData.fleet} sectionId="flotte" />
       </div>
-      <Contact contact={siteData.settings.contact} />
+      <Contact contact={siteData.settings.contact} social={siteData.settings.social} />
       <Footer contact={siteData.settings.contact} impressum={siteData.settings.impressum} social={siteData.settings.social} />
     </main>
   );

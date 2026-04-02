@@ -21,7 +21,7 @@ export default async function AnmeldenPage({ params, searchParams }: Props) {
       <div className="pt-20">
         <RegistrationForm instructors={siteData.instructors} initialRefCode={initialRefCode} />
       </div>
-      <Contact contact={siteData.settings.contact} />
+      <Contact contact={siteData.settings.contact} social={siteData.settings.social} />
       <Footer contact={siteData.settings.contact} impressum={siteData.settings.impressum} social={siteData.settings.social} />
     </main>
   );

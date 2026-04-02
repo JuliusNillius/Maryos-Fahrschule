@@ -6,7 +6,7 @@ import { routing } from '@/i18n/routing';
 import AppShell from '@/components/layout/AppShell';
 import LocaleHtmlAttrs from '@/components/layout/LocaleHtmlAttrs';
 import PageTransition from '@/components/layout/PageTransition';
-import { METADATA, getCanonicalUrl, type Locale } from '@/lib/seo';
+import { METADATA, buildPageMetadata, type Locale } from '@/lib/seo';
 
 type Props = {
   children: React.ReactNode;
@@ -26,28 +26,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   if (!LOCALES.includes(locale)) return {};
   const meta = METADATA[locale as Locale];
-  const canonical = getCanonicalUrl('/', locale as Locale);
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryosfahrschule.de';
-  const ogImage = `${base}/logo.png`;
-  return {
+  return buildPageMetadata({
+    locale: locale as Locale,
+    path: '/',
     title: meta.title,
     description: meta.description,
-    alternates: { canonical },
-    openGraph: {
-      title: meta.openGraphTitle ?? meta.title,
-      description: meta.openGraphDescription ?? meta.description,
-      url: canonical,
-      siteName: "Maryo's Fahrschule",
-      locale: locale === 'de' ? 'de_DE' : locale === 'tr' ? 'tr_TR' : locale === 'ar' ? 'ar_SA' : locale,
-      type: 'website',
-      images: [{ url: ogImage, width: 1200, height: 630, alt: "Maryo's Fahrschule" }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: meta.title,
-      description: meta.description,
-    },
-  };
+    openGraphTitle: meta.openGraphTitle,
+    openGraphDescription: meta.openGraphDescription,
+  });
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -55,7 +41,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!(routing.locales as readonly string[]).includes(locale)) {
     notFound();
   }
-  setRequestLocale(locale as 'de' | 'tr' | 'ar');
+  setRequestLocale(locale);
   const messages = await getMessages();
   const isRtl = locale === 'ar';
 

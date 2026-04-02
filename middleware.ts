@@ -6,14 +6,22 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
+  const host = request.headers.get('host')?.split(':')[0]?.toLowerCase();
+  if (host === 'maryosfahrschule.de') {
+    const url = request.nextUrl.clone();
+    url.hostname = 'www.maryosfahrschule.de';
+    url.protocol = 'https:';
+    return NextResponse.redirect(url, 308);
+  }
+
   const path = request.nextUrl.pathname;
   // Backoffice: nicht durch next-intl (Auth-Prüfung erfolgt im Backoffice-Layout)
   if (path.startsWith('/backoffice')) {
     return NextResponse.next();
   }
-  // Alte URLs /en/… und /ru/… auf Deutsch umleiten
+  // Alte URL /ru/… auf Deutsch umleiten (/en ist gültige Locale)
   const seg = path.split('/').filter(Boolean)[0];
-  if (seg === 'en' || seg === 'ru') {
+  if (seg === 'ru') {
     const rest = path.split('/').slice(2).join('/');
     const target = rest ? `/de/${rest}` : '/de';
     const url = request.nextUrl.clone();

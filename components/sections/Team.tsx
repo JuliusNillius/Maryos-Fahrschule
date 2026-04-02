@@ -11,9 +11,9 @@ export default function Team() {
       className="section-divider scroll-mt-20 bg-bg py-20 md:py-28"
     >
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-14 text-center font-heading text-3xl font-bold italic uppercase tracking-tight text-white sm:text-4xl md:text-5xl">
-          {t('heading')}
-        </h2>
+        <h1 className="mb-14 text-center font-heading text-3xl font-bold italic uppercase tracking-tight text-white sm:text-4xl md:text-5xl">
+          {t('pageH1')}
+        </h1>
 
         <div className="space-y-16 md:space-y-20">
           {/* Geschäftsführer: Maryo Asoo — Bild kommt noch */}

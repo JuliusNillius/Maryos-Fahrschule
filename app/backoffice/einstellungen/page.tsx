@@ -17,7 +17,7 @@ type Settings = {
   opening_hours?: { text?: string };
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number };
   impressum?: { company?: string; street?: string; zip?: string; city?: string; register?: string; owner?: string };
-  social?: { instagram?: string; tiktok?: string; facebook?: string };
+  social?: { instagram?: string; tiktok?: string; facebook?: string; youtube?: string };
   email_welcome?: { subject?: string; body?: string };
   google_review_quotes?: GoogleReviewQuote[];
 };
@@ -240,7 +240,7 @@ export default function BackofficeEinstellungenPage() {
         </section>
 
         <section className="rounded-xl border border-white/10 bg-[#0F0F0F] p-6">
-          <h2 className="font-heading text-lg font-bold italic text-green-500 mb-4">Soziale Medien (Footer)</h2>
+          <h2 className="font-heading text-lg font-bold italic text-green-500 mb-4">Soziale Medien (Footer & Kontakt)</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label className="block text-sm text-text-muted mb-1">Instagram-URL</label>
@@ -253,6 +253,10 @@ export default function BackofficeEinstellungenPage() {
             <div className="sm:col-span-2">
               <label className="block text-sm text-text-muted mb-1">Facebook-URL</label>
               <input value={soc.facebook ?? ''} onChange={(e) => update('social', { ...soc, facebook: e.target.value })} className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2 text-white focus:border-green-500 focus:outline-none" placeholder="https://facebook.com/maryosfahrschule" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm text-text-muted mb-1">YouTube-URL</label>
+              <input value={soc.youtube ?? ''} onChange={(e) => update('social', { ...soc, youtube: e.target.value })} className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2 text-white focus:border-green-500 focus:outline-none" placeholder="https://youtube.com/@maryosfahrschule" />
             </div>
           </div>
         </section>

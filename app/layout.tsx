@@ -8,7 +8,6 @@ import {
 import './globals.css';
 import JsonLd from '@/components/layout/JsonLd';
 import LenisProvider from '@/components/providers/LenisProvider';
-import ReloadToStart from '@/components/ReloadToStart';
 
 // §03 Heading: Barlow Condensed 700 Italic — ALL CAPS
 const barlowCondensed = Barlow_Condensed({
@@ -36,7 +35,7 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://maryosfahrschule.de'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.maryosfahrschule.de'),
   title: { default: "Maryo's Fahrschule | Mönchengladbach", template: "%s | Maryo's Fahrschule" },
   description: "Fahrschule in Mönchengladbach. Führerschein PKW Klasse B & BF17. 5.0 ★ Google.",
   robots: { index: true, follow: true },
@@ -52,7 +51,7 @@ export const viewport: Viewport = {
   themeColor: '#080808',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -77,7 +76,6 @@ export default function RootLayout({
           />
         )}
         <LenisProvider>
-          <ReloadToStart />
           <JsonLd />
           {children}
         </LenisProvider>

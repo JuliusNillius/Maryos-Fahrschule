@@ -12,6 +12,7 @@ export type GoogleReviewQuote = {
   author: string;
   rating: number;
   text_de: string;
+  text_en?: string;
   text_tr?: string;
   text_ar?: string;
 };
@@ -29,7 +30,7 @@ export type SiteSettings = {
   opening_hours?: { text?: string };
   stats?: { googleRating?: number; googleReviews?: number; languages?: number; classes?: number };
   impressum?: { company?: string; street?: string; zip?: string; city?: string; register?: string; owner?: string };
-  social?: { instagram?: string; tiktok?: string; facebook?: string };
+  social?: { instagram?: string; tiktok?: string; facebook?: string; youtube?: string };
   google_review_quotes?: GoogleReviewQuote[];
 };
 
@@ -115,7 +116,12 @@ export async function getSiteData(): Promise<SiteData> {
       supabase.from('pricing').select('*').order('class_id'),
       supabase.from('site_settings').select('key, value'),
       supabase.from('faq').select('*').order('sort_order'),
-      supabase.from('fleet').select('id, model, transmission, classes, image').order('sort_order', { ascending: true }),
+      supabase
+        .from('fleet')
+        .select(
+          'id, model, transmission, classes, image, power_ps, has_driver_assistance, has_apple_carplay, steckbrief_notes'
+        )
+        .order('sort_order', { ascending: true }),
     ]);
     const timeoutPromise = new Promise<never>((_, reject) =>
       setTimeout(() => reject(new Error('getSiteData timeout')), SITE_DATA_TIMEOUT_MS)
@@ -126,7 +132,7 @@ export async function getSiteData(): Promise<SiteData> {
     ]);
 
     const instructors = (instructorsRes.data ?? []).map(mapInstructor);
-    const fleet: FleetVehicle[] = (fleetRes.data ?? []).map((r: { id: string; model: string; transmission: string; classes: string[]; image: string }) => mapFleetRow(r));
+    const fleet: FleetVehicle[] = (fleetRes.data ?? []).map((r: Parameters<typeof mapFleetRow>[0]) => mapFleetRow(r));
     const pricing: PricingItem[] = (pricingRes.data ?? []).map((r: { id: string; class_id: string; price: string; popular: boolean; note: string | null }) => ({
       id: r.id,
       class_id: r.class_id,
@@ -139,6 +145,10 @@ export async function getSiteData(): Promise<SiteData> {
     (settingsRes.data ?? []).forEach((r: { key: string; value: unknown }) => {
       settings[r.key as keyof SiteSettings] = r.value as never;
     });
+
+    if (settings.stats?.languages === 3) {
+      settings.stats = { ...settings.stats, languages: 4 };
+    }
 
     const faq: FaqItem[] = (faqRes.data ?? []).map((r: Record<string, unknown>) => ({
       id: r.id as string,

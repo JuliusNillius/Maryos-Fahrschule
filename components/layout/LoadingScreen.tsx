@@ -185,7 +185,7 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
         progress,
         {
           value: 1,
-          duration: 2.2,
+          duration: 1.35,
           ease: 'none',
           onUpdate: () => applyProgress(progress.value),
         },
@@ -210,12 +210,14 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
         else window.addEventListener('load', onComplete);
       }
 
-      tl.to(overlay, { y: '-100%', duration: 0.7, ease: 'expo.inOut' }, 2.9);
+      const curtainAt = 1.75;
+      const curtainDur = 0.58;
+      tl.to(overlay, { y: '-100%', duration: curtainDur, ease: 'expo.inOut' }, curtainAt);
       tl.add(() => {
         if (!cancelled) {
           hideAfterCurtainTimer = window.setTimeout(hideLoader, 100);
         }
-      }, 2.9 + 0.7);
+      }, curtainAt + curtainDur);
 
       return () => {
         cancelled = true;

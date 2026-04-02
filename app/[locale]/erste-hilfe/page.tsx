@@ -5,27 +5,20 @@ import { getSiteData } from '@/lib/site-data';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/layout/Footer';
 import { PRICING_ERSTE_HILFE_EUR } from '@/lib/pricing';
-import { getCanonicalUrl, type Locale } from '@/lib/seo';
+import { buildPageMetadata, type Locale } from '@/lib/seo';
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const l = (locale as Locale) || 'de';
-  const canonical = getCanonicalUrl('/erste-hilfe', l);
   const t = await getTranslations({ locale: locale as string, namespace: 'ersteHilfePage' });
-  return {
+  return buildPageMetadata({
+    locale: l,
+    path: '/erste-hilfe',
     title: t('metaTitle'),
     description: t('metaDescription'),
-    alternates: { canonical },
-    openGraph: {
-      title: t('metaTitle'),
-      description: t('metaDescription'),
-      url: canonical,
-      siteName: "Maryo's Fahrschule",
-      type: 'website',
-    },
-  };
+  });
 }
 
 export default async function ErsteHilfePage({ params }: Props) {
@@ -74,7 +67,7 @@ export default async function ErsteHilfePage({ params }: Props) {
           </Link>
         </div>
       </div>
-      <Contact contact={siteData.settings.contact} />
+      <Contact contact={siteData.settings.contact} social={siteData.settings.social} />
       <Footer contact={siteData.settings.contact} impressum={siteData.settings.impressum} social={siteData.settings.social} />
     </main>
   );

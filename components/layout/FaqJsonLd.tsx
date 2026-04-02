@@ -10,12 +10,14 @@ type Props = {
 export default function FaqJsonLd({ faq, locale }: Props) {
   if (!faq.length) return null;
 
-  const qKey = locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : 'question_de';
-  const aKey = locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : 'answer_de';
+  const qKey =
+    locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : locale === 'en' ? 'question_en' : 'question_de';
+  const aKey =
+    locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : locale === 'en' ? 'answer_en' : 'answer_de';
 
   const mainEntity = faq.map((item) => {
-    const question = (item[qKey as keyof FaqItem] as string) || item.question_de;
-    const answer = (item[aKey as keyof FaqItem] as string) || item.answer_de;
+    const question = (item[qKey as keyof FaqItem] as string | null) || item.question_de;
+    const answer = (item[aKey as keyof FaqItem] as string | null) || item.answer_de;
     return {
       '@type': 'Question',
       name: question,

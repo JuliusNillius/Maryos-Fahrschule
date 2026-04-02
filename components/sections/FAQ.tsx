@@ -10,7 +10,7 @@ import type { FaqItem } from '@/lib/site-data';
 gsap.registerPlugin(ScrollTrigger);
 
 const FAQ_KEYS = [
-  'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9',
+  'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10',
 ] as const;
 
 export type FAQVariant = 'default' | 'page';
@@ -19,6 +19,11 @@ type FAQProps = { faq?: FaqItem[] | null; locale?: string; variant?: FAQVariant 
 
 const CATEGORY_ORDER = ['allgemein', 'preise', 'klassen', 'foerderung', 'anmeldung'] as const;
 type CategoryId = (typeof CATEGORY_ORDER)[number] | 'alle';
+
+/** Kategorie für die FAQ-Seite (Filter), nur für statische Keys aus messages. */
+const FAQ_KEY_CATEGORIES: Partial<Record<(typeof FAQ_KEYS)[number], CategoryId>> = {
+  q10: 'preise',
+};
 
 function AccordionItem({
   id,
@@ -89,8 +94,10 @@ export default function FAQ({ faq, locale = 'de', variant = 'default' }: FAQProp
   const [filterCat, setFilterCat] = useState<CategoryId>('alle');
   const [query, setQuery] = useState('');
 
-  const qKey = locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : 'question_de';
-  const aKey = locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : 'answer_de';
+  const qKey =
+    locale === 'tr' ? 'question_tr' : locale === 'ar' ? 'question_ar' : locale === 'en' ? 'question_en' : 'question_de';
+  const aKey =
+    locale === 'tr' ? 'answer_tr' : locale === 'ar' ? 'answer_ar' : locale === 'en' ? 'answer_en' : 'answer_de';
 
   const faqItems = useMemo(() => {
     if (faq?.length) {
@@ -103,7 +110,7 @@ export default function FAQ({ faq, locale = 'de', variant = 'default' }: FAQProp
     }
     return FAQ_KEYS.map((key, i) => ({
       id: i,
-      category: 'allgemein' as CategoryId,
+      category: (FAQ_KEY_CATEGORIES[key] ?? 'allgemein') as CategoryId,
       question: t(`${key}Q`),
       answer: t(`${key}A`),
     }));
@@ -289,10 +296,6 @@ export default function FAQ({ faq, locale = 'de', variant = 'default' }: FAQProp
             })
           )}
         </div>
-
-        {pageStyle && (
-          <p className="mt-10 text-center font-body text-xs text-text-muted/90 md:text-sm">{tp('footerHint')}</p>
-        )}
       </div>
     </section>
   );

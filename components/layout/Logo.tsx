@@ -3,53 +3,45 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-const FALLBACK_SVG = '/logo.svg';
-const LOGO_PNG = '/logo.png';
+/** Navbar: Kleeblatt; Footer: fertiges Wortmarken-PNG (weißes MARYO'S, grüne Linie, Slogan). */
+const NAVBAR_SRC = '/kleeblatt-logo.png';
+const NAVBAR_INTRINSIC = { width: 1024, height: 872 } as const;
+const FOOTER_SRC = '/maryos-logo-footer.png';
+const FOOTER_INTRINSIC = { width: 1024, height: 574 } as const;
 
 type LogoVariant = 'navbar' | 'footer';
 
-const SIZES: Record<LogoVariant, { width: number; height: number; className: string }> = {
-  navbar: { width: 180, height: 46, className: 'h-12 w-auto object-contain' },
-  footer: { width: 200, height: 64, className: 'h-16 w-auto object-contain' },
-};
+const NAVBAR_IMAGE_CLASS = 'h-12 w-auto max-h-12 object-contain';
+const FOOTER_IMAGE_CLASS =
+  'h-auto max-h-[7.5rem] w-auto max-w-[min(100%,min(96vw,26rem))] object-contain object-left sm:max-h-[8.5rem]';
 
 const TEXT_FALLBACK = (
   <span className="font-heading text-xl font-bold italic text-white">
-    MARYO&apos;S <span className="text-green-500">FAHRSCHULE</span>
+    MARYO&apos;S <span className="text-green-primary">FAHRSCHULE</span>
   </span>
 );
 
 export default function Logo({ variant = 'navbar' }: { variant?: LogoVariant }) {
-  const [useSvg, setUseSvg] = useState(false);
   const [useText, setUseText] = useState(false);
-  const { width, height, className } = SIZES[variant];
 
   if (useText) {
     return TEXT_FALLBACK;
   }
 
-  if (useSvg) {
-    return (
-      <img
-        src={FALLBACK_SVG}
-        alt="Maryo's Fahrschule"
-        width={width}
-        height={height}
-        className={className}
-        onError={() => setUseText(true)}
-      />
-    );
-  }
+  const isFooter = variant === 'footer';
+  const src = isFooter ? FOOTER_SRC : NAVBAR_SRC;
+  const intrinsic = isFooter ? FOOTER_INTRINSIC : NAVBAR_INTRINSIC;
+  const className = isFooter ? FOOTER_IMAGE_CLASS : NAVBAR_IMAGE_CLASS;
 
   return (
     <Image
-      src={LOGO_PNG}
-      alt="Maryo's Fahrschule"
-      width={width}
-      height={height}
+      src={src}
+      alt="Maryo's Fahrschule — Logo"
+      width={intrinsic.width}
+      height={intrinsic.height}
       className={className}
       priority={variant === 'navbar'}
-      onError={() => setUseSvg(true)}
+      onError={() => setUseText(true)}
     />
   );
 }

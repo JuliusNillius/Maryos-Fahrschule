@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import gsap from 'gsap';
@@ -11,7 +11,7 @@ import { setRegistrationInstructor } from '@/lib/registration';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const LANG_FILTERS: InstructorLang[] = ['de', 'ar', 'tr'];
+const LANG_FILTERS: InstructorLang[] = ['de', 'ar', 'tr', 'en'];
 function filterInstructors(
   instructors: Instructor[],
   langFilters: Set<InstructorLang>,
@@ -35,6 +35,7 @@ export default function Instructors({ instructors }: InstructorsProps) {
   const [availabilityOnly, setAvailabilityOnly] = useState(false);
 
   const filtered = filterInstructors(list, langFilters, availabilityOnly);
+  const slideIdsKey = useMemo(() => filtered.map((i) => i.id).join(','), [filtered]);
 
   const toggleLang = (lang: InstructorLang) => {
     setLangFilters((prev) => {
@@ -45,12 +46,18 @@ export default function Instructors({ instructors }: InstructorsProps) {
     });
   };
 
-  const [emblaRef] = useEmblaCarousel({
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
     containScroll: 'trimSnaps',
     skipSnaps: false,
   });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.reInit();
+    emblaApi.scrollTo(0);
+  }, [emblaApi, slideIdsKey]);
 
   const scrollToAnmelden = (instructorId: string) => {
     setRegistrationInstructor(instructorId);
@@ -124,9 +131,9 @@ export default function Instructors({ instructors }: InstructorsProps) {
           </label>
         </div>
 
-        {/* Carousel */}
+        {/* Carousel — kein touch-pan-y: sonst blockiert der Browser horizontales Wischen auf dem Handy */}
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex touch-pan-y gap-6">
+          <div className="flex gap-6">
             {filtered.length === 0 ? (
               <p className="w-full py-12 text-center font-body text-text-muted">
                 {t('noResults')}
@@ -145,16 +152,22 @@ export default function Instructors({ instructors }: InstructorsProps) {
                       className="object-cover"
                       sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 32vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent opacity-80" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                    {/* Starker unterer Verlauf: helle Fotos sonst „fressen“ grauen Text */}
+                    <div
+                      className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black from-[8%] via-black/85 via-[42%] to-transparent to-[78%]"
+                      aria-hidden
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 z-[2] p-4 pt-16 [text-shadow:0_1px_3px_rgba(0,0,0,0.95),0_0_20px_rgba(0,0,0,0.65)]">
                       <h3 className="font-heading text-lg font-bold italic uppercase tracking-tight text-white">
                         {inst.name}
                       </h3>
-                      <p className="font-body text-sm text-green-primary">{inst.title}</p>
-                      <div className="mt-1 flex gap-1 text-yellow-400" aria-hidden>
+                      <p className="font-body text-sm font-medium text-green-primary [text-shadow:0_1px_4px_rgba(0,0,0,0.9)]">
+                        {inst.title}
+                      </p>
+                      <div className="mt-1 flex gap-1 text-yellow-400 [text-shadow:0_1px_2px_rgba(0,0,0,0.9)]" aria-hidden>
                         {'★'.repeat(5)}
                       </div>
-                      <div className="mt-1 flex flex-wrap gap-1 font-body text-sm text-text-muted">
+                      <div className="mt-1 flex flex-wrap gap-1 font-body text-sm text-white/90">
                         {inst.languages.map((l) => (
                           <span key={l}>{getLangFlag(l)}</span>
                         ))}
@@ -165,7 +178,7 @@ export default function Instructors({ instructors }: InstructorsProps) {
                         {inst.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded bg-white/10 px-2 py-0.5 font-body text-xs text-text-muted"
+                            className="rounded border border-white/10 bg-black/55 px-2 py-0.5 font-body text-xs text-white/95 backdrop-blur-sm"
                           >
                             {tag}
                           </span>
@@ -178,7 +191,7 @@ export default function Instructors({ instructors }: InstructorsProps) {
                           }`}
                           aria-hidden
                         />
-                        <span className="font-body text-xs text-text-muted">
+                        <span className="font-body text-xs text-white/90">
                           {inst.available ? t('available') : t('unavailable')}
                         </span>
                       </div>
@@ -199,6 +212,28 @@ export default function Instructors({ instructors }: InstructorsProps) {
             )}
           </div>
         </div>
+
+        {filtered.length > 1 && (
+          <div className="mt-5 flex items-center justify-center gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={() => emblaApi?.scrollPrev()}
+              className="flex h-12 min-w-[3rem] items-center justify-center rounded-full border border-green-primary/40 bg-surface2 px-4 font-heading text-lg text-green-primary active:scale-95"
+              aria-label={t('carouselPrev')}
+            >
+              ←
+            </button>
+            <p className="max-w-[10rem] text-center font-body text-xs text-text-muted">{t('carouselSwipeHint')}</p>
+            <button
+              type="button"
+              onClick={() => emblaApi?.scrollNext()}
+              className="flex h-12 min-w-[3rem] items-center justify-center rounded-full border border-green-primary/40 bg-surface2 px-4 font-heading text-lg text-green-primary active:scale-95"
+              aria-label={t('carouselNext')}
+            >
+              →
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

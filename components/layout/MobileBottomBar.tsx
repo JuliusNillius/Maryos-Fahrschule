@@ -20,6 +20,7 @@ export default function MobileBottomBar() {
         {t('call')}
       </a>
       <Link
+        prefetch
         href="/anmelden"
         className="flex flex-1 flex-col items-center gap-1 bg-green-primary py-3 font-heading text-xs font-bold uppercase tracking-wide text-black transition-colors active:bg-green-dark"
         data-cta

@@ -43,16 +43,24 @@
     "reviewsFaq": "Yorumlar ve SSS",
     "contact": "İletişim"
   },
+  "homeSwitcher": {
+    "ariaLabel": "Okul değiştirenler için teklif",
+    "badge": "TEKLİF",
+    "line": "Okul değişimi: kayıt (nakil) yalnızca 1 € — önceki sürücü kursundan geçerli eğitim belgesi ile.",
+    "linkLabel": "Fiyatlara git"
+  },
   "hero": {
     "badge": "Mönchengladbach'ın 1 Numaralı Sürücü Kursu",
     "headline": "MUTLULUĞA SÜR",
     "headlineHighlight": "MUTLULUK",
+    "seoH1": "Mönchengladbach sürücü kursu – B, BF17, B197 ve BE ehliyeti",
+    "subheadlineRich": "Ehliyetini şimdi al — yanındayız. Araba: B, BF17, B197 ve BE (römork). <prices>Direksiyon dersi 65 €</prices> — <teachers>çok dilli eğitmenlerimiz</teachers>. <firstaid>İlk yardım kursu</firstaid> ayrıca.",
     "subheadline": "Ehliyetini şimdi al — yanındayız. Araba: B, BF17, B197 ve BE (römork). İlk yardım ayrı.",
     "ctaPrimary": "HEMEN KAYIT OL",
     "ctaSecondary": "ÖĞRETMENLERİMİZ →",
     "statGoogle": "5.0 ★ Google",
     "statReviews": "18 Yorum",
-    "statLanguages": "3 Dil",
+    "statLanguages": "4 Dil",
     "statClasses": "B · BF17 · B197 · BE"
   },
   "trustBar": {
@@ -61,7 +69,7 @@
     "item3": "Apple Pay",
     "item4": "Sofort & Klarna",
     "item5": "Otomobil: B · BF17 · B197 · BE",
-    "item6": "3 Dil (DE · TR · AR)",
+    "item6": "4 Dil (DE · EN · TR · AR)",
     "item7": "Mönchengladbach",
     "item8": "WhatsApp Destek",
     "item9": "2025 Kuruluş",
@@ -77,8 +85,8 @@
     "card1Desc": "Dil, sempati ve müsaitliğe göre seç.",
     "card2Title": "Odak: otomobil",
     "card2Desc": "B, BF17, B197 ve BE — ehliyetini net şekilde tamamlaman için.",
-    "card3Title": "3 dil",
-    "card3Desc": "Almanca, Arapça ve Türkçe — site ve öğretmen testindeki gibi.",
+    "card3Title": "4 dil",
+    "card3Desc": "Almanca, İngilizce, Arapça ve Türkçe — site ve öğretmen testindeki gibi.",
     "card4Title": "5.0 yıldız",
     "card4Desc": "18 Google yorumu — %100 memnun öğrenci.",
     "card5Title": "%100 dijital",
@@ -116,7 +124,10 @@
     "available": "Müsait",
     "unavailable": "Dolu",
     "cta": "{name} ile kayıt ol",
-    "noResults": "Filtrelere uyan öğretmen yok."
+    "noResults": "Filtrelere uyan öğretmen yok.",
+    "carouselPrev": "Önceki eğitmen",
+    "carouselNext": "Sonraki eğitmen",
+    "carouselSwipeHint": "Sola veya sağa kaydır"
   },
   "stats": {
     "ariaLabel": "Rakamlar ve gerçekler",
@@ -131,7 +142,10 @@
   "bookingCalendar": {
     "heading": "TARİH SEÇ",
     "subheading": "İlk ders veya teori — onay için dönüş yapacağız.",
-    "contactOptional": "İletişim bilgilerin (isteğe bağlı)",
+    "contactOptional": "İletişim — en az ad, e-posta veya telefon girin",
+    "contactRequired": "Lütfen en azından ad, e-posta veya telefon girin.",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+    "submitError": "Gönderilemedi. Lütfen tekrar deneyin.",
     "namePlaceholder": "Ad",
     "emailPlaceholder": "E-posta",
     "phonePlaceholder": "Telefon",
@@ -190,7 +204,7 @@
     "cta": "SÜREÇE BAK →"
   },
   "team": {
-    "heading": "EKİP",
+    "pageH1": "Ekip – Maryo's Sürücü Kursu Mönchengladbach",
     "maryoRole": "Geschäftsführer",
     "maryoAlt": "Maryo Asoo",
     "maryoText": "İnsanların ehliyet yolunda yanlarında olmayı seviyorum. Deneyimli bir girişimci olarak sadece ders vermek değil, herkesin kendini evinde hissedeceği bir aile ortamı yaratmak önemli.",
@@ -221,7 +235,23 @@
     "heading": "ARAÇLARIMIZ",
     "manual": "Manuel",
     "automatic": "Otomatik",
-    "class": "Sınıf"
+    "class": "Sınıf",
+    "dossier": "Araç dosyası",
+    "dossierSub": "Eğitim aracı · Maryos Sürücü Kursu",
+    "psStatLabel": "Güç (BG)",
+    "tapHint": "Detay için dokun",
+    "openSteckbrief": "Özellikleri aç",
+    "steckbriefBadge": "Araç özeti",
+    "close": "Kapat",
+    "powerLabel": "Güç",
+    "powerUnit": "HP",
+    "notSpecified": "yok",
+    "assistanceLabel": "Sürücü yardımları",
+    "carplayLabel": "Apple CarPlay",
+    "notesLabel": "Ek bilgi",
+    "yes": "Evet",
+    "no": "Hayır",
+    "transmissionLabel": "Vites"
   },
   "priceCalculator": {
     "heading": "SÜRÜCÜ KURSU NE KADAR?",
@@ -293,23 +323,25 @@
     "q4A": "Apple Pay, Google Pay, Sofort, Klarna taksit ve kart.",
     "q5Q": "Taksit var mı?",
     "q5A": "Evet! Klarna ile 3 taksit — faizsiz.",
-    "q6Q": "Almanca, Arapça veya Türkçe ders alabilir miyim?",
-    "q6A": "Evet. Bu üç dilde ders veriyoruz — site ve öğretmen testiyle uyumlu.",
+    "q6Q": "Almanca, İngilizce, Arapça veya Türkçe ders alabilir miyim?",
+    "q6A": "Evet. Bu dört dilde ders veriyoruz — site ve öğretmen testiyle uyumlu.",
     "q7Q": "Online kayıttan sonra ne olur?",
     "q7A": "Genelde 24 saat içinde dönüş yaparız — bu bizim minimum işlem süremiz. Tel: 0178 4557528. Bazen daha hızlı olur, garanti her zaman en az bu süre.",
     "q8Q": "Ne zaman açıksınız?",
     "q8A": "Pzt–Cuma 12:00–18:00. Bahnhofstraße 25. Mesaj ve randevu: sitede sağ alttaki yeşil düğmeler; tel.: 0178 4557528",
     "q9Q": "BF17 için kayıt olabilir miyim?",
-    "q9A": "Evet, 17 yaşında uygun refakatçi ile."
+    "q9A": "Evet, 17 yaşında uygun refakatçi ile.",
+    "q10Q": "Başka bir sürücü kursundan geçenler için teklif var mı?",
+    "q10A": "Evet. Başka bir kurstan bize geçiyorsan ve önceki kurstan geçerli bir eğitim belgesi sunabiliyorsan, kayıt (nakil) ücreti yalnızca 1 €. Ayrıntıları kayıtta netleştiririz. Uygulama, dersler ve sınav ücretleri normal tarifelerimize tabidir — fiyat hesaplayıcı ve Fiyatlar sayfasına bak."
   },
   "faqPage": {
     "metaTitle": "SSS ehliyet Mönchengladbach | Maryo's Sürücü Kursu",
-    "metaDescription": "B, BF17, B197, BE, fiyatlar, Jobcenter, İlk Yardım ve süreç hakkında sorular — Mönchengladbach'ta Maryo's.",
+    "metaDescription": "B, BF17, B197, BE, fiyatlar, Jobcenter, İlk Yardım ve süreç — başka kurstan geçiş ve nakil (geçerli eğitim belgesiyle kayıt 1 €). Mönchengladbach'ta Maryo's.",
     "kicker": "Merak ettiklerin",
     "heroTitle": "Sıkça sorulan sorular",
-    "heroLead": "Mönchengladbach ve çevresindeki adayların en çok sorduğu konular: maliyet, destek, BF17 ve B197. Aşağıdan konuya göre süzebilir veya arayabilirsin.",
+    "heroLead": "Mönchengladbach ve çevresindeki adayların en çok sorduğu konular: maliyet, destek, BF17 ve B197 — ayrıca başka bir sürücü kursundan bize geçiş (nakil). Aşağıdan konuya göre süzebilir veya arayabilirsin.",
     "searchLabel": "SSS ara",
-    "searchPlaceholder": "ör. Jobcenter, fiyat, BF17 …",
+    "searchPlaceholder": "ör. okul değişimi, nakil, eğitim belgesi, Jobcenter, fiyat …",
     "filterAria": "Konu filtresi",
     "filterAll": "Tümü",
     "categories": {
@@ -321,8 +353,16 @@
     },
     "ctaPreise": "Fiyatlar",
     "ctaAnmelden": "Kayıt ol",
-    "empty": "Sonuç yok — filtreyi veya aramayı değiştir.",
-    "footerHint": "Yanıtları Backoffice'ten düzenleyebilirsin; sayfa veritabanından canlı gelir."
+    "empty": "Sonuç yok — filtreyi veya aramayı değiştir."
+  },
+  "lehrerPage": {
+    "metaTitle": "Mönchengladbach'ta direksiyon eğitmenleri | Maryo's Sürücü Kursu",
+    "metaDescription": "Eğitmenlerinle tanış — Almanca, Türkçe ve Arapça ders. Maryo's Mönchengladbach, Bahnhofstraße 25. Eğitmen seç ve kayıt ol.",
+    "h1": "Mönchengladbach'taki direksiyon eğitmenlerimiz"
+  },
+  "teamPage": {
+    "metaTitle": "Ekibimiz | Maryo's Sürücü Kursu Mönchengladbach",
+    "metaDescription": "Mönchengladbach'taki Maryo's ekibi. B, BF17, B197 ve BE için eğitmenler — Almanca, Türkçe ve Arapça."
   },
   "preisePage": {
     "metaTitle": "Ehliyet fiyatları Mönchengladbach | B BF17 B197 BE hesap",
@@ -331,7 +371,12 @@
     "heading": "Mönchengladbach'ta ehliyet fiyatları",
     "intro1": "Rheydt, Wickrath veya başka bir semtte otur — Bahnhofstraße'deki merkezimizde tüm PKW adayları için aynı net fiyatlar geçerlidir.",
     "intro2": "Kayıt ve öğrenme uygulaması başlangıçtır; direksiyon dersleri ihtiyaca göre ödenir. TÜV ve İlk Yardım ayrı kalemlerdir. Jobcenter ve destek için SSS'ye bak.",
-    "intro3": "Aşağıdaki hesap makinesinde B, BF17, B197 veya BE için farklı saat sayılarını dene."
+    "intro3": "Yukarıdaki hesap makinesinde B, BF17, B197 veya BE için farklı saat sayılarını dene.",
+    "switcherOfferBadge": "TEKLİF",
+    "switcherOfferTitle": "Okul değiştirenler",
+    "switcherOfferBody": "Başka bir sürücü kursundan bize mi geçiyorsun? Önceki kurstan geçerli bir eğitim belgesi sunabiliyorsan kayıt (nakil) yalnızca 1 €. Uygulama, dersler ve diğer hizmetler standart fiyatlarımızdır — yukarıdaki hesaplayıcı toplam tahmini için yardımcı olur.",
+    "switcherOfferFaqHint": "Konuyu SSS bölümünde de bulabilirsin (filtre: Fiyatlar).",
+    "switcherOfferFaqLink": "SSS'ye git"
   },
   "fuehrerscheinPage": {
     "ctaPreise": "Fiyatlar ve hesap",
@@ -404,8 +449,8 @@
   },
   "registration": {
     "heading": "KAYIT",
-    "step1Title": "Kişisel bilgiler",
-    "step2Title": "Kurs & öğretmen",
+    "step1Title": "Kurs & öğretmen",
+    "step2Title": "Kişisel bilgiler",
     "step3Title": "Ödeme & koşullar",
     "firstName": "Ad",
     "lastName": "Soyad",
@@ -485,7 +530,19 @@
     "successTitle": "MARYO'S'A HOŞ GELDİN!",
     "successMessage": "Yakında dönüş yapacağız. Soru: 0178 4557528.",
     "successCta": "Ana sayfaya",
-    "loadingPayment": "Ödeme hazırlanıyor"
+    "loadingPayment": "Ödeme hazırlanıyor",
+    "referrerCode": "Tavsiye kodu (isteğe bağlı)",
+    "referrerCodePlaceholder": "örn. MARYO-ABC123",
+    "referrerCodeHint": "Arkadaşın seni yönlendirdiyse kodunu gir.",
+    "yourReferralCode": "Tavsiye kodun",
+    "referralCodeSuccessHint": "Arkadaşlarınla paylaş.",
+    "referralLookupTitle": "Kodunu al",
+    "referralLookupEmail": "Kayıt olduğun e-posta",
+    "referralLookupCta": "Kodu göster",
+    "referralLookupNotFound": "Bu e-posta için tavsiye kodu yok.",
+    "referralLookupEmailRequired": "Lütfen e-posta adresini gir.",
+    "referralLookupEmailInvalid": "Lütfen geçerli bir e-posta gir.",
+    "referralLookupFound": "Tavsiye kodun"
   },
   "common": {
     "loading": "Yükleniyor…"

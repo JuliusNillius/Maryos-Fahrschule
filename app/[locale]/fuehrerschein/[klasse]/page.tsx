@@ -5,7 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { getSiteData } from '@/lib/site-data';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/layout/Footer';
-import { getCanonicalUrl, type Locale } from '@/lib/seo';
+import { buildPageMetadata, type Locale } from '@/lib/seo';
 
 const KLASSEN_SLUG = ['b', 'bf17'] as const;
 
@@ -30,23 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!upper) return {};
   const l = (locale as Locale) || 'de';
   const path = `/fuehrerschein/${klasse.toLowerCase()}`;
-  const canonical = getCanonicalUrl(path, l);
   const t = await getTranslations({ locale, namespace: 'fuehrerscheinPage' });
   const prefix = upper === 'B' ? 'b' : 'bf17';
   const title = t(`${prefix}MetaTitle`);
   const description = t(`${prefix}MetaDescription`);
-  return {
-    title,
-    description,
-    alternates: { canonical },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Maryo's Fahrschule",
-      type: 'website',
-    },
-  };
+  return buildPageMetadata({ locale: l, path, title, description });
 }
 
 export default async function FuehrerscheinKlassePage({ params }: Props) {
@@ -108,7 +96,7 @@ export default async function FuehrerscheinKlassePage({ params }: Props) {
           </Link>
         </div>
       </article>
-      <Contact contact={siteData.settings.contact} />
+      <Contact contact={siteData.settings.contact} social={siteData.settings.social} />
       <Footer contact={siteData.settings.contact} impressum={siteData.settings.impressum} social={siteData.settings.social} />
     </main>
   );

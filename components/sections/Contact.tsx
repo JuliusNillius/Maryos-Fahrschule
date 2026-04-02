@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { socialHref, type SocialLinks } from '@/lib/social-links';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,9 +18,10 @@ type ContactProps = {
     city?: string;
     mapUrl?: string;
   } | null;
+  social?: SocialLinks | null;
 };
 
-export default function Contact({ contact }: ContactProps) {
+export default function Contact({ contact, social }: ContactProps) {
   const phone = contact?.phone ?? '0178 4557528';
   const address = contact?.street && contact?.zip && contact?.city
     ? `${contact.street}, ${contact.zip} ${contact.city}`
@@ -43,18 +45,22 @@ export default function Contact({ contact }: ContactProps) {
     const map = mapRef.current;
     if (!section) return;
 
+    const reduceMotion =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const ctx = gsap.context(() => {
+      if (reduceMotion) return;
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: section, start: 'top 78%', toggleActions: 'play none none none' },
+        scrollTrigger: { trigger: section, start: 'top 88%', toggleActions: 'play none none none' },
       });
       if (heading) {
-        tl.fromTo(heading, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' });
+        tl.fromTo(heading, { y: 28 }, { y: 0, duration: 0.65, ease: 'power3.out' });
       }
       if (left) {
-        tl.fromTo(left, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, '-=0.5');
+        tl.fromTo(left, { x: -28 }, { x: 0, duration: 0.65, ease: 'power3.out' }, '-=0.45');
       }
       if (map) {
-        tl.fromTo(map, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, '-=0.85');
+        tl.fromTo(map, { x: 28 }, { x: 0, duration: 0.65, ease: 'power3.out' }, '-=0.65');
       }
     }, section);
     return () => ctx.revert();
@@ -108,9 +114,9 @@ export default function Contact({ contact }: ContactProps) {
               {t('closed')}
             </p>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-wrap gap-4 pt-4">
               <a
-                href="https://instagram.com"
+                href={socialHref('instagram', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg border border-[rgba(93,196,34,0.2)] p-2 text-text-muted transition-colors hover:border-green-primary hover:text-green-primary"
@@ -119,7 +125,7 @@ export default function Contact({ contact }: ContactProps) {
                 Instagram
               </a>
               <a
-                href="https://tiktok.com"
+                href={socialHref('tiktok', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg border border-[rgba(93,196,34,0.2)] p-2 text-text-muted transition-colors hover:border-green-primary hover:text-green-primary"
@@ -128,7 +134,7 @@ export default function Contact({ contact }: ContactProps) {
                 TikTok
               </a>
               <a
-                href="https://facebook.com"
+                href={socialHref('facebook', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg border border-[rgba(93,196,34,0.2)] p-2 text-text-muted transition-colors hover:border-green-primary hover:text-green-primary"
@@ -137,7 +143,7 @@ export default function Contact({ contact }: ContactProps) {
                 Facebook
               </a>
               <a
-                href="https://youtube.com"
+                href={socialHref('youtube', social)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg border border-[rgba(93,196,34,0.2)] p-2 text-text-muted transition-colors hover:border-green-primary hover:text-green-primary"
