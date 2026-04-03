@@ -101,6 +101,12 @@ export async function getSiteData(): Promise<SiteData> {
   headers();
   const supabase = getSupabaseAdmin();
 
+  // Lokaler `next build`: optional keine DB (sonst bis zu SITE_DATA_TIMEOUT_MS pro Aufruf, oft wirkt das wie „Hänger“).
+  // Nicht auf Vercel/Production setzen — nur in `.env.local` für schnellere Builds.
+  if (process.env.NEXT_PHASE === 'phase-production-build' && process.env.SKIP_BUILD_SUPABASE === '1') {
+    return empty;
+  }
+
   // Im Development ohne Supabase-Zugriff starten, damit localhost sofort lädt (Supabase ggf. langsam/blockiert)
   if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEV_USE_SUPABASE !== '1') {
     return empty;

@@ -39,3 +39,6 @@ supabase/.temp/
 # Lokale Artefakte
 ffmpeg-static-*.tgz
 .cursor/debug*.log
+
+# Große Video-Backups nach Kompression (nicht ins Repo)
+public/videos/*.backup.mp4

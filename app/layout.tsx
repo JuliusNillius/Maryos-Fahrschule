@@ -55,12 +55,25 @@ export const viewport: Viewport = {
   themeColor: '#080808',
 };
 
+function heroVideoPreloadHrefs() {
+  const site = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.maryosfahrschule.de').replace(
+    /\/$/,
+    '',
+  );
+  const desktop =
+    process.env.NEXT_PUBLIC_HERO_VIDEO_DESKTOP_URL?.trim() || `${site}/videos/hero.mp4`;
+  const mobile =
+    process.env.NEXT_PUBLIC_HERO_VIDEO_MOBILE_URL?.trim() || `${site}/videos/hero-mobile.mp4`;
+  return { desktop, mobile };
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+  const { desktop: heroDesktop, mobile: heroMobile } = heroVideoPreloadHrefs();
 
   return (
     <html
@@ -69,6 +82,20 @@ export default async function RootLayout({
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="preload"
+          href={heroDesktop}
+          as="video"
+          type="video/mp4"
+          media="(min-width: 1024px)"
+        />
+        <link
+          rel="preload"
+          href={heroMobile}
+          as="video"
+          type="video/mp4"
+          media="(max-width: 1023px)"
+        />
       </head>
       <body className="font-body antialiased">
         {plausibleDomain && (

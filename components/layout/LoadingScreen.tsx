@@ -5,7 +5,9 @@ import gsap from 'gsap';
 
 /** Gleiche Grün-Werte wie Brand — Glow + Kleeblatt wirken aus einem Guss */
 const G = '93,196,34';
-const CLOVER_MASK = "url('/kleeblatt-logo.png')";
+/** 320px-Breite WebP nur für Ladescreen (2× für 160px-Box); Navbar nutzt weiter /kleeblatt-logo.png */
+const LOADER_CLOVER = '/kleeblatt-loader.webp';
+const CLOVER_MASK = `url('${LOADER_CLOVER}')`;
 
 /**
  * Schwarze Kontur nur um die Form (kein Rechteck-Rahmen): filter drop-shadow entlang der Alpha-Kante.
@@ -273,10 +275,10 @@ export default function LoadingScreen({ children }: { children: React.ReactNode 
               />
               <img
                 ref={imgRef}
-                src="/kleeblatt-logo.png"
+                src={LOADER_CLOVER}
                 alt=""
-                width={160}
-                height={160}
+                width={320}
+                height={272}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
